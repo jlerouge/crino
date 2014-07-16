@@ -20,7 +20,7 @@ We are writing an article on IODA, we'll inform you as soon as it is ready to pu
 * Install Crino :
 ```bash
 cd to/your/preferred/path
-git checkout https://github.com/jlerouge/crino
+git clone https://github.com/jlerouge/crino.git
 cd crino
 sudo python setup.py install
 ```
