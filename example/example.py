@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Benjamin Labbé, Julien Lerouge,
+#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
 #    Romain Modzelewski, LITIS - EA 4108. All rights reserved.
 #    
 #    This file is part of Crino.
