@@ -16,24 +16,23 @@ IODA is a specialization of the DNNs, specifically designed for cases where you 
 
 We are writing an article on IODA, we'll inform you as soon as it is ready to publish.
 
-## Installation
-First, install Crino's dependencies :
-	* python 2.6 or higher (https://wiki.python.org/moin/BeginnersGuide),
-    * theano 0.6 or higher (http://deeplearning.net/software/theano/install.html)
-
-Then, checkout Crino's source to your preferred location, either with the command `git clone git://github.com/jlerouge/crino.git` or by clicking the "Download ZIP" button and extracting the archive. 
-
-Finally, make `PYTHONPATH` environment variable point to Crino's root directory (the one that contains this README).
-   
 ## Getting started
-* Install Crino
+* Install Crino :
+```bash
+sudo python setup.py install
+```
+OR
+```bash
+pip install https://github.com/jlerouge/crino
+```
+
 * Run the given example :
 ```bash
 cd example
 chmod +x example.py
 ./example.py
 ```
-* Check out the [docs](http://jlerouge.github.io/crino/)
+* Check the [docs](http://jlerouge.github.io/soft/crino/)
 
 ## FAQ
 * **What does "device gpu is not available" mean ?**
