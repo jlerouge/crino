@@ -39,6 +39,7 @@ chmod +x example.py
 
 ## Contact
 You can contact us with the following e-mail address : crino-contact@litislab.fr.
+
 Feel free to open a new [issue](https://github.com/jlerouge/crino/issues) in case you have found a bug in Crino.
 
 ## Credits
