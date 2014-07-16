@@ -46,8 +46,13 @@ Feel free to open a new [issue](https://github.com/jlerouge/crino/issues) in cas
 Crino is based on Theano :
 * J. Bergstra, O. Breuleux, F. Bastien, P. Lamblin, R. Pascanu, G. Desjardins, J. Turian, D. Warde-Farley and Y. Bengio. [“Theano: A CPU and GPU Math Expression Compiler”](http://www.iro.umontreal.ca/~lisa/pointeurs/theano_scipy2010.pdf). Proceedings of the Python for Scientific Computing Conference (SciPy) 2010. June 30 - July 3, Austin, TX
 
+IODA is based on B. Labbé's et al. work :
+* B. Labbé, R. Hérault and C. Chatelain . [“Learning Deep Neural Networks for High Dimensional Output Problems”](http://hal.archives-ouvertes.fr/docs/00/43/87/14/PDF/icmla09.pdf). In IEEE International Conference on Machine Learning and Applications (ICMLA'09), December 2009.
+
+
 ## Disclaimer
-Copyright (c) 2014 Clément Chatelain, Romain Hérault, Benjamin Labbé, Julien Lerouge, Romain Modzelewski, LITIS - EA 4108.
+Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge, Romain Modzelewski, LITIS - EA 4108.
+
 All rights reserved.
 
 This program is free software: you can redistribute it and/or modify
