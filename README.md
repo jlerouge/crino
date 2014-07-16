@@ -19,11 +19,10 @@ We are writing an article on IODA, we'll inform you as soon as it is ready to pu
 ## Getting started
 * Install Crino :
 ```bash
+cd to/your/preferred/path
+git checkout https://github.com/jlerouge/crino
+cd crino
 sudo python setup.py install
-```
-OR
-```bash
-pip install https://github.com/jlerouge/crino
 ```
 
 * Run the given example :
