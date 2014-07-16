@@ -9,12 +9,14 @@ Crino lets you "hand-craft" neural-network architectures, using a modular framew
 * deep neural networks (DNN)
 * input-output deep architectures (IODA)
 
-Crino is natively compatible with Matlab-like data, but you can easily adapt it to your needs using SciPy and NumPy.
-
-## IODA
+### IODA
 IODA is a specialization of the DNNs, specifically designed for cases where you have to deal with high-dimensional input and output spaces. The input and output layers are initialized with an unsupervised pre-training step. Then, the backpropagation algorithm performs the supervised learning final step. This process is based on the stacked auto-encoder strategy, commonly used by DNN training algorithms.
 
-We are writing an article on IODA, we'll inform you as soon as it is ready to publish.
+We are currently writing an article on IODA, we'll inform you as soon as it is ready to publish.
+
+### Data
+Crino is natively compatible with Matlab-like data, but you can easily adapt it to your needs using SciPy and NumPy.
+See our example (`example/example.py`) to know how to load and use data.
 
 ## Getting started
 * Install Crino :
@@ -32,10 +34,6 @@ chmod +x example.py
 ./example.py
 ```
 * Check the [docs](http://jlerouge.github.io/soft/crino/)
-
-## Credits
-Crino is based on Theano :
-* J. Bergstra, O. Breuleux, F. Bastien, P. Lamblin, R. Pascanu, G. Desjardins, J. Turian, D. Warde-Farley and Y. Bengio. [“Theano: A CPU and GPU Math Expression Compiler”](http://www.iro.umontreal.ca/~lisa/pointeurs/theano_scipy2010.pdf). Proceedings of the Python for Scientific Computing Conference (SciPy) 2010. June 30 - July 3, Austin, TX
 
 ## FAQ
 * **What does "device gpu is not available" mean ?**
@@ -59,4 +57,6 @@ GNU Lesser General Public License for more details.
 
 The sample data (located in `example/data`) are free of use.
 
-
+## Credits
+Crino is based on Theano :
+* J. Bergstra, O. Breuleux, F. Bastien, P. Lamblin, R. Pascanu, G. Desjardins, J. Turian, D. Warde-Farley and Y. Bengio. [“Theano: A CPU and GPU Math Expression Compiler”](http://www.iro.umontreal.ca/~lisa/pointeurs/theano_scipy2010.pdf). Proceedings of the Python for Scientific Computing Conference (SciPy) 2010. June 30 - July 3, Austin, TX
