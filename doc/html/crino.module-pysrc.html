@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>crino.module</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="crino-module.html">Package&nbsp;crino</a> ::
+        Module&nbsp;module
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="crino.module-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="crino.module-module.html">Module crino.module</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment">#    Copyright (c) 2014 Julien Lerouge, Romain H&#233;rault, Cl&#233;ment Chatelain, Benjamin Labb&#233;, Romain Modzelewski.</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment">#    All rights reserved.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment">#    This file is part of Crino.</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#    Crino is free software: you can redistribute it and/or modify</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#    it under the terms of the GNU Lesser General Public License as published</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#    by the Free Software Foundation, either version 3 of the License, or</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#    (at your option) any later version.</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#    Crino is distributed in the hope that it will be useful,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment">#    GNU Lesser General Public License for more details.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#    You should have received a copy of the GNU Lesser General Public License</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment">#    along with Crino.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">provides a modular architecture to build a neural network.</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">theano</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">theano</tt><tt class="py-op">.</tt><tt class="py-name">tensor</tt> <tt class="py-keyword">as</tt> <tt class="py-name">T</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> <tt class="py-keyword">as</tt> <tt class="py-name">np</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">warnings</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">cPickle</tt> <tt class="py-keyword">as</tt> <tt class="py-name">pickle</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package crino=crino-module.html"><a title="crino" class="py-name" href="#" onclick="return doclink('link-0', 'crino', 'link-0');">crino</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module crino.criterion=crino.criterion-module.html"><a title="crino.criterion" class="py-name" href="#" onclick="return doclink('link-1', 'criterion', 'link-1');">criterion</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class crino.criterion.Criterion=crino.criterion.Criterion-class.html"><a title="crino.criterion.Criterion" class="py-name" href="#" onclick="return doclink('link-2', 'Criterion', 'link-2');">Criterion</a></tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="load"></a><div id="load-def"><a name="L31"></a><tt class="py-lineno"> 31</tt> <a class="py-toggle" href="#" id="load-toggle" onclick="return toggle('load');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module-module.html#load">load</a><tt class="py-op">(</tt><tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="load-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="load-expanded"><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">    Loads and returns a `Module` previously saved with `Module.save` function.</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">    :Parameters:</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">        filename : str</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">            The path to the saved module.</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Function crino.module.load()=crino.module-module.html#load"><a title="crino.module.load" class="py-name" href="#" onclick="return doclink('link-3', 'load', 'link-3');">load</a></tt><tt class="py-op">(</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">load_file</tt><tt class="py-op">,</tt> <tt class="py-string">'rb'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="Module"></a><div id="Module-def"><a name="L41"></a><tt class="py-lineno"> 41</tt> <a class="py-toggle" href="#" id="Module-toggle" onclick="return toggle('Module');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Module-class.html">Module</a><tt class="py-op">:</tt> </tt>
+</div><div id="Module-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Module-expanded"><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">    A `Module` is a part of a neural network architecture,</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">    that may have parameters. Provided an input vector of</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">    fixed size, a module is able to compute an output vector,</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">    which size is specified at construction.</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">    According to their characteristics, several modules can</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">    be combined to build a new module.</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">    If a criterion is given to a module, it is able to compute</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">    the partial gradients of its parameters, in order to perform</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">    a gradient descent.</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring">    :attention: This is an abstract class, it must be derived to be used.</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Module.__init__"></a><div id="Module.__init__-def"><a name="L56"></a><tt class="py-lineno"> 56</tt> <a class="py-toggle" href="#" id="Module.__init__-toggle" onclick="return toggle('Module.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.__init__-expanded"><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Module` object.</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">            nOutputs : int</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">                The `outputs` size.</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The symbolic `inputs` vector of the module, denoted :math:`\mathbf{x}`</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-string">        :type: :theano:`TensorVariable`</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The symbolic `outputs` vector of the module, denoted :math:`\mathbf{\hat{y}}`</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-string">        :type: :theano:`TensorVariable`</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">=</tt> <tt class="py-name">nInputs</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The `inputs` size</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-string">        :type: int</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt> <tt class="py-op">=</tt> <tt class="py-name">nOutputs</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The `outputs` size</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-string">        :type: int</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The list of parameters</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-string">        :type: list</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-string">        :ivar: Indicates whether the module have already been prepared</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-string">        :type: bool</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+</div><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="Module.linkModule"></a><div id="Module.linkModule-def"><a name="L103"></a><tt class="py-lineno">103</tt> <a class="py-toggle" href="#" id="Module.linkModule-toggle" onclick="return toggle('Module.linkModule');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#linkModule">linkModule</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">previous</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.linkModule-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.linkModule-expanded"><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">        Links the outputs of the previous module to the inputs of the current module.</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">            previous : `Module`</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">                The previous module to be linked with the current module.</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt> <tt class="py-keyword">and</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">!=</tt> <tt class="py-name">previous</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">"This module has already been prepared, you can't change its inputs size."</tt><tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-keyword">not</tt><tt class="py-op">(</tt><tt class="py-name">previous</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt><tt class="py-op">)</tt> <tt class="py-op">:</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">"The inputs module has not been prepared before."</tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt> <tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">=</tt> <tt class="py-name">previous</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt> <tt class="py-op">=</tt> <tt class="py-name">previous</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> </tt>
+</div><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="Module.linkInputs"></a><div id="Module.linkInputs-def"><a name="L120"></a><tt class="py-lineno">120</tt> <a class="py-toggle" href="#" id="Module.linkInputs-toggle" onclick="return toggle('Module.linkInputs');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#linkInputs">linkInputs</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">vector</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.linkInputs-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.linkInputs-expanded"><a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">        Sets the symbolic vector as the inputs of the current module.</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring">        :attention: You can't change the module inputs size once it has been `prepare()`'d</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-docstring">            vector : :theano:`TensorVariable`</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">                The symbolic vector that will serve as inputs.</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring">                The size of this inputs vector.</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt> <tt class="py-keyword">and</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">!=</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">"This module has already been prepared, you can't change its inputs size."</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">=</tt> <tt class="py-name">nInputs</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt> <tt class="py-op">=</tt> <tt class="py-name">vector</tt> </tt>
+</div><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"> </tt>
+<a name="Module.trainFunction"></a><div id="Module.trainFunction-def"><a name="L138"></a><tt class="py-lineno">138</tt> <a class="py-toggle" href="#" id="Module.trainFunction-toggle" onclick="return toggle('Module.trainFunction');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#trainFunction">trainFunction</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">batch_size</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-param">lr</tt><tt class="py-op">=</tt><tt class="py-number">0.1</tt><tt class="py-op">,</tt> <tt class="py-param">downcast</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.trainFunction-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.trainFunction-expanded"><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs and compiles a Theano function in order to train the module.</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">            batch_size : int</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring">                The size of the batches to use for gradient descent :</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">                    - 1 for stochastic gradient descent;</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">                    - :math:`n \in ]1..N_{train}[` for mini-batch gradient descent (:math:`N_{train}` must be a multiple of n);</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">                    - :math:`N_{train}` for batch gradient descent.</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">                (:math:`N_{train}` is the total number of training examples)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">            lr : float</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring">                The learning rate.</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">            downcast : bool</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">                If true, allows the inputs data to be downcasted</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring">                (e.g. from double to single precision floats for GPU use).</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-docstring">        :return: a Theano-function that performs one step of gradient descent</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring">        :rtype: :theano:`function`</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt> <tt class="py-keyword">and</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="crino.criterion" class="py-name" href="#" onclick="return doclink('link-4', 'criterion', 'link-1');">criterion</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gparams</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">grad</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="crino.criterion" class="py-name" href="#" onclick="return doclink('link-5', 'criterion', 'link-1');">criterion</a></tt><tt class="py-op">.</tt><tt class="py-name">expression</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">            <tt class="py-comment"># D&#233;finition des variables symboliques</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">            <tt class="py-name">index</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">lscalar</tt><tt class="py-op">(</tt><tt class="py-string">'index'</tt><tt class="py-op">)</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">            <tt class="py-name">x_train</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">matrix</tt><tt class="py-op">(</tt><tt class="py-string">'x_train'</tt><tt class="py-op">)</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">            <tt class="py-name">y_train</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">matrix</tt><tt class="py-op">(</tt><tt class="py-string">'y_train'</tt><tt class="py-op">)</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">            <tt class="py-comment"># D&#233;finition des mises &#224; jour</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">            <tt class="py-name">updates</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">param_i</tt><tt class="py-op">,</tt> <tt class="py-name">grad_i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">gparams</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">                <tt class="py-name">updates</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">param_i</tt><tt class="py-op">,</tt> <tt class="py-name">param_i</tt> <tt class="py-op">-</tt> <tt class="py-name">lr</tt><tt class="py-op">*</tt><tt class="py-name">grad_i</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">            <tt class="py-comment"># Construction d'une fonction d'apprentissage theano</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">theano</tt><tt class="py-op">.</tt><tt class="py-name">function</tt><tt class="py-op">(</tt> <tt class="py-name">inputs</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-name">x_train</tt><tt class="py-op">,</tt> <tt class="py-name">y_train</tt><tt class="py-op">,</tt> <tt class="py-name">index</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">outputs</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="crino.criterion" class="py-name" href="#" onclick="return doclink('link-6', 'criterion', 'link-1');">criterion</a></tt><tt class="py-op">.</tt><tt class="py-name">expression</tt><tt class="py-op">,</tt> <tt class="py-name">updates</tt><tt class="py-op">=</tt><tt class="py-name">updates</tt><tt class="py-op">,</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">                                    <tt class="py-name">givens</tt><tt class="py-op">=</tt><tt class="py-op">{</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">                                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">:</tt> <tt class="py-name">x_train</tt><tt class="py-op">[</tt><tt class="py-name">index</tt><tt class="py-op">*</tt><tt class="py-name">batch_size</tt><tt class="py-op">:</tt><tt class="py-op">(</tt><tt class="py-name">index</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">*</tt><tt class="py-name">batch_size</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">                                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="crino.criterion" class="py-name" href="#" onclick="return doclink('link-7', 'criterion', 'link-1');">criterion</a></tt><tt class="py-op">.</tt><tt class="py-name">targets</tt><tt class="py-op">:</tt> <tt class="py-name">y_train</tt><tt class="py-op">[</tt><tt class="py-name">index</tt><tt class="py-op">*</tt><tt class="py-name">batch_size</tt><tt class="py-op">:</tt><tt class="py-op">(</tt><tt class="py-name">index</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">*</tt><tt class="py-name">batch_size</tt><tt class="py-op">]</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">                                    <tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-name">allow_input_downcast</tt><tt class="py-op">=</tt><tt class="py-name">downcast</tt><tt class="py-op">)</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="Module.forward"></a><div id="Module.forward-def"><a name="L181"></a><tt class="py-lineno">181</tt> <a class="py-toggle" href="#" id="Module.forward-toggle" onclick="return toggle('Module.forward');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#forward">forward</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">x_test</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.forward-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.forward-expanded"><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-docstring">        Performs the forward step on the given test example.</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">            x_test : :numpy:`ndarray`</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">                The test example on which the neural network will compute its outputs.</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">        :return: a Theano function that performs one step of gradient descent</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">        :rtype: :theano:`function`</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">        <tt id="link-8" class="py-name" targets="Method crino.module.Module.forward()=crino.module.Module-class.html#forward"><a title="crino.module.Module.forward" class="py-name" href="#" onclick="return doclink('link-8', 'forward', 'link-8');">forward</a></tt> <tt class="py-op">=</tt> <tt class="py-name">theano</tt><tt class="py-op">.</tt><tt class="py-name">function</tt><tt class="py-op">(</tt><tt class="py-name">inputs</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">outputs</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt><tt class="py-op">,</tt> <tt class="py-name">givens</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">:</tt> <tt class="py-name">x_test</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-9" class="py-name"><a title="crino.module.Module.forward" class="py-name" href="#" onclick="return doclink('link-9', 'forward', 'link-8');">forward</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="Module.prepare"></a><div id="Module.prepare-def"><a name="L195"></a><tt class="py-lineno">195</tt> <a class="py-toggle" href="#" id="Module.prepare-toggle" onclick="return toggle('Module.prepare');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#prepare">prepare</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.prepare-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.prepare-expanded"><a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-docstring">        Prepares the module before learning.</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-docstring">        :attention: The inputs must be linked before preparation.</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt><tt class="py-op">:</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">:</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'The inputs of this module has not been linked before preparation.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method crino.module.Concat.prepareGeometry()=crino.module.Concat-class.html#prepareGeometry,Method crino.module.Module.prepareGeometry()=crino.module.Module-class.html#prepareGeometry,Method crino.module.Sequential.prepareGeometry()=crino.module.Sequential-class.html#prepareGeometry,Method crino.module.Standalone.prepareGeometry()=crino.module.Standalone-class.html#prepareGeometry"><a title="crino.module.Concat.prepareGeometry
+crino.module.Module.prepareGeometry
+crino.module.Sequential.prepareGeometry
+crino.module.Standalone.prepareGeometry" class="py-name" href="#" onclick="return doclink('link-10', 'prepareGeometry', 'link-10');">prepareGeometry</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method crino.module.Activation.prepareParams()=crino.module.Activation-class.html#prepareParams,Method crino.module.Concat.prepareParams()=crino.module.Concat-class.html#prepareParams,Method crino.module.Linear.prepareParams()=crino.module.Linear-class.html#prepareParams,Method crino.module.Module.prepareParams()=crino.module.Module-class.html#prepareParams,Method crino.module.Sequential.prepareParams()=crino.module.Sequential-class.html#prepareParams,Method crino.network.AutoEncoder.prepareParams()=crino.network.AutoEncoder-class.html#prepareParams,Method crino.network.DeepNeuralNetwork.prepareParams()=crino.network.DeepNeuralNetwork-class.html#prepareParams"><a title="crino.module.Activation.prepareParams
+crino.module.Concat.prepareParams
+crino.module.Linear.prepareParams
+crino.module.Module.prepareParams
+crino.module.Sequential.prepareParams
+crino.network.AutoEncoder.prepareParams
+crino.network.DeepNeuralNetwork.prepareParams" class="py-name" href="#" onclick="return doclink('link-11', 'prepareParams', 'link-11');">prepareParams</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method crino.module.Concat.prepareOutput()=crino.module.Concat-class.html#prepareOutput,Method crino.module.Linear.prepareOutput()=crino.module.Linear-class.html#prepareOutput,Method crino.module.Module.prepareOutput()=crino.module.Module-class.html#prepareOutput,Method crino.module.Sequential.prepareOutput()=crino.module.Sequential-class.html#prepareOutput,Method crino.module.Sigmoid.prepareOutput()=crino.module.Sigmoid-class.html#prepareOutput,Method crino.module.Softmax.prepareOutput()=crino.module.Softmax-class.html#prepareOutput,Method crino.module.Tanh.prepareOutput()=crino.module.Tanh-class.html#prepareOutput"><a title="crino.module.Concat.prepareOutput
+crino.module.Linear.prepareOutput
+crino.module.Module.prepareOutput
+crino.module.Sequential.prepareOutput
+crino.module.Sigmoid.prepareOutput
+crino.module.Softmax.prepareOutput
+crino.module.Tanh.prepareOutput" class="py-name" href="#" onclick="return doclink('link-12', 'prepareOutput', 'link-12');">prepareOutput</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">            <tt class="py-name">warnings</tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"This module is already prepared."</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"> </tt>
+<a name="Module.prepareGeometry"></a><div id="Module.prepareGeometry-def"><a name="L212"></a><tt class="py-lineno">212</tt> <a class="py-toggle" href="#" id="Module.prepareGeometry-toggle" onclick="return toggle('Module.prepareGeometry');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#prepareGeometry">prepareGeometry</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.prepareGeometry-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.prepareGeometry-expanded"><a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-docstring">        Sets correctly the geometry (`nInputs` and `nOutputs`) of the potential submodules.</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"><tt class="py-docstring">        :attention: It must be implemented in derived classes.</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">"This class must be derived."</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"> </tt>
+<a name="Module.prepareParams"></a><div id="Module.prepareParams-def"><a name="L220"></a><tt class="py-lineno">220</tt> <a class="py-toggle" href="#" id="Module.prepareParams-toggle" onclick="return toggle('Module.prepareParams');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#prepareParams">prepareParams</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.prepareParams-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.prepareParams-expanded"><a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"><tt class="py-docstring">        Initializes the `params` of the module and its potential submodules.</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-docstring">        :attention: It must be implemented in derived classes.</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">"This class must be derived."</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"> </tt>
+<a name="Module.prepareOutput"></a><div id="Module.prepareOutput-def"><a name="L228"></a><tt class="py-lineno">228</tt> <a class="py-toggle" href="#" id="Module.prepareOutput-toggle" onclick="return toggle('Module.prepareOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#prepareOutput">prepareOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.prepareOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.prepareOutput-expanded"><a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-docstring">        Computes the symbolic `outputs` of the module in respect to its `inputs`.</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring">        :attention: It must be implemented in derived classes.</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt><tt class="py-string">"This class must be derived."</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"> </tt>
+<a name="Module.save"></a><div id="Module.save-def"><a name="L236"></a><tt class="py-lineno">236</tt> <a class="py-toggle" href="#" id="Module.save-toggle" onclick="return toggle('Module.save');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Module-class.html#save">save</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Module.save-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Module.save-expanded"><a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"><tt class="py-docstring">        Saves this `Module` to a file.</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"><tt class="py-docstring">            filename : str</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"><tt class="py-docstring">                The path where the module is to be saved.</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">        <tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'wb'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">protocol</tt><tt class="py-op">=</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"> </tt>
+<a name="Standalone"></a><div id="Standalone-def"><a name="L246"></a><tt class="py-lineno">246</tt> <a class="py-toggle" href="#" id="Standalone-toggle" onclick="return toggle('Standalone');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Standalone-class.html">Standalone</a><tt class="py-op">(</tt><tt class="py-base-class">Module</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Standalone-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Standalone-expanded"><a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"><tt class="py-docstring">    A `Standalone` module computes its `outputs` without relying</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"><tt class="py-docstring">    on other modules, i.e. it doesn't have any submodule.</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"><tt class="py-docstring">    :attention: This is an abstract class, it must be derived to be used.</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"> </tt>
+<a name="Standalone.__init__"></a><div id="Standalone.__init__-def"><a name="L254"></a><tt class="py-lineno">254</tt> <a class="py-toggle" href="#" id="Standalone.__init__-toggle" onclick="return toggle('Standalone.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Standalone-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Standalone.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Standalone.__init__-expanded"><a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Standalone` module.</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"><tt class="py-docstring">            nOutputs : int</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line"><tt class="py-docstring">                The `outputs` size.</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">        <tt id="link-13" class="py-name" targets="Class crino.module.Module=crino.module.Module-class.html"><a title="crino.module.Module" class="py-name" href="#" onclick="return doclink('link-13', 'Module', 'link-13');">Module</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method crino.criterion.Criterion.__init__()=crino.criterion.Criterion-class.html#__init__,Method crino.criterion.CrossEntropy.__init__()=crino.criterion.CrossEntropy-class.html#__init__,Method crino.criterion.MeanAbsoluteError.__init__()=crino.criterion.MeanAbsoluteError-class.html#__init__,Method crino.criterion.MeanSquareError.__init__()=crino.criterion.MeanSquareError-class.html#__init__,Method crino.module.Activation.__init__()=crino.module.Activation-class.html#__init__,Method crino.module.Concat.__init__()=crino.module.Concat-class.html#__init__,Method crino.module.Container.__init__()=crino.module.Container-class.html#__init__,Method crino.module.Linear.__init__()=crino.module.Linear-class.html#__init__,Method crino.module.Module.__init__()=crino.module.Module-class.html#__init__,Method crino.module.Sequential.__init__()=crino.module.Sequential-class.html#__init__,Method crino.module.Sigmoid.__init__()=crino.module.Sigmoid-class.html#__init__,Method crino.module.Softmax.__init__()=crino.module.Softmax-class.html#__init__,Method crino.module.Standalone.__init__()=crino.module.Standalone-class.html#__init__,Method crino.module.Tanh.__init__()=crino.module.Tanh-class.html#__init__,Method crino.network.AutoEncoder.__init__()=crino.network.AutoEncoder-class.html#__init__,Method crino.network.DeepNeuralNetwork.__init__()=crino.network.DeepNeuralNetwork-class.html#__init__,Method crino.network.InputOutputDeepArchitecture.__init__()=crino.network.InputOutputDeepArchitecture-class.html#__init__,Method crino.network.MultiLayerPerceptron.__init__()=crino.network.MultiLayerPerceptron-class.html#__init__"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-14', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"> </tt>
+<a name="Standalone.prepareGeometry"></a><div id="Standalone.prepareGeometry-def"><a name="L266"></a><tt class="py-lineno">266</tt> <a class="py-toggle" href="#" id="Standalone.prepareGeometry-toggle" onclick="return toggle('Standalone.prepareGeometry');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Standalone-class.html#prepareGeometry">prepareGeometry</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Standalone.prepareGeometry-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Standalone.prepareGeometry-expanded"><a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"><tt class="py-docstring">        Do nothing, as a standalone module doesn't have submodules.</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"> </tt>
+<a name="Linear"></a><div id="Linear-def"><a name="L273"></a><tt class="py-lineno">273</tt> <a class="py-toggle" href="#" id="Linear-toggle" onclick="return toggle('Linear');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Linear-class.html">Linear</a><tt class="py-op">(</tt><tt class="py-base-class">Standalone</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Linear-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Linear-expanded"><a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"><tt class="py-docstring">    A `Linear` module computes its `outputs` as a linear transformation of its `inputs`.</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-docstring">    It has two `params` : :math:`W \in \mathcal{M}_{n_out \\times n_in}(\mathbb{R})`</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"><tt class="py-docstring">    and :math:`b \in \mathbb{R}^{n_{out}}`.</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"><tt class="py-docstring">    The `outputs` expression can be written as follows :</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line"><tt class="py-docstring">    :math:`\mathbf{\hat{y}} = W\\times \mathbf{x} + b`</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line"> </tt>
+<a name="Linear.__init__"></a><div id="Linear.__init__-def"><a name="L283"></a><tt class="py-lineno">283</tt> <a class="py-toggle" href="#" id="Linear.__init__-toggle" onclick="return toggle('Linear.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Linear-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">W_init</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">b_init</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Linear.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Linear.__init__-expanded"><a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Linear` module.</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-docstring">            nOutputs : int</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"><tt class="py-docstring">                The `outputs` size.</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"><tt class="py-docstring">            W_init : :numpy:`ndarray`</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"><tt class="py-docstring">                The initialization matrix for W.</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"><tt class="py-docstring">            b_init : :numpy:`ndarray`</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line"><tt class="py-docstring">                The initialization vector for b.</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">        <tt id="link-15" class="py-name" targets="Class crino.module.Standalone=crino.module.Standalone-class.html"><a title="crino.module.Standalone" class="py-name" href="#" onclick="return doclink('link-15', 'Standalone', 'link-15');">Standalone</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-16', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line"> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W_init</tt> <tt class="py-op">=</tt> <tt class="py-name">W_init</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The initialization matrix for `W`.</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line"><tt class="py-string">        :type: :numpy:`ndarray`</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line"> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b_init</tt> <tt class="py-op">=</tt> <tt class="py-name">b_init</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The initialization vector for `b`.</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line"><tt class="py-string">        :type: :numpy:`ndarray`</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line"> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The symbolic linear transformation matrix.</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line"><tt class="py-string">        :type: :theano:`TensorVariable`</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line"> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The symbolic offset vector.</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line"><tt class="py-string">        :type: :theano:`TensorVariable`</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+</div><a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line"> </tt>
+<a name="Linear.prepareParams"></a><div id="Linear.prepareParams-def"><a name="L324"></a><tt class="py-lineno">324</tt> <a class="py-toggle" href="#" id="Linear.prepareParams-toggle" onclick="return toggle('Linear.prepareParams');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Linear-class.html#prepareParams">prepareParams</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">W</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">b</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Linear.prepareParams-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Linear.prepareParams-expanded"><a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line"><tt class="py-docstring">        Initializes the `W` and `b` `params` of the `Linear` module.</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line"><tt class="py-docstring">            W : :theano:`TensorVariable`</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line"><tt class="py-docstring">                If provided, the `Linear` module will use W as a shared parameter from another module.</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line"><tt class="py-docstring">            b : :theano:`TensorVariable`</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line"><tt class="py-docstring">                If provided, the `Linear` module will use b as a shared parameter from another module.</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line"><tt class="py-docstring">        :attention: `W_init` and `b_init` values will be ignored if existing W and b are passed, since they have already been initialized in another module.</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line"> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">W</tt><tt class="py-op">:</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W</tt> <tt class="py-op">=</tt> <tt class="py-name">W</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W_init</tt> <tt class="py-op">==</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">                <tt class="py-name">ext</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-number">6.</tt><tt class="py-op">/</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W_init</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">asarray</tt><tt class="py-op">(</tt><tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">random</tt><tt class="py-op">.</tt><tt class="py-name">uniform</tt><tt class="py-op">(</tt><tt class="py-name">low</tt><tt class="py-op">=</tt><tt class="py-op">-</tt><tt class="py-name">ext</tt><tt class="py-op">,</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line">                                <tt class="py-name">high</tt><tt class="py-op">=</tt><tt class="py-name">ext</tt><tt class="py-op">,</tt> <tt class="py-name">size</tt><tt class="py-op">=</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line">                                <tt class="py-name">dtype</tt><tt class="py-op">=</tt><tt class="py-name">theano</tt><tt class="py-op">.</tt><tt class="py-name">config</tt><tt class="py-op">.</tt><tt class="py-name">floatX</tt><tt class="py-op">)</tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W</tt> <tt class="py-op">=</tt> <tt class="py-name">theano</tt><tt class="py-op">.</tt><tt class="py-name">shared</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W_init</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'W'</tt><tt class="py-op">,</tt> <tt class="py-name">borrow</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line"> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">b</tt><tt class="py-op">:</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-name">b</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b_init</tt> <tt class="py-op">==</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b_init</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt class="py-name">zeros</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">dtype</tt><tt class="py-op">=</tt><tt class="py-name">theano</tt><tt class="py-op">.</tt><tt class="py-name">config</tt><tt class="py-op">.</tt><tt class="py-name">floatX</tt><tt class="py-op">)</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-name">theano</tt><tt class="py-op">.</tt><tt class="py-name">shared</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b_init</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-string">'b'</tt><tt class="py-op">,</tt> <tt class="py-name">borrow</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line"> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line"> </tt>
+<a name="Linear.prepareOutput"></a><div id="Linear.prepareOutput-def"><a name="L356"></a><tt class="py-lineno">356</tt> <a class="py-toggle" href="#" id="Linear.prepareOutput-toggle" onclick="return toggle('Linear.prepareOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Linear-class.html#prepareOutput">prepareOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Linear.prepareOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Linear.prepareOutput-expanded"><a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"><tt class="py-docstring">        Computes the linear relation :math:`\mathbf{\hat{y}} = W\\times \mathbf{x} + b`</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">dot</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">W</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">b</tt> </tt>
+</div></div><a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line"> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line"> </tt>
+<a name="Container"></a><div id="Container-def"><a name="L363"></a><tt class="py-lineno">363</tt> <a class="py-toggle" href="#" id="Container-toggle" onclick="return toggle('Container');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Container-class.html">Container</a><tt class="py-op">(</tt><tt class="py-base-class">Module</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Container-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Container-expanded"><a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line"><tt class="py-docstring">    A `Container` module computes its `outputs` thanks to</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line"><tt class="py-docstring">    other modules, i.e. it includes several submodules.</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line"><tt class="py-docstring">    The way these submodules are organized depends on the</tt> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line"><tt class="py-docstring">    implementation.</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line"><tt class="py-docstring">    :attention: This is an abstract class, it must be derived to be used.</tt> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line"> </tt>
+<a name="Container.__init__"></a><div id="Container.__init__-def"><a name="L373"></a><tt class="py-lineno">373</tt> <a class="py-toggle" href="#" id="Container.__init__-toggle" onclick="return toggle('Container.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Container-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">mods</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Container.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Container.__init__-expanded"><a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Container` module.</tt> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line"><tt class="py-docstring">            mods : list</tt> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line"><tt class="py-docstring">                A list of submodules to add to the container.</tt> </tt>
+<a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L382"></a><tt class="py-lineno">382</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L383"></a><tt class="py-lineno">383</tt>  <tt class="py-line">        <tt id="link-17" class="py-name"><a title="crino.module.Module" class="py-name" href="#" onclick="return doclink('link-17', 'Module', 'link-13');">Module</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-18', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+<a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line"> </tt>
+<a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L386"></a><tt class="py-lineno">386</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L387"></a><tt class="py-lineno">387</tt>  <tt class="py-line"><tt class="py-string">        :ivar: The list of submodules</tt> </tt>
+<a name="L388"></a><tt class="py-lineno">388</tt>  <tt class="py-line"><tt class="py-string">        :type: list</tt> </tt>
+<a name="L389"></a><tt class="py-lineno">389</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+<a name="L390"></a><tt class="py-lineno">390</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">mods</tt><tt class="py-op">:</tt> </tt>
+<a name="L391"></a><tt class="py-lineno">391</tt>  <tt class="py-line">            <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method crino.module.Container.add()=crino.module.Container-class.html#add"><a title="crino.module.Container.add" class="py-name" href="#" onclick="return doclink('link-19', 'add', 'link-19');">add</a></tt><tt class="py-op">,</tt> <tt class="py-name">mods</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L392"></a><tt class="py-lineno">392</tt>  <tt class="py-line"> </tt>
+<a name="Container.add"></a><div id="Container.add-def"><a name="L393"></a><tt class="py-lineno">393</tt> <a class="py-toggle" href="#" id="Container.add-toggle" onclick="return toggle('Container.add');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Container-class.html#add">add</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">module</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Container.add-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Container.add-expanded"><a name="L394"></a><tt class="py-lineno">394</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L395"></a><tt class="py-lineno">395</tt>  <tt class="py-line"><tt class="py-docstring">        Adds a module to the `Container`.</tt> </tt>
+<a name="L396"></a><tt class="py-lineno">396</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L397"></a><tt class="py-lineno">397</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L398"></a><tt class="py-lineno">398</tt>  <tt class="py-line"><tt class="py-docstring">            module : `Module`</tt> </tt>
+<a name="L399"></a><tt class="py-lineno">399</tt>  <tt class="py-line"><tt class="py-docstring">                The submodule to add.</tt> </tt>
+<a name="L400"></a><tt class="py-lineno">400</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L401"></a><tt class="py-lineno">401</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-20" class="py-name" targets="Module crino.module=crino.module-module.html"><a title="crino.module" class="py-name" href="#" onclick="return doclink('link-20', 'module', 'link-20');">module</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L402"></a><tt class="py-lineno">402</tt>  <tt class="py-line"> </tt>
+<a name="L403"></a><tt class="py-lineno">403</tt>  <tt class="py-line"> </tt>
+<a name="Sequential"></a><div id="Sequential-def"><a name="L404"></a><tt class="py-lineno">404</tt> <a class="py-toggle" href="#" id="Sequential-toggle" onclick="return toggle('Sequential');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Sequential-class.html">Sequential</a><tt class="py-op">(</tt><tt class="py-base-class">Container</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sequential-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Sequential-expanded"><a name="L405"></a><tt class="py-lineno">405</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L406"></a><tt class="py-lineno">406</tt>  <tt class="py-line"><tt class="py-docstring">    A `Sequential` module computes its `outputs` sequentially,</tt> </tt>
+<a name="L407"></a><tt class="py-lineno">407</tt>  <tt class="py-line"><tt class="py-docstring">    i.e. each `outputs` of its submodules is linked to the `inputs`</tt> </tt>
+<a name="L408"></a><tt class="py-lineno">408</tt>  <tt class="py-line"><tt class="py-docstring">    of the following module. The number of submodules in the sequence</tt> </tt>
+<a name="L409"></a><tt class="py-lineno">409</tt>  <tt class="py-line"><tt class="py-docstring">    can be chosen arbitrarily, but the `inputs` and `outputs` sizes</tt> </tt>
+<a name="L410"></a><tt class="py-lineno">410</tt>  <tt class="py-line"><tt class="py-docstring">    must be the same throughout the sequence.</tt> </tt>
+<a name="L411"></a><tt class="py-lineno">411</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L412"></a><tt class="py-lineno">412</tt>  <tt class="py-line"><tt class="py-docstring">    .. image:: ../images/sequential.png</tt> </tt>
+<a name="L413"></a><tt class="py-lineno">413</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L414"></a><tt class="py-lineno">414</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Sequential.__init__"></a><div id="Sequential.__init__-def"><a name="L415"></a><tt class="py-lineno">415</tt> <a class="py-toggle" href="#" id="Sequential.__init__-toggle" onclick="return toggle('Sequential.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Sequential-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">mods</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sequential.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Sequential.__init__-expanded"><a name="L416"></a><tt class="py-lineno">416</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L417"></a><tt class="py-lineno">417</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Sequential` container.</tt> </tt>
+<a name="L418"></a><tt class="py-lineno">418</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L419"></a><tt class="py-lineno">419</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L420"></a><tt class="py-lineno">420</tt>  <tt class="py-line"><tt class="py-docstring">            mods : list</tt> </tt>
+<a name="L421"></a><tt class="py-lineno">421</tt>  <tt class="py-line"><tt class="py-docstring">                A list of submodules to add to the sequence. They will be linked in the same order as provided.</tt> </tt>
+<a name="L422"></a><tt class="py-lineno">422</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L423"></a><tt class="py-lineno">423</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size of the sequence (and of all the submodules).</tt> </tt>
+<a name="L424"></a><tt class="py-lineno">424</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L425"></a><tt class="py-lineno">425</tt>  <tt class="py-line">        <tt id="link-21" class="py-name" targets="Class crino.module.Container=crino.module.Container-class.html"><a title="crino.module.Container" class="py-name" href="#" onclick="return doclink('link-21', 'Container', 'link-21');">Container</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-22', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">mods</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L426"></a><tt class="py-lineno">426</tt>  <tt class="py-line"> </tt>
+<a name="Sequential.prepareGeometry"></a><div id="Sequential.prepareGeometry-def"><a name="L427"></a><tt class="py-lineno">427</tt> <a class="py-toggle" href="#" id="Sequential.prepareGeometry-toggle" onclick="return toggle('Sequential.prepareGeometry');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Sequential-class.html#prepareGeometry">prepareGeometry</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sequential.prepareGeometry-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Sequential.prepareGeometry-expanded"><a name="L428"></a><tt class="py-lineno">428</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L429"></a><tt class="py-lineno">429</tt>  <tt class="py-line"><tt class="py-docstring">        Sets the same `inputs` and `outputs` size for all submodules,</tt> </tt>
+<a name="L430"></a><tt class="py-lineno">430</tt>  <tt class="py-line"><tt class="py-docstring">        and prepare their internal geometry.</tt> </tt>
+<a name="L431"></a><tt class="py-lineno">431</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L432"></a><tt class="py-lineno">432</tt>  <tt class="py-line"> </tt>
+<a name="L433"></a><tt class="py-lineno">433</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L434"></a><tt class="py-lineno">434</tt>  <tt class="py-line">            <tt class="py-comment"># Le conteneur s&#233;quentiel a pour sortie le dernier module</tt> </tt>
+<a name="L435"></a><tt class="py-lineno">435</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt> </tt>
+<a name="L436"></a><tt class="py-lineno">436</tt>  <tt class="py-line">            <tt class="py-comment"># Le premier module a pour entr&#233;e celle du conteneur s&#233;quentiel</tt> </tt>
+<a name="L437"></a><tt class="py-lineno">437</tt>  <tt class="py-line">            <tt class="py-name">first</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L438"></a><tt class="py-lineno">438</tt>  <tt class="py-line">            <tt class="py-name">first</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> </tt>
+<a name="L439"></a><tt class="py-lineno">439</tt>  <tt class="py-line">            <tt class="py-name">first</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="crino.module.Concat.prepareGeometry
+crino.module.Module.prepareGeometry
+crino.module.Sequential.prepareGeometry
+crino.module.Standalone.prepareGeometry" class="py-name" href="#" onclick="return doclink('link-23', 'prepareGeometry', 'link-10');">prepareGeometry</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L440"></a><tt class="py-lineno">440</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">base</tt><tt class="py-op">,</tt> <tt class="py-name">new</tt> <tt class="py-keyword">in</tt> <tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L441"></a><tt class="py-lineno">441</tt>  <tt class="py-line">                <tt class="py-name">new</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> <tt class="py-op">=</tt> <tt class="py-name">base</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt> </tt>
+<a name="L442"></a><tt class="py-lineno">442</tt>  <tt class="py-line">                <tt class="py-name">new</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="crino.module.Concat.prepareGeometry
+crino.module.Module.prepareGeometry
+crino.module.Sequential.prepareGeometry
+crino.module.Standalone.prepareGeometry" class="py-name" href="#" onclick="return doclink('link-24', 'prepareGeometry', 'link-10');">prepareGeometry</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L443"></a><tt class="py-lineno">443</tt>  <tt class="py-line"> </tt>
+<a name="Sequential.prepareParams"></a><div id="Sequential.prepareParams-def"><a name="L444"></a><tt class="py-lineno">444</tt> <a class="py-toggle" href="#" id="Sequential.prepareParams-toggle" onclick="return toggle('Sequential.prepareParams');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Sequential-class.html#prepareParams">prepareParams</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sequential.prepareParams-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Sequential.prepareParams-expanded"><a name="L445"></a><tt class="py-lineno">445</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L446"></a><tt class="py-lineno">446</tt>  <tt class="py-line"><tt class="py-docstring">        Initializes the `params` of the submodules. The `Sequential` module `params` will include the `params` of its submodules .</tt> </tt>
+<a name="L447"></a><tt class="py-lineno">447</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L448"></a><tt class="py-lineno">448</tt>  <tt class="py-line"> </tt>
+<a name="L449"></a><tt class="py-lineno">449</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L450"></a><tt class="py-lineno">450</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">mod</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">:</tt> </tt>
+<a name="L451"></a><tt class="py-lineno">451</tt>  <tt class="py-line">                <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="crino.module.Activation.prepareParams
+crino.module.Concat.prepareParams
+crino.module.Linear.prepareParams
+crino.module.Module.prepareParams
+crino.module.Sequential.prepareParams
+crino.network.AutoEncoder.prepareParams
+crino.network.DeepNeuralNetwork.prepareParams" class="py-name" href="#" onclick="return doclink('link-25', 'prepareParams', 'link-11');">prepareParams</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L452"></a><tt class="py-lineno">452</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L453"></a><tt class="py-lineno">453</tt>  <tt class="py-line"> </tt>
+<a name="Sequential.prepareOutput"></a><div id="Sequential.prepareOutput-def"><a name="L454"></a><tt class="py-lineno">454</tt> <a class="py-toggle" href="#" id="Sequential.prepareOutput-toggle" onclick="return toggle('Sequential.prepareOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Sequential-class.html#prepareOutput">prepareOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sequential.prepareOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Sequential.prepareOutput-expanded"><a name="L455"></a><tt class="py-lineno">455</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L456"></a><tt class="py-lineno">456</tt>  <tt class="py-line"><tt class="py-docstring">        Computes sequentially the symbolic `outputs` of the module.</tt> </tt>
+<a name="L457"></a><tt class="py-lineno">457</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L458"></a><tt class="py-lineno">458</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L459"></a><tt class="py-lineno">459</tt>  <tt class="py-line">            <tt class="py-name">first</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L460"></a><tt class="py-lineno">460</tt>  <tt class="py-line">            <tt class="py-name">first</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt> </tt>
+<a name="L461"></a><tt class="py-lineno">461</tt>  <tt class="py-line">            <tt class="py-name">first</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="crino.module.Concat.prepareOutput
+crino.module.Linear.prepareOutput
+crino.module.Module.prepareOutput
+crino.module.Sequential.prepareOutput
+crino.module.Sigmoid.prepareOutput
+crino.module.Softmax.prepareOutput
+crino.module.Tanh.prepareOutput" class="py-name" href="#" onclick="return doclink('link-26', 'prepareOutput', 'link-12');">prepareOutput</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L462"></a><tt class="py-lineno">462</tt>  <tt class="py-line">            <tt class="py-name">first</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L463"></a><tt class="py-lineno">463</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">base</tt><tt class="py-op">,</tt> <tt class="py-name">new</tt> <tt class="py-keyword">in</tt> <tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L464"></a><tt class="py-lineno">464</tt>  <tt class="py-line">                <tt class="py-name">new</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method crino.module.Module.linkModule()=crino.module.Module-class.html#linkModule"><a title="crino.module.Module.linkModule" class="py-name" href="#" onclick="return doclink('link-27', 'linkModule', 'link-27');">linkModule</a></tt><tt class="py-op">(</tt><tt class="py-name">base</tt><tt class="py-op">)</tt> </tt>
+<a name="L465"></a><tt class="py-lineno">465</tt>  <tt class="py-line">                <tt class="py-name">new</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="crino.module.Concat.prepareOutput
+crino.module.Linear.prepareOutput
+crino.module.Module.prepareOutput
+crino.module.Sequential.prepareOutput
+crino.module.Sigmoid.prepareOutput
+crino.module.Softmax.prepareOutput
+crino.module.Tanh.prepareOutput" class="py-name" href="#" onclick="return doclink('link-28', 'prepareOutput', 'link-12');">prepareOutput</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L466"></a><tt class="py-lineno">466</tt>  <tt class="py-line">                <tt class="py-name">new</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L467"></a><tt class="py-lineno">467</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> </tt>
+</div></div><a name="L468"></a><tt class="py-lineno">468</tt>  <tt class="py-line"> </tt>
+<a name="L469"></a><tt class="py-lineno">469</tt>  <tt class="py-line"> </tt>
+<a name="Concat"></a><div id="Concat-def"><a name="L470"></a><tt class="py-lineno">470</tt> <a class="py-toggle" href="#" id="Concat-toggle" onclick="return toggle('Concat');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Concat-class.html">Concat</a><tt class="py-op">(</tt><tt class="py-base-class">Container</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Concat-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Concat-expanded"><a name="L471"></a><tt class="py-lineno">471</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L472"></a><tt class="py-lineno">472</tt>  <tt class="py-line"><tt class="py-docstring">    A `Concat` module computes its `outputs` in parallel,</tt> </tt>
+<a name="L473"></a><tt class="py-lineno">473</tt>  <tt class="py-line"><tt class="py-docstring">    i.e. it subdivides its `inputs` in :math:`n \in \mathbb{N}`</tt> </tt>
+<a name="L474"></a><tt class="py-lineno">474</tt>  <tt class="py-line"><tt class="py-docstring">    parts of fixed sizes. The sum of the submodules `inputs`</tt> </tt>
+<a name="L475"></a><tt class="py-lineno">475</tt>  <tt class="py-line"><tt class="py-docstring">    sizes must equal the total `inputs` size of the `Concat`.</tt> </tt>
+<a name="L476"></a><tt class="py-lineno">476</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L477"></a><tt class="py-lineno">477</tt>  <tt class="py-line"><tt class="py-docstring">    .. image:: ../images/concat.png</tt> </tt>
+<a name="L478"></a><tt class="py-lineno">478</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L479"></a><tt class="py-lineno">479</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Concat.__init__"></a><div id="Concat.__init__-def"><a name="L480"></a><tt class="py-lineno">480</tt> <a class="py-toggle" href="#" id="Concat.__init__-toggle" onclick="return toggle('Concat.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Concat-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">mods</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Concat.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Concat.__init__-expanded"><a name="L481"></a><tt class="py-lineno">481</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L482"></a><tt class="py-lineno">482</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Concat` container.</tt> </tt>
+<a name="L483"></a><tt class="py-lineno">483</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L484"></a><tt class="py-lineno">484</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L485"></a><tt class="py-lineno">485</tt>  <tt class="py-line"><tt class="py-docstring">            mods : list</tt> </tt>
+<a name="L486"></a><tt class="py-lineno">486</tt>  <tt class="py-line"><tt class="py-docstring">                A list of submodules to add to the concat. Each one will receive a part of the `inputs`.</tt> </tt>
+<a name="L487"></a><tt class="py-lineno">487</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L488"></a><tt class="py-lineno">488</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size of the concat.</tt> </tt>
+<a name="L489"></a><tt class="py-lineno">489</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L490"></a><tt class="py-lineno">490</tt>  <tt class="py-line">        <tt id="link-29" class="py-name"><a title="crino.module.Container" class="py-name" href="#" onclick="return doclink('link-29', 'Container', 'link-21');">Container</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-30', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">mods</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L491"></a><tt class="py-lineno">491</tt>  <tt class="py-line"> </tt>
+<a name="Concat.prepareGeometry"></a><div id="Concat.prepareGeometry-def"><a name="L492"></a><tt class="py-lineno">492</tt> <a class="py-toggle" href="#" id="Concat.prepareGeometry-toggle" onclick="return toggle('Concat.prepareGeometry');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Concat-class.html#prepareGeometry">prepareGeometry</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Concat.prepareGeometry-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Concat.prepareGeometry-expanded"><a name="L493"></a><tt class="py-lineno">493</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L494"></a><tt class="py-lineno">494</tt>  <tt class="py-line"><tt class="py-docstring">        Sets the `outputs` size for the `Concat`, and prepare the submodules internal geometry.</tt> </tt>
+<a name="L495"></a><tt class="py-lineno">495</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L496"></a><tt class="py-lineno">496</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L497"></a><tt class="py-lineno">497</tt>  <tt class="py-line">            <tt class="py-comment"># Le conteneur de concat&#233;nation concat&#233;ne les sorties de ses modules</tt> </tt>
+<a name="L498"></a><tt class="py-lineno">498</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt> <tt class="py-op">=</tt> <tt class="py-name">reduce</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt><tt class="py-name">y</tt><tt class="py-op">:</tt> <tt class="py-name">x</tt><tt class="py-op">+</tt><tt class="py-name">y</tt><tt class="py-op">.</tt><tt class="py-name">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L499"></a><tt class="py-lineno">499</tt>  <tt class="py-line">            <tt class="py-comment"># On v&#233;rifie que le partitionnement des entr&#233;es est correct</tt> </tt>
+<a name="L500"></a><tt class="py-lineno">500</tt>  <tt class="py-line">            <tt class="py-name">nInputs</tt> <tt class="py-op">=</tt> <tt class="py-name">reduce</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt><tt class="py-name">y</tt><tt class="py-op">:</tt> <tt class="py-name">x</tt><tt class="py-op">+</tt><tt class="py-name">y</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L501"></a><tt class="py-lineno">501</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">nInputs</tt> <tt class="py-op">!=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L502"></a><tt class="py-lineno">502</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">"The total inputs sizes of the sub-modules is wrong."</tt><tt class="py-op">)</tt> </tt>
+<a name="L503"></a><tt class="py-lineno">503</tt>  <tt class="py-line"> </tt>
+<a name="L504"></a><tt class="py-lineno">504</tt>  <tt class="py-line">            <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="crino.module.Concat.prepareGeometry
+crino.module.Module.prepareGeometry
+crino.module.Sequential.prepareGeometry
+crino.module.Standalone.prepareGeometry" class="py-name" href="#" onclick="return doclink('link-31', 'prepareGeometry', 'link-10');">prepareGeometry</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L505"></a><tt class="py-lineno">505</tt>  <tt class="py-line"> </tt>
+<a name="Concat.prepareParams"></a><div id="Concat.prepareParams-def"><a name="L506"></a><tt class="py-lineno">506</tt> <a class="py-toggle" href="#" id="Concat.prepareParams-toggle" onclick="return toggle('Concat.prepareParams');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Concat-class.html#prepareParams">prepareParams</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Concat.prepareParams-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Concat.prepareParams-expanded"><a name="L507"></a><tt class="py-lineno">507</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L508"></a><tt class="py-lineno">508</tt>  <tt class="py-line"><tt class="py-docstring">        Initializes the `params` of the submodules. The `Sequential` module `params` will include the `params` of its submodules .</tt> </tt>
+<a name="L509"></a><tt class="py-lineno">509</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L510"></a><tt class="py-lineno">510</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L511"></a><tt class="py-lineno">511</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">mod</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">:</tt> </tt>
+<a name="L512"></a><tt class="py-lineno">512</tt>  <tt class="py-line">                <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="crino.module.Activation.prepareParams
+crino.module.Concat.prepareParams
+crino.module.Linear.prepareParams
+crino.module.Module.prepareParams
+crino.module.Sequential.prepareParams
+crino.network.AutoEncoder.prepareParams
+crino.network.DeepNeuralNetwork.prepareParams" class="py-name" href="#" onclick="return doclink('link-32', 'prepareParams', 'link-11');">prepareParams</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L513"></a><tt class="py-lineno">513</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L514"></a><tt class="py-lineno">514</tt>  <tt class="py-line"> </tt>
+<a name="Concat.prepareOutput"></a><div id="Concat.prepareOutput-def"><a name="L515"></a><tt class="py-lineno">515</tt> <a class="py-toggle" href="#" id="Concat.prepareOutput-toggle" onclick="return toggle('Concat.prepareOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Concat-class.html#prepareOutput">prepareOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Concat.prepareOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Concat.prepareOutput-expanded"><a name="L516"></a><tt class="py-lineno">516</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L517"></a><tt class="py-lineno">517</tt>  <tt class="py-line"><tt class="py-docstring">        Computes the symbolic `outputs` of all the submodules, and concatenate them to get the complete `outputs`.</tt> </tt>
+<a name="L518"></a><tt class="py-lineno">518</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L519"></a><tt class="py-lineno">519</tt>  <tt class="py-line"> </tt>
+<a name="L520"></a><tt class="py-lineno">520</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L521"></a><tt class="py-lineno">521</tt>  <tt class="py-line">            <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L522"></a><tt class="py-lineno">522</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">mod</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">:</tt> </tt>
+<a name="L523"></a><tt class="py-lineno">523</tt>  <tt class="py-line">                <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method crino.module.Module.linkInputs()=crino.module.Module-class.html#linkInputs"><a title="crino.module.Module.linkInputs" class="py-name" href="#" onclick="return doclink('link-33', 'linkInputs', 'link-33');">linkInputs</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">,</tt><tt class="py-name">temp</tt><tt class="py-op">:</tt><tt class="py-name">temp</tt><tt class="py-op">+</tt><tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+<a name="L524"></a><tt class="py-lineno">524</tt>  <tt class="py-line">                <tt class="py-name">temp</tt> <tt class="py-op">+=</tt> <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">nInputs</tt> </tt>
+<a name="L525"></a><tt class="py-lineno">525</tt>  <tt class="py-line">                <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="crino.module.Concat.prepareOutput
+crino.module.Linear.prepareOutput
+crino.module.Module.prepareOutput
+crino.module.Sequential.prepareOutput
+crino.module.Sigmoid.prepareOutput
+crino.module.Softmax.prepareOutput
+crino.module.Tanh.prepareOutput" class="py-name" href="#" onclick="return doclink('link-34', 'prepareOutput', 'link-12');">prepareOutput</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L526"></a><tt class="py-lineno">526</tt>  <tt class="py-line">                <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">prepared</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L527"></a><tt class="py-lineno">527</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">concatenate</tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">x</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">axis</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L528"></a><tt class="py-lineno">528</tt>  <tt class="py-line"> </tt>
+<a name="L529"></a><tt class="py-lineno">529</tt>  <tt class="py-line"> </tt>
+<a name="Activation"></a><div id="Activation-def"><a name="L530"></a><tt class="py-lineno">530</tt> <a class="py-toggle" href="#" id="Activation-toggle" onclick="return toggle('Activation');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Activation-class.html">Activation</a><tt class="py-op">(</tt><tt class="py-base-class">Standalone</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Activation-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Activation-expanded"><a name="L531"></a><tt class="py-lineno">531</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L532"></a><tt class="py-lineno">532</tt>  <tt class="py-line"><tt class="py-docstring">    An `Activation` module computes its `outputs` without any parameter, but with a function</tt> </tt>
+<a name="L533"></a><tt class="py-lineno">533</tt>  <tt class="py-line"><tt class="py-docstring">    :math:`f \,:\, \mathbb{R}^n -&gt; \mathbb{R}^n` applied to its `inputs` vector.</tt> </tt>
+<a name="L534"></a><tt class="py-lineno">534</tt>  <tt class="py-line"><tt class="py-docstring">    This function is generally non-linear, because its purpose is to provide non-linearity</tt> </tt>
+<a name="L535"></a><tt class="py-lineno">535</tt>  <tt class="py-line"><tt class="py-docstring">    to the neural network.</tt> </tt>
+<a name="L536"></a><tt class="py-lineno">536</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L537"></a><tt class="py-lineno">537</tt>  <tt class="py-line"> </tt>
+<a name="Activation.__init__"></a><div id="Activation.__init__-def"><a name="L538"></a><tt class="py-lineno">538</tt> <a class="py-toggle" href="#" id="Activation.__init__-toggle" onclick="return toggle('Activation.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Activation-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Activation.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Activation.__init__-expanded"><a name="L539"></a><tt class="py-lineno">539</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L540"></a><tt class="py-lineno">540</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Activation` module.</tt> </tt>
+<a name="L541"></a><tt class="py-lineno">541</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L542"></a><tt class="py-lineno">542</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L543"></a><tt class="py-lineno">543</tt>  <tt class="py-line"><tt class="py-docstring">            nOutputs : int</tt> </tt>
+<a name="L544"></a><tt class="py-lineno">544</tt>  <tt class="py-line"><tt class="py-docstring">                The `outputs` size.</tt> </tt>
+<a name="L545"></a><tt class="py-lineno">545</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L546"></a><tt class="py-lineno">546</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L547"></a><tt class="py-lineno">547</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L548"></a><tt class="py-lineno">548</tt>  <tt class="py-line"> </tt>
+<a name="L549"></a><tt class="py-lineno">549</tt>  <tt class="py-line">        <tt id="link-35" class="py-name"><a title="crino.module.Standalone" class="py-name" href="#" onclick="return doclink('link-35', 'Standalone', 'link-15');">Standalone</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-36', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L550"></a><tt class="py-lineno">550</tt>  <tt class="py-line"> </tt>
+<a name="Activation.prepareParams"></a><div id="Activation.prepareParams-def"><a name="L551"></a><tt class="py-lineno">551</tt> <a class="py-toggle" href="#" id="Activation.prepareParams-toggle" onclick="return toggle('Activation.prepareParams');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Activation-class.html#prepareParams">prepareParams</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Activation.prepareParams-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Activation.prepareParams-expanded"><a name="L552"></a><tt class="py-lineno">552</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L553"></a><tt class="py-lineno">553</tt>  <tt class="py-line"><tt class="py-docstring">        Do nothing, as an activation module doesn't have `params`.</tt> </tt>
+<a name="L554"></a><tt class="py-lineno">554</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L555"></a><tt class="py-lineno">555</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L556"></a><tt class="py-lineno">556</tt>  <tt class="py-line"> </tt>
+<a name="Tanh"></a><div id="Tanh-def"><a name="L557"></a><tt class="py-lineno">557</tt> <a class="py-toggle" href="#" id="Tanh-toggle" onclick="return toggle('Tanh');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Tanh-class.html">Tanh</a><tt class="py-op">(</tt><tt class="py-base-class">Activation</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Tanh-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Tanh-expanded"><a name="L558"></a><tt class="py-lineno">558</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L559"></a><tt class="py-lineno">559</tt>  <tt class="py-line"><tt class="py-docstring">    A `Tanh` activation module computes its `outputs` with the</tt> </tt>
+<a name="L560"></a><tt class="py-lineno">560</tt>  <tt class="py-line"><tt class="py-docstring">    non-linear element-wise hyperbolic tangent function, that can be defined as</tt> </tt>
+<a name="L561"></a><tt class="py-lineno">561</tt>  <tt class="py-line"><tt class="py-docstring">    :math:`tanh(\mathbf{x}) = [\dfrac{exp(x_i)-exp(-x_i)}{exp(x_i)+exp(-x_i)}]_{i=1}^n`,</tt> </tt>
+<a name="L562"></a><tt class="py-lineno">562</tt>  <tt class="py-line"><tt class="py-docstring">    with :math:`\mathbf{x} = [x_1, x_2, \dots, x_n] \in \mathbb{R}^n`.</tt> </tt>
+<a name="L563"></a><tt class="py-lineno">563</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Tanh.__init__"></a><div id="Tanh.__init__-def"><a name="L564"></a><tt class="py-lineno">564</tt> <a class="py-toggle" href="#" id="Tanh.__init__-toggle" onclick="return toggle('Tanh.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Tanh-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Tanh.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Tanh.__init__-expanded"><a name="L565"></a><tt class="py-lineno">565</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L566"></a><tt class="py-lineno">566</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Tanh` activation module.</tt> </tt>
+<a name="L567"></a><tt class="py-lineno">567</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L568"></a><tt class="py-lineno">568</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L569"></a><tt class="py-lineno">569</tt>  <tt class="py-line"><tt class="py-docstring">            nOutputs : int</tt> </tt>
+<a name="L570"></a><tt class="py-lineno">570</tt>  <tt class="py-line"><tt class="py-docstring">                The `outputs` size.</tt> </tt>
+<a name="L571"></a><tt class="py-lineno">571</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L572"></a><tt class="py-lineno">572</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L573"></a><tt class="py-lineno">573</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L574"></a><tt class="py-lineno">574</tt>  <tt class="py-line">        <tt id="link-37" class="py-name" targets="Class crino.module.Activation=crino.module.Activation-class.html"><a title="crino.module.Activation" class="py-name" href="#" onclick="return doclink('link-37', 'Activation', 'link-37');">Activation</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-38', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L575"></a><tt class="py-lineno">575</tt>  <tt class="py-line"> </tt>
+<a name="Tanh.prepareOutput"></a><div id="Tanh.prepareOutput-def"><a name="L576"></a><tt class="py-lineno">576</tt> <a class="py-toggle" href="#" id="Tanh.prepareOutput-toggle" onclick="return toggle('Tanh.prepareOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Tanh-class.html#prepareOutput">prepareOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Tanh.prepareOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Tanh.prepareOutput-expanded"><a name="L577"></a><tt class="py-lineno">577</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L578"></a><tt class="py-lineno">578</tt>  <tt class="py-line"><tt class="py-docstring">        Computes the tanh function :math:`\mathbf{\hat{y}} = = [\dfrac{exp(x_i)-exp(-x_i)}{exp(x_i)+exp(-x_i)}]_{i=1}^n`</tt> </tt>
+<a name="L579"></a><tt class="py-lineno">579</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L580"></a><tt class="py-lineno">580</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">tanh</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L581"></a><tt class="py-lineno">581</tt>  <tt class="py-line">         </tt>
+<a name="Sigmoid"></a><div id="Sigmoid-def"><a name="L582"></a><tt class="py-lineno">582</tt> <a class="py-toggle" href="#" id="Sigmoid-toggle" onclick="return toggle('Sigmoid');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Sigmoid-class.html">Sigmoid</a><tt class="py-op">(</tt><tt class="py-base-class">Activation</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sigmoid-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Sigmoid-expanded"><a name="L583"></a><tt class="py-lineno">583</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L584"></a><tt class="py-lineno">584</tt>  <tt class="py-line"><tt class="py-docstring">    A `Sigmoid` activation module computes its `outputs` with the</tt> </tt>
+<a name="L585"></a><tt class="py-lineno">585</tt>  <tt class="py-line"><tt class="py-docstring">    non-linear element-wise sigmoid function, that can be defined as</tt> </tt>
+<a name="L586"></a><tt class="py-lineno">586</tt>  <tt class="py-line"><tt class="py-docstring">    :math:`\sigma(\mathbf{x}) = (1+tanh(\mathbf{x}/2))/2 = [1/(1+exp(-x_i))]_{i=1}^n`,</tt> </tt>
+<a name="L587"></a><tt class="py-lineno">587</tt>  <tt class="py-line"><tt class="py-docstring">    with :math:`\mathbf{x} = [x_1, x_2, \dots, x_n] \in \mathbb{R}^n`.</tt> </tt>
+<a name="L588"></a><tt class="py-lineno">588</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Sigmoid.__init__"></a><div id="Sigmoid.__init__-def"><a name="L589"></a><tt class="py-lineno">589</tt> <a class="py-toggle" href="#" id="Sigmoid.__init__-toggle" onclick="return toggle('Sigmoid.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Sigmoid-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sigmoid.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Sigmoid.__init__-expanded"><a name="L590"></a><tt class="py-lineno">590</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L591"></a><tt class="py-lineno">591</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Sigmoid` activation module.</tt> </tt>
+<a name="L592"></a><tt class="py-lineno">592</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L593"></a><tt class="py-lineno">593</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L594"></a><tt class="py-lineno">594</tt>  <tt class="py-line"><tt class="py-docstring">            nOutputs : int</tt> </tt>
+<a name="L595"></a><tt class="py-lineno">595</tt>  <tt class="py-line"><tt class="py-docstring">                The `outputs` size.</tt> </tt>
+<a name="L596"></a><tt class="py-lineno">596</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L597"></a><tt class="py-lineno">597</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L598"></a><tt class="py-lineno">598</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L599"></a><tt class="py-lineno">599</tt>  <tt class="py-line">        <tt id="link-39" class="py-name"><a title="crino.module.Activation" class="py-name" href="#" onclick="return doclink('link-39', 'Activation', 'link-37');">Activation</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-40', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L600"></a><tt class="py-lineno">600</tt>  <tt class="py-line"> </tt>
+<a name="Sigmoid.prepareOutput"></a><div id="Sigmoid.prepareOutput-def"><a name="L601"></a><tt class="py-lineno">601</tt> <a class="py-toggle" href="#" id="Sigmoid.prepareOutput-toggle" onclick="return toggle('Sigmoid.prepareOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Sigmoid-class.html#prepareOutput">prepareOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Sigmoid.prepareOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Sigmoid.prepareOutput-expanded"><a name="L602"></a><tt class="py-lineno">602</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L603"></a><tt class="py-lineno">603</tt>  <tt class="py-line"><tt class="py-docstring">        Computes the sigmoid function :math:`\mathbf{\hat{y}} = [1/(1+exp(-x_i))]_{i=1}^n`</tt> </tt>
+<a name="L604"></a><tt class="py-lineno">604</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L605"></a><tt class="py-lineno">605</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">nnet</tt><tt class="py-op">.</tt><tt class="py-name">sigmoid</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L606"></a><tt class="py-lineno">606</tt>  <tt class="py-line">         </tt>
+<a name="Softmax"></a><div id="Softmax-def"><a name="L607"></a><tt class="py-lineno">607</tt> <a class="py-toggle" href="#" id="Softmax-toggle" onclick="return toggle('Softmax');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="crino.module.Softmax-class.html">Softmax</a><tt class="py-op">(</tt><tt class="py-base-class">Activation</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Softmax-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Softmax-expanded"><a name="L608"></a><tt class="py-lineno">608</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L609"></a><tt class="py-lineno">609</tt>  <tt class="py-line"><tt class="py-docstring">    A `Softmax` activation module computes its `outputs` with the</tt> </tt>
+<a name="L610"></a><tt class="py-lineno">610</tt>  <tt class="py-line"><tt class="py-docstring">    non-linear softmax function, that can be defined as</tt> </tt>
+<a name="L611"></a><tt class="py-lineno">611</tt>  <tt class="py-line"><tt class="py-docstring">    :math:`softmax(\mathbf{x}) = [exp(x_i)/\sum_{i=1}^n exp(x_i)]_{i=1}^n`,</tt> </tt>
+<a name="L612"></a><tt class="py-lineno">612</tt>  <tt class="py-line"><tt class="py-docstring">    with :math:`\mathbf{x} = [x_1, x_2, \dots, x_n] \in \mathbb{R}^n`.</tt> </tt>
+<a name="L613"></a><tt class="py-lineno">613</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L614"></a><tt class="py-lineno">614</tt>  <tt class="py-line">     </tt>
+<a name="Softmax.__init__"></a><div id="Softmax.__init__-def"><a name="L615"></a><tt class="py-lineno">615</tt> <a class="py-toggle" href="#" id="Softmax.__init__-toggle" onclick="return toggle('Softmax.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Softmax-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-param">nInputs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Softmax.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Softmax.__init__-expanded"><a name="L616"></a><tt class="py-lineno">616</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L617"></a><tt class="py-lineno">617</tt>  <tt class="py-line"><tt class="py-docstring">        Constructs a new `Softmax` activation module.</tt> </tt>
+<a name="L618"></a><tt class="py-lineno">618</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L619"></a><tt class="py-lineno">619</tt>  <tt class="py-line"><tt class="py-docstring">        :Parameters:</tt> </tt>
+<a name="L620"></a><tt class="py-lineno">620</tt>  <tt class="py-line"><tt class="py-docstring">            nOutputs : int</tt> </tt>
+<a name="L621"></a><tt class="py-lineno">621</tt>  <tt class="py-line"><tt class="py-docstring">                The `outputs` size.</tt> </tt>
+<a name="L622"></a><tt class="py-lineno">622</tt>  <tt class="py-line"><tt class="py-docstring">            nInputs : int</tt> </tt>
+<a name="L623"></a><tt class="py-lineno">623</tt>  <tt class="py-line"><tt class="py-docstring">                The `inputs` size.</tt> </tt>
+<a name="L624"></a><tt class="py-lineno">624</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L625"></a><tt class="py-lineno">625</tt>  <tt class="py-line">        <tt id="link-41" class="py-name"><a title="crino.module.Activation" class="py-name" href="#" onclick="return doclink('link-41', 'Activation', 'link-37');">Activation</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="crino.criterion.Criterion.__init__
+crino.criterion.CrossEntropy.__init__
+crino.criterion.MeanAbsoluteError.__init__
+crino.criterion.MeanSquareError.__init__
+crino.module.Activation.__init__
+crino.module.Concat.__init__
+crino.module.Container.__init__
+crino.module.Linear.__init__
+crino.module.Module.__init__
+crino.module.Sequential.__init__
+crino.module.Sigmoid.__init__
+crino.module.Softmax.__init__
+crino.module.Standalone.__init__
+crino.module.Tanh.__init__
+crino.network.AutoEncoder.__init__
+crino.network.DeepNeuralNetwork.__init__
+crino.network.InputOutputDeepArchitecture.__init__
+crino.network.MultiLayerPerceptron.__init__" class="py-name" href="#" onclick="return doclink('link-42', '__init__', 'link-14');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">nOutputs</tt><tt class="py-op">,</tt> <tt class="py-name">nInputs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L626"></a><tt class="py-lineno">626</tt>  <tt class="py-line"> </tt>
+<a name="Softmax.prepareOutput"></a><div id="Softmax.prepareOutput-def"><a name="L627"></a><tt class="py-lineno">627</tt> <a class="py-toggle" href="#" id="Softmax.prepareOutput-toggle" onclick="return toggle('Softmax.prepareOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="crino.module.Softmax-class.html#prepareOutput">prepareOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Softmax.prepareOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Softmax.prepareOutput-expanded"><a name="L628"></a><tt class="py-lineno">628</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L629"></a><tt class="py-lineno">629</tt>  <tt class="py-line"><tt class="py-docstring">        Computes the softmax function :math:`\mathbf{\hat{y}} = [exp(x_i)/\sum_{i=1}^n exp(x_i)]_{i=1}^n`</tt> </tt>
+<a name="L630"></a><tt class="py-lineno">630</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L631"></a><tt class="py-lineno">631</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputs</tt> <tt class="py-op">=</tt> <tt class="py-name">T</tt><tt class="py-op">.</tt><tt class="py-name">nnet</tt><tt class="py-op">.</tt><tt class="py-name">softmax</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">inputs</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L632"></a><tt class="py-lineno">632</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Jul  9 15:37:18 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class Hierarchy</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">&nbsp;</td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="class-tree.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<center><b>
+ [ <a href="module-tree.html">Module Hierarchy</a>
+ | <a href="class-tree.html">Class Hierarchy</a> ]
+</b></center><br />
+<h1 class="epydoc">Class Hierarchy</h1>
+<ul class="nomargin-top">
+    <li> <strong class="uidlink"><a href="crino.criterion.Criterion-class.html">crino.criterion.Criterion</a></strong>:
+      <em class="summary">The Criterion class handles the loss computation between <strong>&#375;</strong> (the <a href="crino.criterion.Criterion-class.html#outputs" class="link">outputs</a> vector of a <a href="crino.module.Module-class.html" class="link">Module</a>)
+and <strong>y</strong> (the <a href="crino.criterion.Criterion-class.html#targets" class="link">targets</a> vector). This loss has to be differentiable, in order to perform a gradient descent.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.criterion.CrossEntropy-class.html">crino.criterion.CrossEntropy</a></strong>:
+      <em class="summary">The cross-entropy criterion is well suited for targets vector
+that are normalized between 0 and 1, used along with a final
+<a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a> activation module.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.criterion.MeanAbsoluteError-class.html">crino.criterion.MeanAbsoluteError</a></strong>:
+      <em class="summary">The mean absolute error criterion is used in the least absolute deviations method.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.criterion.MeanSquareError-class.html">crino.criterion.MeanSquareError</a></strong>:
+      <em class="summary">The mean square error criterion is used in the least squares method,
+it is well suited for data fitting.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.module.Module-class.html">crino.module.Module</a></strong>:
+      <em class="summary">A <a href="crino.module.Module-class.html" class="link">Module</a> is a part of a neural network architecture,
+that may have parameters. Provided an input vector of
+fixed size, a module is able to compute an output vector,
+which size is specified at construction.
+According to their characteristics, several modules can
+be combined to build a new module.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.module.Container-class.html">crino.module.Container</a></strong>:
+      <em class="summary">A <a href="crino.module.Container-class.html" class="link">Container</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> thanks to
+other modules, i.e. it includes several submodules.
+The way these submodules are organized depends on the
+implementation.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.module.Concat-class.html">crino.module.Concat</a></strong>:
+      <em class="summary">A <a href="crino.module.Concat-class.html" class="link">Concat</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> in parallel,
+i.e. it subdivides its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> in <span class="rst-formula"><i>n</i>&#8197;&#8712;&#8197;&#8469;</span>
+
+parts of fixed sizes. The sum of the submodules <a href="crino.module.Module-class.html#inputs" class="link">inputs</a>
+sizes must equal the total <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> size of the <a href="crino.module.Concat-class.html" class="link">Concat</a>.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.module.Sequential-class.html">crino.module.Sequential</a></strong>:
+      <em class="summary">A <a href="crino.module.Sequential-class.html" class="link">Sequential</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> sequentially,
+i.e. each <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> of its submodules is linked to the <a href="crino.module.Module-class.html#inputs" class="link">inputs</a>
+of the following module. The number of submodules in the sequence
+can be chosen arbitrarily, but the <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> and <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> sizes
+must be the same throughout the sequence.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.network.AutoEncoder-class.html">crino.network.AutoEncoder</a></strong>:
+      <em class="summary">An <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> is a neural network whichs aims at encoding
+its inputs in a smaller representation space. It is made of
+a projection layer and a backprojection layer. The compressed
+representation (or hidden representation) lies in the projection
+layer, while the backprojection layer reconstructs the original inputs.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.network.MultiLayerPerceptron-class.html">crino.network.MultiLayerPerceptron</a></strong>:
+      <em class="summary">A <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a> (MLP) is one classical form of artificial
+neural networks, whichs aims at predicting one or more output states
+given some particular inputs. A MLP is a <a href="crino.module.Sequential-class.html" class="link">Sequential</a> module, made of
+a succession of <a href="crino.module.Linear-class.html" class="link">Linear</a> modules and non-linear <a href="crino.module.Activation-class.html" class="link">Activation</a> modules.
+This tends to make the MLP able to learn non-linear decision functions.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.network.DeepNeuralNetwork-class.html">crino.network.DeepNeuralNetwork</a></strong>:
+      <em class="summary">A <a href="crino.network.DeepNeuralNetwork-class.html" class="link">DeepNeuralNetwork</a> (DNN) is a specialization of the MLP, where the
+layers are pretrained on the training examples (<span class="rst-formula"><b>x</b>)<i>using</i><i>a</i><i>Stacked</i></span>
+ strategy. It has been specifically designed
+for data that lies in a high-dimensional input space.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.network.InputOutputDeepArchitecture-class.html">crino.network.InputOutputDeepArchitecture</a></strong>:
+      <em class="summary">An <a href="crino.network.InputOutputDeepArchitecture-class.html" class="link">InputOutputDeepArchitecture</a> (IODA) is a specialization of the DNN,
+where the layers are divided into three categories : the input layers,
+the link layer and the output layers. It has been specifically designed
+for cases where both the input and the output spaces are high-dimensional.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.module.Standalone-class.html">crino.module.Standalone</a></strong>:
+      <em class="summary">A <a href="crino.module.Standalone-class.html" class="link">Standalone</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> without relying
+on other modules, i.e. it doesn't have any submodule.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.module.Activation-class.html">crino.module.Activation</a></strong>:
+      <em class="summary">An <a href="crino.module.Activation-class.html" class="link">Activation</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> without any parameter, but with a function
+<span class="rst-formula"><i>f</i> : &#8477;<sup><i>n</i></sup>&#8197;&#8722;&#8197;&#8197;&gt;&#8197;&#8477;<sup><i>n</i></sup></span>
+ applied to its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> vector.
+This function is generally non-linear, because its purpose is to provide non-linearity
+to the neural network.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="crino.module.Sigmoid-class.html">crino.module.Sigmoid</a></strong>:
+      <em class="summary">A <a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
+non-linear element-wise sigmoid function, that can be defined as
+<span class="rst-formula"><i>&#963;</i>(<b>x</b>)&#8197;=&#8197;(1&#8197;+&#8197;<i>tanh</i>(<b>x</b>&#8197;&#8260;&#8197;2))&#8197;&#8260;&#8197;2&#8197;=&#8197;[1&#8197;&#8260;&#8197;(1&#8197;+&#8197;<i>exp</i>(&#8197;&#8722;&#8197;<i>x</i><sub><i>i</i></sub>))]<span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span></span>
+,
+with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#8197;<i>x</i><sub>2</sub>,&#8197;&#8230;,&#8197;<i>x</i><sub><i>n</i></sub>]&#8197;&#8712;&#8197;&#8477;<sup><i>n</i></sup></span>
+.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.module.Softmax-class.html">crino.module.Softmax</a></strong>:
+      <em class="summary">A <a href="crino.module.Softmax-class.html" class="link">Softmax</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
+non-linear softmax function, that can be defined as
+<span class="rst-formula"><i>softmax</i>(<b>x</b>)&#8197;=&#8197;[<i>exp</i>(<i>x</i><sub><i>i</i></sub>)&#8197;&#8260;&#8197;<span class="limits"><span class="limit"><span class="symbol">&#8721;</span></span></span><span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span><i>exp</i>(<i>x</i><sub><i>i</i></sub>)]<span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span></span>
+,
+with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#8197;<i>x</i><sub>2</sub>,&#8197;&#8230;,&#8197;<i>x</i><sub><i>n</i></sub>]&#8197;&#8712;&#8197;&#8477;<sup><i>n</i></sup></span>
+.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.module.Tanh-class.html">crino.module.Tanh</a></strong>:
+      <em class="summary">A <a href="crino.module.Tanh-class.html" class="link">Tanh</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
+non-linear element-wise hyperbolic tangent function, that can be defined as
+<span class="rst-formula"><i>tanh</i>(<b>x</b>)&#8197;=&#8197;[<span class="fullfraction"><span class="ignored">(</span><span class="numerator"><i>exp</i>(<i>x</i><sub><i>i</i></sub>)&#8197;&#8722;&#8197;<i>exp</i>(&#8197;&#8722;&#8197;<i>x</i><sub><i>i</i></sub>)</span><span class="ignored">)/(</span><span class="denominator"><i>exp</i>(<i>x</i><sub><i>i</i></sub>)&#8197;+&#8197;<i>exp</i>(&#8197;&#8722;&#8197;<i>x</i><sub><i>i</i></sub>)</span><span class="ignored">)</span></span>]<span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span></span>
+,
+with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#8197;<i>x</i><sub>2</sub>,&#8197;&#8230;,&#8197;<i>x</i><sub><i>n</i></sub>]&#8197;&#8712;&#8197;&#8477;<sup><i>n</i></sup></span>
+.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="crino.module.Linear-class.html">crino.module.Linear</a></strong>:
+      <em class="summary">A <a href="crino.module.Linear-class.html" class="link">Linear</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> as a linear transformation of its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a>.
+It has two <a href="crino.module.Module-class.html#params" class="link">params</a> : <span class="rst-formula"><i>W</i>&#8197;&#8712;&#8197;&#8499;<sub><i>n</i><sub><i>out</i></sub>&#8197;&#215;&#8197;<i>n</i><sub><i>in</i></sub></sub>(&#8477;)</span>
+
+and <span class="rst-formula"><i>b</i>&#8197;&#8712;&#8197;&#8477;<sup><i>n</i><sub><i>out</i></sub></sup></span>
+.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+</ul>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Jul  9 15:37:17 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

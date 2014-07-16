@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>crino.network.MultiLayerPerceptron</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="crino-module.html">Package&nbsp;crino</a> ::
+        <a href="crino.network-module.html">Module&nbsp;network</a> ::
+        Class&nbsp;MultiLayerPerceptron
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="crino.network.MultiLayerPerceptron-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class MultiLayerPerceptron</h1><p class="nomargin-top"><span class="codelink"><a href="crino.network-pysrc.html#MultiLayerPerceptron">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="class_hierarchy_for_multilayer" name="class_hierarchy_for_multilayer">
+<area shape="rect" id="node1" href="crino.module.Container-class.html" title="module.Container" alt="" coords="39,65,161,93"/>
+<area shape="rect" id="node3" href="crino.module.Sequential-class.html" title="module.Sequential" alt="" coords="36,123,164,151"/>
+<area shape="rect" id="node2" href="crino.module.Module-class.html" title="module.Module" alt="" coords="45,6,155,34"/>
+<area shape="rect" id="node6" href="crino.network.MultiLayerPerceptron-class.html" title="MultiLayerPerceptron" alt="" coords="28,182,172,210"/>
+<area shape="rect" id="node4" href="crino.network.DeepNeuralNetwork-class.html" title="DeepNeuralNetwork" alt="" coords="31,241,169,269"/>
+<area shape="rect" id="node5" href="crino.network.InputOutputDeepArchitecture-class.html" title="InputOutputDeepArchitecture" alt="" coords="5,299,195,327"/>
+</map>
+  <img src="class_hierarchy_for_multilayer.gif" alt='' usemap="#class_hierarchy_for_multilayer" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>A <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a> (MLP) is one classical form of artificial
+neural networks, whichs aims at predicting one or more output states
+given some particular inputs. A MLP is a <a href="crino.module.Sequential-class.html" class="link">Sequential</a> module, made of
+a succession of <a href="crino.module.Linear-class.html" class="link">Linear</a> modules and non-linear <a href="crino.module.Activation-class.html" class="link">Activation</a> modules.
+This tends to make the MLP able to learn non-linear decision functions.</p>
+<p>A MLP must be trained with a supervised learning algorithm in order
+to work. The gradient backpropagation is by far the most used algorithm
+used to train MLPs.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.network.MultiLayerPerceptron-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">nUnits</span>,
+        <span class="summary-sig-arg">outputActivation</span>=<span class="summary-sig-default">&lt;class crino.module.Sigmoid at 0x3d31530&gt;</span>)</span><br />
+      Constructs a new <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a> network.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.network-pysrc.html#MultiLayerPerceptron.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="summary-sig-name">finetune</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">x_train</span>,
+        <span class="summary-sig-arg">y_train</span>,
+        <span class="summary-sig-arg">batch_size</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">learning_rate</span>=<span class="summary-sig-default">1.0</span>,
+        <span class="summary-sig-arg">epochs</span>=<span class="summary-sig-default">100</span>,
+        <span class="summary-sig-arg">growth_factor</span>=<span class="summary-sig-default">1.25</span>,
+        <span class="summary-sig-arg">growth_threshold</span>=<span class="summary-sig-default">5</span>,
+        <span class="summary-sig-arg">verbose</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Performs the supervised learning step of the <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a>,
+using a batch-gradient backpropagation algorithm. The <code class="link">learning_rate</code>
+is made adaptative with the <code class="link">growth_factor</code> multiplier. If the mean loss
+a number is improved during <code class="link">growth_threshold</code> successive epochs, then
+the <code class="link">learning_rate</code> is increased, and if the mean loss is degraded during
+one epoch, then the <code class="link">learning_rate</code> is decreased.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.network-pysrc.html#MultiLayerPerceptron.finetune">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.network.MultiLayerPerceptron-class.html#train" class="summary-sig-name">train</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">x_train</span>,
+        <span class="summary-sig-arg">y_train</span>,
+        <span class="summary-sig-arg">batch_size</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">learning_rate</span>=<span class="summary-sig-default">1.0</span>,
+        <span class="summary-sig-arg">epochs</span>=<span class="summary-sig-default">100</span>,
+        <span class="summary-sig-arg">growth_factor</span>=<span class="summary-sig-default">1.25</span>,
+        <span class="summary-sig-arg">growth_threshold</span>=<span class="summary-sig-default">5</span>,
+        <span class="summary-sig-arg">verbose</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Performs the supervised learning step of the <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a>.
+This function explicitly calls <a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="link">finetune</a>, but displays a bit more information.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.network-pysrc.html#MultiLayerPerceptron.train">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Sequential-class.html">module.Sequential</a></code></b>:
+      <code><a href="crino.module.Sequential-class.html#prepareGeometry">prepareGeometry</a></code>,
+      <code><a href="crino.module.Sequential-class.html#prepareOutput">prepareOutput</a></code>,
+      <code><a href="crino.module.Sequential-class.html#prepareParams">prepareParams</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Container-class.html">module.Container</a></code></b>:
+      <code><a href="crino.module.Container-class.html#add">add</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#forward">forward</a></code>,
+      <code><a href="crino.module.Module-class.html#linkInputs">linkInputs</a></code>,
+      <code><a href="crino.module.Module-class.html#linkModule">linkModule</a></code>,
+      <code><a href="crino.module.Module-class.html#prepare">prepare</a></code>,
+      <code><a href="crino.module.Module-class.html#save">save</a></code>,
+      <code><a href="crino.module.Module-class.html#trainFunction">trainFunction</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Container-class.html">module.Container</a></code></b>:
+      <code><a href="crino.module.Container-class.html#modules">modules</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#inputs">inputs</a></code>,
+      <code><a href="crino.module.Module-class.html#nInputs">nInputs</a></code>,
+      <code><a href="crino.module.Module-class.html#nOutputs">nOutputs</a></code>,
+      <code><a href="crino.module.Module-class.html#outputs">outputs</a></code>,
+      <code><a href="crino.module.Module-class.html#params">params</a></code>,
+      <code><a href="crino.module.Module-class.html#prepared">prepared</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">nUnits</span>,
+        <span class="sig-arg">outputActivation</span>=<span class="sig-default">&lt;class crino.module.Sigmoid at 0x3d31530&gt;</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.network-pysrc.html#MultiLayerPerceptron.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Constructs a new <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a> network.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>nUnits</code></strong> (int list) - The sizes of the (input, hidden and output) representations.</li>
+        <li><strong class="pname"><code>outputActivation</code></strong> (class derived from <a href="crino.module.Activation-class.html" class="link">Activation</a>) - The type of activation for the output layer.</li>
+    </ul></dd>
+    <dt>Overrides:
+        <a href="crino.module.Module-class.html#__init__">module.Module.__init__</a>
+    </dt>
+  </dl>
+<div class="fields">      <p><strong>Attention:</strong>
+        <code class="link">outputActivation</code> parameter is not an instance but a class.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="finetune"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">finetune</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">x_train</span>,
+        <span class="sig-arg">y_train</span>,
+        <span class="sig-arg">batch_size</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">learning_rate</span>=<span class="sig-default">1.0</span>,
+        <span class="sig-arg">epochs</span>=<span class="sig-default">100</span>,
+        <span class="sig-arg">growth_factor</span>=<span class="sig-default">1.25</span>,
+        <span class="sig-arg">growth_threshold</span>=<span class="sig-default">5</span>,
+        <span class="sig-arg">verbose</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.network-pysrc.html#MultiLayerPerceptron.finetune">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Performs the supervised learning step of the <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a>,
+using a batch-gradient backpropagation algorithm. The <code class="link">learning_rate</code>
+is made adaptative with the <code class="link">growth_factor</code> multiplier. If the mean loss
+a number is improved during <code class="link">growth_threshold</code> successive epochs, then
+the <code class="link">learning_rate</code> is increased, and if the mean loss is degraded during
+one epoch, then the <code class="link">learning_rate</code> is decreased.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x_train</code></strong> (<a class="rst-reference external image-reference" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The training examples.</li>
+        <li><strong class="pname"><code>y_train</code></strong> (<a class="rst-reference external image-reference" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The training labels.</li>
+        <li><strong class="pname"><code>batch_size</code></strong> (int) - The number of training examples in each mini-batch.</li>
+        <li><strong class="pname"><code>learning_rate</code></strong> (float) - The rate used to update the parameters with the gradient.</li>
+        <li><strong class="pname"><code>epochs</code></strong> (int) - The number of epochs to run the training algorithm.</li>
+        <li><strong class="pname"><code>growth_factor</code></strong> (float) - The multiplier factor used to increase or decrease the <code class="link">learning_rate</code>.</li>
+        <li><strong class="pname"><code>growth_threshold</code></strong> (float) - The number of successive loss-improving epochs after which the <code class="link">learning_rate</code> must be updated.</li>
+        <li><strong class="pname"><code>verbose</code></strong> (bool) - If true, information about the training process will be displayed on the standard output.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>elapsed time, in seconds.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="train"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">train</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">x_train</span>,
+        <span class="sig-arg">y_train</span>,
+        <span class="sig-arg">batch_size</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">learning_rate</span>=<span class="sig-default">1.0</span>,
+        <span class="sig-arg">epochs</span>=<span class="sig-default">100</span>,
+        <span class="sig-arg">growth_factor</span>=<span class="sig-default">1.25</span>,
+        <span class="sig-arg">growth_threshold</span>=<span class="sig-default">5</span>,
+        <span class="sig-arg">verbose</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.network-pysrc.html#MultiLayerPerceptron.train">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Performs the supervised learning step of the <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a>.
+This function explicitly calls <a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="link">finetune</a>, but displays a bit more information.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x_train</code></strong> (<a class="rst-reference external image-reference" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The training examples.</li>
+        <li><strong class="pname"><code>y_train</code></strong> (<a class="rst-reference external image-reference" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The training labels.</li>
+        <li><strong class="pname"><code>batch_size</code></strong> (int) - The number of training examples in each mini-batch.</li>
+        <li><strong class="pname"><code>learning_rate</code></strong> (float) - The rate used to update the parameters with the gradient.</li>
+        <li><strong class="pname"><code>epochs</code></strong> (int) - The number of epochs to run the training algorithm.</li>
+        <li><strong class="pname"><code>growth_factor</code></strong> (float) - The multiplier factor used to increase or decrease the <code class="link">learning_rate</code>.</li>
+        <li><strong class="pname"><code>growth_threshold</code></strong> (float) - The number of successive loss-improving epochs after which the <code class="link">learning_rate</code> must be updated.</li>
+        <li><strong class="pname"><code>verbose</code></strong> (bool) - If true, information about the training process will be displayed on the standard output.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>elapsed time, in seconds.</dd>
+  </dl>
+<div class="fields">      <p><strong>See Also:</strong>
+        <a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="link">finetune</a>
+      </p>
+</div></td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Jul  9 15:37:17 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

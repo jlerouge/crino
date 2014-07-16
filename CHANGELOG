@@ -1,0 +1,10 @@
+1.0.0 (7 july 2014) :
+    - Initial release of crino
+    - Implements a torch-like library to build artificial neural networks (ANN)
+    - Provides standard implementations for :
+        * auto-encoders
+        * multi-layer perceptrons (MLP)
+        * deep neural networks (DNN)
+        * input output deep architecture (IODA)
+    - Provides a batch-gradient backpropagation algorithm, with adaptative learning rate
+

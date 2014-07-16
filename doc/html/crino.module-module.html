@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>crino.module</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="crino-module.html">Package&nbsp;crino</a> ::
+        Module&nbsp;module
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="crino.module-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module module</h1><p class="nomargin-top"><span class="codelink"><a href="crino.module-pysrc.html">source&nbsp;code</a></span></p>
+provides a modular architecture to build a neural network.
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Module-class.html" class="summary-name">Module</a><br />
+      A <a href="crino.module.Module-class.html" class="link">Module</a> is a part of a neural network architecture,
+that may have parameters. Provided an input vector of
+fixed size, a module is able to compute an output vector,
+which size is specified at construction.
+According to their characteristics, several modules can
+be combined to build a new module.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Standalone-class.html" class="summary-name">Standalone</a><br />
+      A <a href="crino.module.Standalone-class.html" class="link">Standalone</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> without relying
+on other modules, i.e. it doesn't have any submodule.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Linear-class.html" class="summary-name">Linear</a><br />
+      A <a href="crino.module.Linear-class.html" class="link">Linear</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> as a linear transformation of its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a>.
+It has two <a href="crino.module.Module-class.html#params" class="link">params</a> : <span class="rst-formula"><i>W</i>&#8197;&#8712;&#8197;&#8499;<sub><i>n</i><sub><i>out</i></sub>&#8197;&#215;&#8197;<i>n</i><sub><i>in</i></sub></sub>(&#8477;)</span>
+
+and <span class="rst-formula"><i>b</i>&#8197;&#8712;&#8197;&#8477;<sup><i>n</i><sub><i>out</i></sub></sup></span>
+.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Container-class.html" class="summary-name">Container</a><br />
+      A <a href="crino.module.Container-class.html" class="link">Container</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> thanks to
+other modules, i.e. it includes several submodules.
+The way these submodules are organized depends on the
+implementation.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Sequential-class.html" class="summary-name">Sequential</a><br />
+      A <a href="crino.module.Sequential-class.html" class="link">Sequential</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> sequentially,
+i.e. each <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> of its submodules is linked to the <a href="crino.module.Module-class.html#inputs" class="link">inputs</a>
+of the following module. The number of submodules in the sequence
+can be chosen arbitrarily, but the <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> and <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> sizes
+must be the same throughout the sequence.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Concat-class.html" class="summary-name">Concat</a><br />
+      A <a href="crino.module.Concat-class.html" class="link">Concat</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> in parallel,
+i.e. it subdivides its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> in <span class="rst-formula"><i>n</i>&#8197;&#8712;&#8197;&#8469;</span>
+
+parts of fixed sizes. The sum of the submodules <a href="crino.module.Module-class.html#inputs" class="link">inputs</a>
+sizes must equal the total <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> size of the <a href="crino.module.Concat-class.html" class="link">Concat</a>.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Activation-class.html" class="summary-name">Activation</a><br />
+      An <a href="crino.module.Activation-class.html" class="link">Activation</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> without any parameter, but with a function
+<span class="rst-formula"><i>f</i> : &#8477;<sup><i>n</i></sup>&#8197;&#8722;&#8197;&#8197;&gt;&#8197;&#8477;<sup><i>n</i></sup></span>
+ applied to its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> vector.
+This function is generally non-linear, because its purpose is to provide non-linearity
+to the neural network.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Tanh-class.html" class="summary-name">Tanh</a><br />
+      A <a href="crino.module.Tanh-class.html" class="link">Tanh</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
+non-linear element-wise hyperbolic tangent function, that can be defined as
+<span class="rst-formula"><i>tanh</i>(<b>x</b>)&#8197;=&#8197;[<span class="fullfraction"><span class="ignored">(</span><span class="numerator"><i>exp</i>(<i>x</i><sub><i>i</i></sub>)&#8197;&#8722;&#8197;<i>exp</i>(&#8197;&#8722;&#8197;<i>x</i><sub><i>i</i></sub>)</span><span class="ignored">)/(</span><span class="denominator"><i>exp</i>(<i>x</i><sub><i>i</i></sub>)&#8197;+&#8197;<i>exp</i>(&#8197;&#8722;&#8197;<i>x</i><sub><i>i</i></sub>)</span><span class="ignored">)</span></span>]<span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span></span>
+,
+with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#8197;<i>x</i><sub>2</sub>,&#8197;&#8230;,&#8197;<i>x</i><sub><i>n</i></sub>]&#8197;&#8712;&#8197;&#8477;<sup><i>n</i></sup></span>
+.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Sigmoid-class.html" class="summary-name">Sigmoid</a><br />
+      A <a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
+non-linear element-wise sigmoid function, that can be defined as
+<span class="rst-formula"><i>&#963;</i>(<b>x</b>)&#8197;=&#8197;(1&#8197;+&#8197;<i>tanh</i>(<b>x</b>&#8197;&#8260;&#8197;2))&#8197;&#8260;&#8197;2&#8197;=&#8197;[1&#8197;&#8260;&#8197;(1&#8197;+&#8197;<i>exp</i>(&#8197;&#8722;&#8197;<i>x</i><sub><i>i</i></sub>))]<span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span></span>
+,
+with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#8197;<i>x</i><sub>2</sub>,&#8197;&#8230;,&#8197;<i>x</i><sub><i>n</i></sub>]&#8197;&#8712;&#8197;&#8477;<sup><i>n</i></sup></span>
+.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="crino.module.Softmax-class.html" class="summary-name">Softmax</a><br />
+      A <a href="crino.module.Softmax-class.html" class="link">Softmax</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
+non-linear softmax function, that can be defined as
+<span class="rst-formula"><i>softmax</i>(<b>x</b>)&#8197;=&#8197;[<i>exp</i>(<i>x</i><sub><i>i</i></sub>)&#8197;&#8260;&#8197;<span class="limits"><span class="limit"><span class="symbol">&#8721;</span></span></span><span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span><i>exp</i>(<i>x</i><sub><i>i</i></sub>)]<span class="scripts"><sup class="script"><i>n</i></sup><sub class="script"><i>i</i>&#8197;=&#8197;1</sub></span></span>
+,
+with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#8197;<i>x</i><sub>2</sub>,&#8197;&#8230;,&#8197;<i>x</i><sub><i>n</i></sub>]&#8197;&#8712;&#8197;&#8477;<sup><i>n</i></sup></span>
+.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.module-module.html#load" class="summary-sig-name">load</a>(<span class="summary-sig-arg">filename</span>)</span><br />
+      Loads and returns a <a href="crino.module.Module-class.html" class="link">Module</a> previously saved with <a href="crino.module.Module-class.html#save" class="link">Module.save</a> function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.module-pysrc.html#load">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'crino'"><code class="variable-quote">'</code><code class="variable-string">crino</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="load"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">load</span>(<span class="sig-arg">filename</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.module-pysrc.html#load">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Loads and returns a <a href="crino.module.Module-class.html" class="link">Module</a> previously saved with <a href="crino.module.Module-class.html#save" class="link">Module.save</a> function.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filename</code></strong> (str) - The path to the saved module.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Jul  9 15:37:17 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
