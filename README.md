@@ -44,7 +44,8 @@ Crino is based on Theano :
     We developed this library as an extension of Theano. In Greek mythology, Crino is the daughter of Theano.
 
 ## Disclaimer
-Copyright (c) 2014 Clément Chatelain, Romain Hérault, Benjamin Labbé, Julien Lerouge, Romain Modzelewski, LITIS - EA 4108. All rights reserved.
+Copyright (c) 2014 Clément Chatelain, Romain Hérault, Benjamin Labbé, Julien Lerouge, Romain Modzelewski, LITIS - EA 4108.
+All rights reserved.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published 
