@@ -19,16 +19,16 @@ classifiers =  ['Development Status :: 4 - Beta',
                 'Operating System :: OS Independent']
 
 if __name__ == "__main__":
-setup(
-	name = DISTNAME,
-  	version = VERSION,
-	author = AUTHOR,
-	author_email = AUTHOR_EMAIL,
-    description = DESCRIPTION,
-    license = LICENSE,
-    url = URL,
-    long_description = LONG_DESCRIPTION,
-    packages = ['crino'],
-    classifiers =classifiers,
-    install_requires=['theano','numpy','scipy']
-)
+	setup(
+		name = DISTNAME,
+  		version = VERSION,
+		author = AUTHOR,
+		author_email = AUTHOR_EMAIL,
+		description = DESCRIPTION,
+		license = LICENSE,
+		url = URL,
+		long_description = LONG_DESCRIPTION,
+		packages = ['crino'],
+		classifiers =classifiers,
+		install_requires=['theano','numpy','scipy']
+	)
