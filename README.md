@@ -51,7 +51,7 @@ IODA is based on B. Labbé's et al. work :
 
 
 ## Disclaimer
-Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge, Romain Modzelewski, LITIS - EA 4108.
+Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
 
 All rights reserved.
 
