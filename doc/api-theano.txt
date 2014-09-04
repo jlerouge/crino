@@ -1,4 +1,0 @@
-theano	index.html
-theano.tensor	tensor/index.html
-theano.tensor.TensorVariable	tensor/basic.html#tensor.TensorVariable
-theano.function	compile/function.html#module-function

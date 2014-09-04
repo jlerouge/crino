@@ -1,2 +1,0 @@
-numpy	index.html
-numpy.ndarray	arrays.ndarray.html
