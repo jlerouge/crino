@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>crino.network.AutoEncoder</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="crino-module.html">Package&nbsp;crino</a> ::
+        <a href="crino.network-module.html">Module&nbsp;network</a> ::
+        Class&nbsp;AutoEncoder
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="crino.network.AutoEncoder-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class AutoEncoder</h1><p class="nomargin-top"><span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="class_hierarchy_for_autoencode" name="class_hierarchy_for_autoencode">
+<area shape="rect" id="node1" href="crino.module.Container-class.html" title="module.Container" alt="" coords="8,65,131,93"/>
+<area shape="rect" id="node3" href="crino.module.Sequential-class.html" title="module.Sequential" alt="" coords="5,123,133,151"/>
+<area shape="rect" id="node2" href="crino.module.Module-class.html" title="module.Module" alt="" coords="15,6,124,34"/>
+<area shape="rect" id="node4" href="crino.network.AutoEncoder-class.html" title="AutoEncoder" alt="" coords="21,182,117,210"/>
+</map>
+  <img src="class_hierarchy_for_autoencode.gif" alt='' usemap="#class_hierarchy_for_autoencode" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>An <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> is a neural network whichs aims at encoding
+its inputs in a smaller representation space. It is made of
+a projection layer and a backprojection layer. The compressed
+representation (or hidden representation) lies in the projection
+layer, while the backprojection layer reconstructs the original inputs.</p>
+<p>The weights between those two layers are shared, that means
+that the backprojection matrix is constrained to be the transpose
+of the projection matrix. However, the two biases are independant.</p>
+<p>If the data allows it, the <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> is best learned with a <a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a>
+final activation module in conjunction with a <a href="crino.criterion.CrossEntropy-class.html" class="link">CrossEntropy</a> criterion.</p>
+
+<hr />
+<div class="fields">      <p><strong>See Also:</strong>
+        <a href="crino.criterion.CrossEntropy-class.html" class="link">CrossEntropy</a>, <a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a>
+      </p>
+</div><!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.network.AutoEncoder-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">nInputs</span>,
+        <span class="summary-sig-arg">nHidden</span>,
+        <span class="summary-sig-arg">outputActivation</span>=<span class="summary-sig-default">&lt;class crino.module.Sigmoid at 0x2e19390&gt;</span>)</span><br />
+      Constructs a new <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> network.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.network.AutoEncoder-class.html#prepareParams" class="summary-sig-name">prepareParams</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Initializes the <a href="crino.module.Module-class.html#params" class="link">params</a> of the submodules.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder.prepareParams">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.network.AutoEncoder-class.html#hiddenValues" class="summary-sig-name">hiddenValues</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">x_input</span>)</span><br />
+      Returns the hidden representation for a given input.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder.hiddenValues">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Sequential-class.html">module.Sequential</a></code></b>:
+      <code><a href="crino.module.Sequential-class.html#prepareGeometry">prepareGeometry</a></code>,
+      <code><a href="crino.module.Sequential-class.html#prepareOutput">prepareOutput</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Container-class.html">module.Container</a></code></b>:
+      <code><a href="crino.module.Container-class.html#add">add</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#forward">forward</a></code>,
+      <code><a href="crino.module.Module-class.html#linkInputs">linkInputs</a></code>,
+      <code><a href="crino.module.Module-class.html#linkModule">linkModule</a></code>,
+      <code><a href="crino.module.Module-class.html#prepare">prepare</a></code>,
+      <code><a href="crino.module.Module-class.html#save">save</a></code>,
+      <code><a href="crino.module.Module-class.html#trainFunction">trainFunction</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Container-class.html">module.Container</a></code></b>:
+      <code><a href="crino.module.Container-class.html#modules">modules</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#inputs">inputs</a></code>,
+      <code><a href="crino.module.Module-class.html#nInputs">nInputs</a></code>,
+      <code><a href="crino.module.Module-class.html#nOutputs">nOutputs</a></code>,
+      <code><a href="crino.module.Module-class.html#outputs">outputs</a></code>,
+      <code><a href="crino.module.Module-class.html#params">params</a></code>,
+      <code><a href="crino.module.Module-class.html#prepared">prepared</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">nInputs</span>,
+        <span class="sig-arg">nHidden</span>,
+        <span class="sig-arg">outputActivation</span>=<span class="sig-default">&lt;class crino.module.Sigmoid at 0x2e19390&gt;</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Constructs a new <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> network.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>nInputs</code></strong> (int) - The <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> size.</li>
+        <li><strong class="pname"><code>nHidden</code></strong> (int) - The size of the hidden representation.</li>
+        <li><strong class="pname"><code>outputActivation</code></strong> (class derived from <a href="crino.module.Activation-class.html" class="link">Activation</a>) - The type of activation for the backprojection layer.</li>
+    </ul></dd>
+    <dt>Overrides:
+        <a href="crino.module.Module-class.html#__init__">module.Module.__init__</a>
+    </dt>
+  </dl>
+<div class="fields">      <p><strong>Attention:</strong>
+        <code class="link">outputActivation</code> parameter is not an instance but a class.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="prepareParams"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">prepareParams</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder.prepareParams">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Initializes the <a href="crino.module.Module-class.html#params" class="link">params</a> of the submodules. The <a href="crino.module.Sequential-class.html" class="link">Sequential</a> module <a href="crino.module.Module-class.html#params" class="link">params</a> will include the <a href="crino.module.Module-class.html#params" class="link">params</a> of its submodules .
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="crino.module.Module-class.html#prepareParams">module.Module.prepareParams</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="hiddenValues"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">hiddenValues</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">x_input</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder.hiddenValues">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Returns the hidden representation for a given input.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x_input</code></strong> (<a class="rst-reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The input on which the hidden representation must be computed.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>the corresponding hidden representation</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="crino-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:02 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
