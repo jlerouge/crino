@@ -161,8 +161,6 @@ class NegativeLogLikelihood(Criterion):
 
     It is meant to be connected to a Softmax Module as the last layer of the MLP.
     
-    Note that the combination LogSoftmax/LogNegativeLogLikelihood is numerically more stable than Softmax/NegativeLogLikelihood.
-    
     The output size should be the same as the number of possible classes.
     
     The target size should be the same as the number of possible classes, with value in between [0..1].
