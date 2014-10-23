@@ -21,18 +21,20 @@
 
 import numpy as np
 
-import matplotlib.cm as cm
+import sys
+
+import matplotlib
+matplotlib.use('pdf')
 import matplotlib.pyplot as plt
+
 import theano.tensor as T
-
 import crino
-from crino.criterion import LogNegativeLogLikelihood
-
+from crino.criterion import NegativeLogLikelihood
 
 learning_rate = 2.0
 pretraining_learning_rate = 10.0
 minibatch_size = 100
-epochs = 5
+epochs = 10
 
 print '... generating training data'
 train_set = {}
@@ -68,18 +70,17 @@ y_test=y_test[arrtest]
 
 x_train = np.asarray(x_train, dtype='float32') # We convert to float32 to 
 y_train = np.asarray(y_train, dtype='float32') # compute on GPUs with CUDA
-x_test = np.asarray(x_test, dtype='float64') # We convert to float32 to 
+x_test = np.asarray(x_test, dtype='float32') # We convert to float32 to 
 y_test = np.asarray(y_test, dtype='float32') # compute on GPUs with CUDA
 
 N = x_train.shape[0] # number of training examples
 nFeats = x_train.shape[1] # number of features per example
 
 print '... building and learning a MLP network'
-nn = crino.network.MultiLayerPerceptron([2,4,nClasses] ,crino.module.LogSoftmax)
+nn = crino.network.MultiLayerPerceptron([2,4,nClasses] ,crino.module.Softmax)
 nn.linkInputs(T.matrix('x'), nFeats)
 nn.prepare()
-print(nn.outputs)
-nn.criterion = LogNegativeLogLikelihood(nn.outputs, T.matrix('y'))
+nn.criterion = NegativeLogLikelihood(nn.outputs, T.matrix('y'))
 
 delta = nn.train(x_train, y_train, minibatch_size, learning_rate, epochs, verbose=True)
 print '... learning lasted %f minutes ' % (delta / 60.)
@@ -97,4 +98,5 @@ plt.figure(1)
 for c in xrange(nClasses):
     idx=np.nonzero(y_test_estim==c)[0]
     plt.plot(x_test[idx,0],x_test[idx,1],styles[c])
-plt.show()
+plt.savefig(sys.argv[0]+'.pdf')
+plt.close()

@@ -630,30 +630,3 @@ class Softmax(Activation):
         Computes the softmax function :math:`\mathbf{\hat{y}} = [exp(x_i)/\sum_{i=1}^n exp(x_i)]_{i=1}^n`
         """
         self.outputs = T.nnet.softmax(self.inputs)
-        
-
-class LogSoftmax(Activation):
-    """
-    A `LogSoftmax` activation module computes its `outputs` with the
-    non-linear logsoftmax function, that can be defined as
-    :math:`logsoftmax(\mathbf{x}) = [x_i - log(sum_{i=1}^n exp(x_i))]_{i=1}^n`,
-    with :math:`\mathbf{x} = [x_1, x_2, \dots, x_n] \in \mathbb{R}^n`.
-    """
-    
-    def __init__(self, nOutputs, nInputs=None):
-        """
-        Constructs a new `LogSoftmax` activation module.
-
-        :Parameters:
-            nOutputs : int
-                The `outputs` size.
-            nInputs : int
-                The `inputs` size.
-        """
-        Activation.__init__(self, nOutputs, nInputs)
-
-    def prepareOutput(self):
-        """
-        Computes the softmax function :math:`\mathbf{\hat{y}} = [x_i - log(\sum_{i=1}^n exp(x_i))]_{i=1}^n`
-        """
-        self.outputs = self.inputs-T.log(T.sum(T.exp(self.inputs)))
