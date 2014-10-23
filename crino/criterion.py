@@ -187,7 +187,7 @@ class NegativeLogLikelihood(Criterion):
 
     def prepare(self):
         """ Computes the Negative Log Likelihood symbolic expression. """
-        self.expression = -T.log(T.sum(self.outputs*self.targets))
+        self.expression = -T.sum(T.log(self.outputs)*self.targets)
 
 class LogNegativeLogLikelihood(Criterion):
     """
