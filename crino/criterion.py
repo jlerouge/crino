@@ -154,3 +154,71 @@ class MeanAbsoluteError(Criterion):
     def prepare(self):
         """ Computes the mean absolute error symbolic expression. """
         self.expression = T.mean(T.abs_(self.outputs - self.targets))
+
+class NegativeLogLikelihood(Criterion):
+    """
+    The Negative Log Likelihood criterion is used in classification task.
+
+    It is meant to be connected to a Softmax Module as the last layer of the MLP.
+    
+    Note that the combination LogSoftmax/LogNegativeLogLikelihood is numerically more stable than Softmax/NegativeLogLikelihood.
+    
+    The size of the output should be the same as the number of possible classes.
+    
+    The size of the target is only one integer corresponding to the class (starting from 0).
+
+    The Negative Log Likelihood can be written as follows :
+
+    :math:`L_{NLL} = -log(\hat{y_i}) | y=i`
+    """
+
+    def __init__(self, outputs, targets):
+        """
+        Constructs a new `NegativeLogLikelihood` criterion.
+
+        :Parameters:
+            outputs : :theano:`TensorVariable`
+                The symbolic `outputs` vector of a network
+            targets : :theano:`TensorVariable`
+                The symbolic `targets` vector
+        """
+        Criterion.__init__(self, outputs, targets)
+
+    def prepare(self):
+        """ Computes the Negative Log Likelihood symbolic expression. """
+        self.expression = -T.log(self.outputs[self.targets])
+
+class LogNegativeLogLikelihood(Criterion):
+    """
+    The Log Negative Log Likelihood criterion is used in classification task.
+
+    It is meant to be connected to a LogSoftmax Module as the last layer of the MLP.
+    
+    The combination LogSoftmax/LogNegativeLogLikelihood is numerically more stable than Softmax/NegativeLogLikelihood.
+    
+    The size of the output should be the same as the number of possible classes.
+    
+    The size of the target is only one integer corresponding to the class (starting from 0).
+
+    The Negative Log Likelihood can be written as follows :
+
+    :math:`L_{LNLL} = -\hat{y_i} | y=i`
+    """
+
+    def __init__(self, outputs, targets):
+        """
+        Constructs a new `Log NegativeLogLikelihood` criterion.
+
+        :Parameters:
+            outputs : :theano:`TensorVariable`
+                The symbolic `outputs` vector of a network
+            targets : :theano:`TensorVariable`
+                The symbolic `targets` vector
+        """
+        Criterion.__init__(self, outputs, targets)
+
+    def prepare(self):
+        """ Computes the Log Negative Log Likelihood symbolic expression. """
+        self.expression = -self.outputs[self.targets]
+
+
