@@ -163,13 +163,14 @@ class NegativeLogLikelihood(Criterion):
     
     Note that the combination LogSoftmax/LogNegativeLogLikelihood is numerically more stable than Softmax/NegativeLogLikelihood.
     
-    The size of the output should be the same as the number of possible classes.
+    The output size should be the same as the number of possible classes.
     
-    The size of the target is only one integer corresponding to the class (starting from 0).
+    The target size should be the same as the number of possible classes, with value in between [0..1].
+    If not weighted, all 0 except 1 on the correct class.
 
     The Negative Log Likelihood can be written as follows :
 
-    :math:`L_{NLL} = -log(\hat{y_i}) | y=i`
+    :math:`L_{NLL} = -log(<\hat{y},y>)`
     """
 
     def __init__(self, outputs, targets):
@@ -186,7 +187,7 @@ class NegativeLogLikelihood(Criterion):
 
     def prepare(self):
         """ Computes the Negative Log Likelihood symbolic expression. """
-        self.expression = -T.log(self.outputs[self.targets])
+        self.expression = -T.log(T.sum(self.outputs*self.targets))
 
 class LogNegativeLogLikelihood(Criterion):
     """
@@ -196,13 +197,14 @@ class LogNegativeLogLikelihood(Criterion):
     
     The combination LogSoftmax/LogNegativeLogLikelihood is numerically more stable than Softmax/NegativeLogLikelihood.
     
-    The size of the output should be the same as the number of possible classes.
+    The output size should be the same as the number of possible classes.
     
-    The size of the target is only one integer corresponding to the class (starting from 0).
+    The target size should be the same as the number of possible classes, with value in between [0..1].
+    If not weighted, all 0 except 1 on the correct class.
 
     The Negative Log Likelihood can be written as follows :
 
-    :math:`L_{LNLL} = -\hat{y_i} | y=i`
+    :math:`L_{LNLL} = -<\hat{y},y>`
     """
 
     def __init__(self, outputs, targets):
@@ -219,6 +221,6 @@ class LogNegativeLogLikelihood(Criterion):
 
     def prepare(self):
         """ Computes the Log Negative Log Likelihood symbolic expression. """
-        self.expression = -self.outputs[self.targets]
+        self.expression = -T.sum(self.outputs*self.targets)
 
 
