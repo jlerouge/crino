@@ -154,3 +154,36 @@ class MeanAbsoluteError(Criterion):
     def prepare(self):
         """ Computes the mean absolute error symbolic expression. """
         self.expression = T.mean(T.abs_(self.outputs - self.targets))
+
+class NegativeLogLikelihood(Criterion):
+    """
+    The Negative Log Likelihood criterion is used in classification task.
+
+    It is meant to be connected to a Softmax Module as the last layer of the MLP.
+    
+    The output size should be the same as the number of possible classes.
+    
+    The target size should be the same as the number of possible classes, with value in between [0..1].
+    If not weighted, all 0 except 1 on the correct class.
+
+    The Negative Log Likelihood can be written as follows :
+
+    :math:`L_{NLL} = -log(<\hat{y},y>)`
+    """
+
+    def __init__(self, outputs, targets):
+        """
+        Constructs a new `NegativeLogLikelihood` criterion.
+
+        :Parameters:
+            outputs : :theano:`TensorVariable`
+                The symbolic `outputs` vector of a network
+            targets : :theano:`TensorVariable`
+                The symbolic `targets` vector
+        """
+        Criterion.__init__(self, outputs, targets)
+
+    def prepare(self):
+        """ Computes the Negative Log Likelihood symbolic expression. """
+        self.expression = -T.log(T.sum(self.outputs*self.targets))
+
