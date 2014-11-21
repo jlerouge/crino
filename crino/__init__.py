@@ -19,7 +19,7 @@
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
 # Init file for crino
-
+__version__ = "0.1.0b2"
 import crino.criterion
 import crino.module
 import crino.network

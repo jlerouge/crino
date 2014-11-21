@@ -1,4 +1,6 @@
-1.0.0 (7 july 2014) :
+0.1.0b2 (15 november 2014) :
+    -  Added `NegativeLogLikelihood` class as a new criterion for multi-class lassification purposes 
+0.1.0b1 (7 july 2014) :
     - Initial release of crino
     - Implements a torch-like library to build artificial neural networks (ANN)
     - Provides standard implementations for :
