@@ -28,6 +28,7 @@ import numpy as np
 import warnings
 import cPickle as pickle
 from crino.criterion import Criterion
+from theano.compile.sharedvalue import SharedVariable
 
 def load(filename):
     """
@@ -136,7 +137,7 @@ class Module:
             self.nInputs = nInputs
         self.inputs = vector
 
-    def trainFunction(self, batch_size=1, lr=0.1, downcast=None):
+    def trainFunction(self, batch_size=1, lr=0.1, downcast=None, shared_x_train=None, shared_y_train=None):
         """
         Constructs and compiles a Theano function in order to train the module.
 
@@ -156,22 +157,36 @@ class Module:
         :return: a Theano-function that performs one step of gradient descent
         :rtype: :theano:`function`
         """
+        
+        shared_sets=False
+        if isinstance(shared_x_train,SharedVariable) and isinstance(shared_y_train,SharedVariable):
+            shared_sets=True
 
         if self.params and self.criterion:
             self.gparams = T.grad(self.criterion.expression, self.params)
 
             # Définition des variables symboliques
             index = T.lscalar('index')
-            x_train = T.matrix('x_train')
-            y_train = T.matrix('y_train')
+            if shared_sets:
+                x_train = shared_x_train
+                y_train = shared_y_train
+            else:
+                x_train = T.matrix('x_train')
+                y_train = T.matrix('y_train')
 
             # Définition des mises à jour
             updates = []
             for param_i, grad_i in zip(self.params, self.gparams):
                 updates.append((param_i, param_i - lr*grad_i))
+                
+            # Définition des entrées
+            if shared_sets:
+                inputs=[index]
+            else:
+                inputs=[x_train, y_train, index]
 
             # Construction d'une fonction d'apprentissage theano
-            return theano.function( inputs=[x_train, y_train, index], outputs=self.criterion.expression, updates=updates,
+            return theano.function( inputs=inputs, outputs=self.criterion.expression, updates=updates,
                                     givens={
                                         self.inputs: x_train[index*batch_size:(index+1)*batch_size],
                                         self.criterion.targets: y_train[index*batch_size:(index+1)*batch_size]

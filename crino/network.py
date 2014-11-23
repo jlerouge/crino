@@ -151,7 +151,9 @@ class MultiLayerPerceptron(Sequential):
         :return: elapsed time, in seconds.
         """
         # Compilation d'une fonction theano pour l'apprentissage du modèle
-        train = self.trainFunction(batch_size, learning_rate, True)
+        shared_x_train=theano.shared(x_train)
+        shared_y_train=theano.shared(y_train)
+        train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
         n_train_batches = x_train.shape[0]/batch_size
         start_time = time.clock()
         mean_loss = float('inf')
@@ -161,7 +163,7 @@ class MultiLayerPerceptron(Sequential):
             if(verbose):
                 print "",
             for i in xrange(n_train_batches):
-                loss = train(x_train, y_train, i)
+                loss = train(i)
                 c.append(loss)
                 if(verbose):
                     print "\r  | |_Batch %d/%d, loss : %f" % (i+1, n_train_batches, loss),
@@ -175,13 +177,13 @@ class MultiLayerPerceptron(Sequential):
                     if(verbose):
                         print "\r# learning rate : %f > %f" % (learning_rate, learning_rate*growth_factor)
                     learning_rate = learning_rate*growth_factor
-                    train = self.trainFunction(batch_size, learning_rate, True)
+                    train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
             else:
                 good_epochs = 0
                 if(verbose):
                     print "\r# learning rate : %f > %f" % (learning_rate, learning_rate/growth_factor)
                 learning_rate = learning_rate/growth_factor
-                train = self.trainFunction(batch_size, learning_rate, True)
+                train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
             mean_loss = new_mean_loss
             if(verbose):
                 print "\r  |_Epoch %d/%d, mean loss : %f" % (epoch+1, epochs, mean_loss)
