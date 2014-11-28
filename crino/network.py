@@ -22,7 +22,7 @@
 provides some ready-to-use neural networks, such as MLP's, DNN's and IODA's. 
 """
 
-import time
+import datetime as DT
 import theano
 import theano.tensor as T
 import numpy as np
@@ -148,17 +148,18 @@ class MultiLayerPerceptron(Sequential):
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
 
-        :return: elapsed time, in seconds.
+        :return: elapsed time, in datetime.
         """
         # Compilation d'une fonction theano pour l'apprentissage du modèle
         shared_x_train=theano.shared(x_train)
         shared_y_train=theano.shared(y_train)
         train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
         n_train_batches = x_train.shape[0]/batch_size
-        start_time = time.clock()
+        start_time = DT.datetime.now()
         mean_loss = float('inf')
         good_epochs = 0
         for epoch in xrange(epochs):
+            epoch_start=DT.datetime.now()
             c = []
             if(verbose):
                 print "",
@@ -186,8 +187,8 @@ class MultiLayerPerceptron(Sequential):
                 train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
             mean_loss = new_mean_loss
             if(verbose):
-                print "\r  |_Epoch %d/%d, mean loss : %f" % (epoch+1, epochs, mean_loss)
-        return (time.clock()-start_time)
+                print "\r  |_Epoch %d/%d, mean loss : %f, duration : %s" % (epoch+1, epochs, mean_loss,(DT.datetime.now()-epoch_start))
+        return (DT.datetime.now()-start_time)
 
     def train(self, x_train, y_train, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
         """
@@ -212,12 +213,12 @@ class MultiLayerPerceptron(Sequential):
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
 
-        :return: elapsed time, in seconds.
+        :return: elapsed time, in datetime.
         :see: `finetune`
         """
         print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
         delta = self.finetune(x_train, y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
-        print "-- End of fine-tuning (lasted %f minutes) --" % (delta/60.)
+        print "-- End of fine-tuning (lasted %s) --" % (delta)
         return delta
 
 class DeepNeuralNetwork(MultiLayerPerceptron):
@@ -329,12 +330,13 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
         """
         n_train_batches = data.shape[0]/batch_size
         inputs = data
-        global_start_time = time.clock()
+        global_start_time = DT.datetime.now()
         for (ae,layer) in zip(autoEncoders, xrange(len(autoEncoders))):
-            fn = ae.trainFunction(batch_size, learning_rate, True)
+            shared_inputs=theano.shared(inputs)
+            fn = ae.trainFunction(batch_size, learning_rate, True, shared_inputs, shared_inputs)
             if(verbose):
                 print "Layer %d/%d" % (layer+1,len(autoEncoders))
-                start_time = time.clock()
+                start_time = DT.datetime.now()
             mean_loss = float('inf')
             good_epochs = 0
             for epoch in xrange(epochs):
@@ -342,7 +344,7 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
                     print "",
                 c = []
                 for i in xrange(n_train_batches):
-                    loss = fn(inputs, inputs, i)
+                    loss = fn(i)
                     c.append(loss)
                     if(verbose):
                         print "\r  | |_Batch %d/%d, loss : %f" % (i+1, n_train_batches, loss),
@@ -356,22 +358,22 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
                         if(verbose):
                             print "\r# learning rate : %f > %f" % (learning_rate, learning_rate*growth_factor)
                         learning_rate = learning_rate*growth_factor
-                        fn = ae.trainFunction(batch_size, learning_rate, True)
+                        fn = ae.trainFunction(batch_size, learning_rate, True, shared_inputs, shared_inputs)
                 else:
                     good_epochs = 0
                     if(verbose):
                         print "\r# learning rate : %f > %f" % (learning_rate, learning_rate/growth_factor)
                     learning_rate = learning_rate/growth_factor
-                    fn = ae.trainFunction(batch_size, learning_rate, True)
+                    fn = ae.trainFunction(batch_size, learning_rate, True, shared_inputs, shared_inputs)
                 mean_loss = new_mean_loss
                 if(verbose):
                     print "\r  |_Epoch %d, mean loss : %f" % (epoch, mean_loss)
             if(verbose):
-                end_time = time.clock()
-                print "Pre-learning layer %d took %f minutes" % (layer, (end_time - start_time)/60.)
+                end_time = DT.datetime.now()
+                print "Pre-learning layer %d took %s" % (layer, (end_time - start_time))
             inputs = (ae.hiddenValues(inputs)+1)/2
         self.linkData.append(inputs)
-        return (time.clock()-start_time)
+        return (DT.datetime.now()-start_time)
 
     def train(self, x_train, y_train, batch_size=1, learning_rate=1.0, pretraining_learning_rate=2.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
         """
@@ -396,21 +398,19 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
 
-        :return: elapsed time, in seconds.
+        :return: elapsed time, in deltatime.
         :see: `pretrainAutoEncoders`, `finetune`
         """
-        totalDelta = 0.0
         if(verbose):
             print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
-        delta = self.pretrainAutoEncoders(x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
-        totalDelta += delta
+        totalDelta = self.pretrainAutoEncoders(x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         if(verbose):
-            print "-- End of input layers pre-training (lasted %f minutes) --" % (delta/60.)
+            print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
             print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
-        delta = self.finetune(x_train, y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
-        totalDelta += delta
+        delta +=  self.finetune(x_train, y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        totalDelta +=  delta
         if(verbose):
-            print "-- End of fine-tuning (lasted %f minutes) --" % (delta/60.)
+            print "-- End of fine-tuning (lasted %s) --" % (delta)
         return totalDelta
 
 
@@ -472,35 +472,33 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
 
-        :return: elapsed time, in seconds.
+        :return: elapsed time, in deltatime.
         :see: `pretrainAutoEncoders`, `pretrainLink`, `finetune`
         """
-        totalDelta = 0.0
         if(verbose):
             print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
-        delta = self.pretrainAutoEncoders(x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
-        totalDelta += delta
+        totalDelta = self.pretrainAutoEncoders(x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         if(verbose):
-            print "-- End of input layers pre-training (lasted %f minutes) --" % (delta/60.)
+            print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
             print "-- Beginning of output layers pre-training (%d epochs) --" % (epochs)
         delta = self.pretrainAutoEncoders(y_train, self.outputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         totalDelta += delta
         if(verbose):
-            print "-- End of output layers pre-training (lasted %f minutes) --" % (delta/60.)
+            print "-- End of output layers pre-training (lasted %s) --" % (delta)
         if(pretrainLink):
             if(verbose):
                 print "-- Beginning of link layer pre-training (%d epochs) --" % (epochs)
             delta = self.pretrainLink(batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
             totalDelta += delta
             if(verbose):
-                print "-- End of link layer pre-training (lasted %f minutes) --" % (delta/60.)
+                print "-- End of link layer pre-training (lasted %s) --" % (delta)
 
         if(verbose):
             print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
         delta = self.finetune(x_train, y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
         totalDelta += delta
         if(verbose):
-            print "-- End of fine-tuning (lasted %f minutes) --" % (delta/60.)
+            print "-- End of fine-tuning (lasted %s) --" % (delta)
         return totalDelta
 
     def pretrainLink(self, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
