@@ -31,7 +31,168 @@ import sys
 from crino.module import Sequential, Linear, Sigmoid, Tanh
 from crino.criterion import CrossEntropy, MeanSquareError
 
-class AutoEncoder(Sequential):
+
+class MultiLayerPerceptron(Sequential):
+    """
+    A `MultiLayerPerceptron` (MLP) is one classical form of artificial
+    neural networks, whichs aims at predicting one or more output states
+    given some particular inputs. A MLP is a `Sequential` module, made of
+    a succession of `Linear` modules and non-linear `Activation` modules.
+    This tends to make the MLP able to learn non-linear decision functions.
+
+    A MLP must be trained with a supervised learning algorithm in order
+    to work. The gradient backpropagation is by far the most used algorithm
+    used to train MLPs.
+    """
+    def __init__(self, nUnits, outputActivation=Sigmoid):
+        """
+        Constructs a new `MultiLayerPerceptron` network.
+
+        :Parameters:
+            nUnits : int list
+                The sizes of the (input, hidden and output) representations.
+            outputActivation : class derived from `Activation`
+                The type of activation for the output layer.
+        :attention: `outputActivation` parameter is not an instance but a class.
+        """
+        Sequential.__init__(self, nInputs=nUnits[0])
+        self.nUnits = nUnits
+
+        # In and hidden layers
+        for nOutputs in nUnits[1:-1]:
+            self.add(Linear(nOutputs))
+            self.add(Tanh(nOutputs))
+        # Output layer
+        self.add(Linear(nUnits[-1]))
+        self.add(outputActivation(nUnits[-1]))
+        
+    def initStoppingCriterion(self):
+        pass
+        
+    def checkStoppingCriterion(self):
+        return False
+
+    def finetune(self, shared_x_train, shared_y_train, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
+        """
+        Performs the supervised learning step of the `MultiLayerPerceptron`,
+        using a batch-gradient backpropagation algorithm. The `learning_rate`
+        is made adaptative with the `growth_factor` multiplier. If the mean loss
+        a number is improved during `growth_threshold` successive epochs, then
+        the `learning_rate` is increased, and if the mean loss is degraded during
+        one epoch, then the `learning_rate` is decreased.
+
+        :Parameters:
+            x_train : SharedVariable from :numpy:`ndarray`
+                The training examples.
+            y_train : SharedVariable from :numpy:`ndarray`
+                The training labels.
+            batch_size : int
+                The number of training examples in each mini-batch.
+            learning_rate : float
+                The rate used to update the parameters with the gradient.
+            epochs : int
+                The number of epochs to run the training algorithm.
+            growth_factor : float
+                The multiplier factor used to increase or decrease the `learning_rate`.
+            growth_threshold : float
+                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
+            verbose : bool
+                If true, information about the training process will be displayed on the standard output.
+
+        :return: elapsed time, in datetime.
+        """
+        # Compilation d'une fonction theano pour l'apprentissage du modèle
+        train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
+        hold=self.holdFunction()
+        restore=self.restoreFunction()
+        n_train_batches = shared_x_train.get_value().shape[0]/batch_size
+        start_time = DT.datetime.now()
+        mean_loss = float('inf')
+        good_epochs = 0
+        self.finetune_history=[(-1,learning_rate,mean_loss)]
+        
+        self.initStoppingCriterion()
+        
+        for epoch in xrange(epochs):
+            epoch_start=DT.datetime.now()
+            c = []
+            hold()
+            if(verbose):
+                print "",
+            trial=True
+            while trial:
+                for i in xrange(n_train_batches):
+                    loss = train(i)
+                    c.append(loss)
+                    if(verbose):
+                        print "\r  | |_Batch %d/%d, loss : %f" % (i+1, n_train_batches, loss),
+                        sys.stdout.flush()
+
+                new_mean_loss = np.mean(c)
+                self.finetune_history.append((epoch,learning_rate,new_mean_loss))
+                if  new_mean_loss < mean_loss:
+                    trial=False
+                    good_epochs += 1
+                else:
+                    if(verbose):
+                        print "\r# Bad move %f > %f; Learning rate : %f > %f" % (mean_loss, new_mean_loss, learning_rate, learning_rate/growth_factor)
+                    restore()
+                    good_epochs = -1                    
+                    learning_rate = learning_rate/growth_factor
+                    train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
+
+            mean_loss = new_mean_loss
+
+            if(good_epochs >= growth_threshold):
+                good_epochs = 0
+                if(verbose):
+                    print "\r# Fast Track; Learning rate : %f > %f" % (learning_rate, learning_rate*growth_factor)
+                learning_rate = learning_rate*growth_factor
+                train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
+           
+            if(verbose):
+                print "\r  |_Epoch %d/%d, mean loss : %f, duration (s) : %s" % (epoch+1, epochs, new_mean_loss,(DT.datetime.now()-epoch_start).total_seconds())
+            
+            if self.checkStoppingCriterion():
+                break
+                
+        return (DT.datetime.now()-start_time)
+
+    def train(self, x_train, y_train, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
+        """
+        Performs the supervised learning step of the `MultiLayerPerceptron`.
+        This function explicitly calls `finetune`, but displays a bit more information.
+
+        :Parameters:
+            x_train : :numpy:`ndarray`
+                The training examples.
+            y_train : :numpy:`ndarray`
+                The training labels.
+            batch_size : int
+                The number of training examples in each mini-batch.
+            learning_rate : float
+                The rate used to update the parameters with the gradient.
+            epochs : int
+                The number of epochs to run the training algorithm.
+            growth_factor : float
+                The multiplier factor used to increase or decrease the `learning_rate`.
+            growth_threshold : float
+                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
+            verbose : bool
+                If true, information about the training process will be displayed on the standard output.
+
+        :return: elapsed time, in datetime.
+        :see: `finetune`
+        """
+        print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
+        shared_x_train=theano.shared(x_train)
+        shared_y_train=theano.shared(y_train)        
+        delta = self.finetune(shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        print "-- End of fine-tuning (lasted %s) --" % (delta)
+        return delta
+
+
+class AutoEncoder(MultiLayerPerceptron):
     """
     An `AutoEncoder` is a neural network whichs aims at encoding
     its inputs in a smaller representation space. It is made of
@@ -86,140 +247,6 @@ class AutoEncoder(Sequential):
         :return: the corresponding hidden representation
         """
         return self.modules[1].forward(self.modules[0].forward(x_input))
-
-class MultiLayerPerceptron(Sequential):
-    """
-    A `MultiLayerPerceptron` (MLP) is one classical form of artificial
-    neural networks, whichs aims at predicting one or more output states
-    given some particular inputs. A MLP is a `Sequential` module, made of
-    a succession of `Linear` modules and non-linear `Activation` modules.
-    This tends to make the MLP able to learn non-linear decision functions.
-
-    A MLP must be trained with a supervised learning algorithm in order
-    to work. The gradient backpropagation is by far the most used algorithm
-    used to train MLPs.
-    """
-    def __init__(self, nUnits, outputActivation=Sigmoid):
-        """
-        Constructs a new `MultiLayerPerceptron` network.
-
-        :Parameters:
-            nUnits : int list
-                The sizes of the (input, hidden and output) representations.
-            outputActivation : class derived from `Activation`
-                The type of activation for the output layer.
-        :attention: `outputActivation` parameter is not an instance but a class.
-        """
-        Sequential.__init__(self, nInputs=nUnits[0])
-        self.nUnits = nUnits
-
-        # In and hidden layers
-        for nOutputs in nUnits[1:-1]:
-            self.add(Linear(nOutputs))
-            self.add(Tanh(nOutputs))
-        # Output layer
-        self.add(Linear(nUnits[-1]))
-        self.add(outputActivation(nUnits[-1]))
-
-    def finetune(self, x_train, y_train, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
-        """
-        Performs the supervised learning step of the `MultiLayerPerceptron`,
-        using a batch-gradient backpropagation algorithm. The `learning_rate`
-        is made adaptative with the `growth_factor` multiplier. If the mean loss
-        a number is improved during `growth_threshold` successive epochs, then
-        the `learning_rate` is increased, and if the mean loss is degraded during
-        one epoch, then the `learning_rate` is decreased.
-
-        :Parameters:
-            x_train : :numpy:`ndarray`
-                The training examples.
-            y_train : :numpy:`ndarray`
-                The training labels.
-            batch_size : int
-                The number of training examples in each mini-batch.
-            learning_rate : float
-                The rate used to update the parameters with the gradient.
-            epochs : int
-                The number of epochs to run the training algorithm.
-            growth_factor : float
-                The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : float
-                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
-            verbose : bool
-                If true, information about the training process will be displayed on the standard output.
-
-        :return: elapsed time, in datetime.
-        """
-        # Compilation d'une fonction theano pour l'apprentissage du modèle
-        shared_x_train=theano.shared(x_train)
-        shared_y_train=theano.shared(y_train)
-        train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
-        n_train_batches = x_train.shape[0]/batch_size
-        start_time = DT.datetime.now()
-        mean_loss = float('inf')
-        good_epochs = 0
-        for epoch in xrange(epochs):
-            epoch_start=DT.datetime.now()
-            c = []
-            if(verbose):
-                print "",
-            for i in xrange(n_train_batches):
-                loss = train(i)
-                c.append(loss)
-                if(verbose):
-                    print "\r  | |_Batch %d/%d, loss : %f" % (i+1, n_train_batches, loss),
-                    sys.stdout.flush()
-
-            new_mean_loss = np.mean(c)
-            if(new_mean_loss < mean_loss):
-                good_epochs += 1
-                if(good_epochs >= growth_threshold):
-                    good_epochs = 0
-                    if(verbose):
-                        print "\r# learning rate : %f > %f" % (learning_rate, learning_rate*growth_factor)
-                    learning_rate = learning_rate*growth_factor
-                    train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
-            else:
-                good_epochs = 0
-                if(verbose):
-                    print "\r# learning rate : %f > %f" % (learning_rate, learning_rate/growth_factor)
-                learning_rate = learning_rate/growth_factor
-                train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
-            mean_loss = new_mean_loss
-            if(verbose):
-                print "\r  |_Epoch %d/%d, mean loss : %f, duration : %s" % (epoch+1, epochs, mean_loss,(DT.datetime.now()-epoch_start))
-        return (DT.datetime.now()-start_time)
-
-    def train(self, x_train, y_train, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
-        """
-        Performs the supervised learning step of the `MultiLayerPerceptron`.
-        This function explicitly calls `finetune`, but displays a bit more information.
-
-        :Parameters:
-            x_train : :numpy:`ndarray`
-                The training examples.
-            y_train : :numpy:`ndarray`
-                The training labels.
-            batch_size : int
-                The number of training examples in each mini-batch.
-            learning_rate : float
-                The rate used to update the parameters with the gradient.
-            epochs : int
-                The number of epochs to run the training algorithm.
-            growth_factor : float
-                The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : float
-                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
-            verbose : bool
-                If true, information about the training process will be displayed on the standard output.
-
-        :return: elapsed time, in datetime.
-        :see: `finetune`
-        """
-        print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
-        delta = self.finetune(x_train, y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
-        print "-- End of fine-tuning (lasted %s) --" % (delta)
-        return delta
 
 class DeepNeuralNetwork(MultiLayerPerceptron):
     """
@@ -311,7 +338,7 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
         one epoch, then the `learning_rate` is decreased.
 
         :Parameters:
-            data : :numpy:`ndarray`
+            data : SharedVariable from :numpy:`ndarray`
                 The training data (examples or labels).
             autoEncoders : `AutoEncoder` list
                 The list of autoencoders used for training (input or output autoencoders).
@@ -329,49 +356,19 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
                 If true, information about the training process will be displayed on the standard output.
         """
         n_train_batches = data.shape[0]/batch_size
-        inputs = data
-        global_start_time = DT.datetime.now()
+        shared_inputs= data
+        start_time = DT.datetime.now()
         for (ae,layer) in zip(autoEncoders, xrange(len(autoEncoders))):
+            if verbose:
+                print("--- Learning AE %d ---"%(layer,))
+            delta=ae.finetune(shared_inputs, shared_inputs,
+                              batch_size=batch_size,learning_rate=learning_rate,
+                              epochs=epochs, growth_factor=growth_factor,
+                              growth_threshold=growth_threshold, verbose=verbose)
+            if verbose:
+                print("--- AE %d Learned, Duration (s) %d ---"%(layer,delta.total_seconds()))            
+            inputs = (ae.hiddenValues(shared_inputs.get_value())+1)/2
             shared_inputs=theano.shared(inputs)
-            fn = ae.trainFunction(batch_size, learning_rate, True, shared_inputs, shared_inputs)
-            if(verbose):
-                print "Layer %d/%d" % (layer+1,len(autoEncoders))
-                start_time = DT.datetime.now()
-            mean_loss = float('inf')
-            good_epochs = 0
-            for epoch in xrange(epochs):
-                if(verbose):
-                    print "",
-                c = []
-                for i in xrange(n_train_batches):
-                    loss = fn(i)
-                    c.append(loss)
-                    if(verbose):
-                        print "\r  | |_Batch %d/%d, loss : %f" % (i+1, n_train_batches, loss),
-                        sys.stdout.flush()
-
-                new_mean_loss = np.mean(c)
-                if(new_mean_loss < mean_loss):
-                    good_epochs += 1
-                    if(good_epochs >= growth_threshold):
-                        good_epochs = 0
-                        if(verbose):
-                            print "\r# learning rate : %f > %f" % (learning_rate, learning_rate*growth_factor)
-                        learning_rate = learning_rate*growth_factor
-                        fn = ae.trainFunction(batch_size, learning_rate, True, shared_inputs, shared_inputs)
-                else:
-                    good_epochs = 0
-                    if(verbose):
-                        print "\r# learning rate : %f > %f" % (learning_rate, learning_rate/growth_factor)
-                    learning_rate = learning_rate/growth_factor
-                    fn = ae.trainFunction(batch_size, learning_rate, True, shared_inputs, shared_inputs)
-                mean_loss = new_mean_loss
-                if(verbose):
-                    print "\r  |_Epoch %d, mean loss : %f" % (epoch, mean_loss)
-            if(verbose):
-                end_time = DT.datetime.now()
-                print "Pre-learning layer %d took %s" % (layer, (end_time - start_time))
-            inputs = (ae.hiddenValues(inputs)+1)/2
         self.linkData.append(inputs)
         return (DT.datetime.now()-start_time)
 
@@ -401,13 +398,15 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
         :return: elapsed time, in deltatime.
         :see: `pretrainAutoEncoders`, `finetune`
         """
+        shared_x_train=theano.shared(x_train)
+        shared_y_train=theano.shared(y_train)         
         if(verbose):
             print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
-        totalDelta = self.pretrainAutoEncoders(x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         if(verbose):
             print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
-            print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
-        delta +=  self.finetune(x_train, y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+            print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)             
+        delta +=  self.finetune(shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
         totalDelta +=  delta
         if(verbose):
             print "-- End of fine-tuning (lasted %s) --" % (delta)
@@ -475,13 +474,15 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
         :return: elapsed time, in deltatime.
         :see: `pretrainAutoEncoders`, `pretrainLink`, `finetune`
         """
+        shared_x_train=theano.shared(x_train)
+        shared_y_train=theano.shared(y_train)         
         if(verbose):
             print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
-        totalDelta = self.pretrainAutoEncoders(x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         if(verbose):
             print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
             print "-- Beginning of output layers pre-training (%d epochs) --" % (epochs)
-        delta = self.pretrainAutoEncoders(y_train, self.outputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        delta = self.pretrainAutoEncoders(shared_y_train, self.outputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         totalDelta += delta
         if(verbose):
             print "-- End of output layers pre-training (lasted %s) --" % (delta)
@@ -495,7 +496,7 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
 
         if(verbose):
             print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
-        delta = self.finetune(x_train, y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        delta = self.finetune(shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
         totalDelta += delta
         if(verbose):
             print "-- End of fine-tuning (lasted %s) --" % (delta)

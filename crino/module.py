@@ -96,6 +96,12 @@ class Module:
         :type: list
         """
 
+        self.backupParams = []
+        """
+        :ivar: The list of backup parameters
+        :type: list
+        """
+
         self.prepared = False
         """
         :ivar: Indicates whether the module have already been prepared
@@ -208,6 +214,32 @@ class Module:
         forward = theano.function(inputs=[], outputs=self.outputs, givens={self.inputs: x_test})
         return forward()
 
+    def holdFunction(self):
+        
+        if self.params and self.backupParams:
+            # Définition des mises à jour
+            updates = []
+            for param_i, backup_param_i in zip(self.params, self.backupParams):
+                updates.append((backup_param_i, param_i))
+            
+            # Construction d'une fonction de hold
+            return theano.function(inputs=[], updates=updates)                
+        else:
+            return None                
+
+    def restoreFunction(self):
+        
+        if self.params and self.backupParams:
+            # Définition des mises à jour
+            updates = []
+            for param_i, backup_param_i in zip(self.params, self.backupParams):
+                updates.append((param_i, backup_param_i))
+            
+            # Construction d'une fonction de restore
+            return theano.function(inputs=[], updates=updates)                
+        else:
+            return None 
+
     def prepare(self):
         """
         Prepares the module before learning.
@@ -220,6 +252,7 @@ class Module:
             else:
                 self.prepareGeometry()
                 self.prepareParams()
+                self.prepareBackup()                
                 self.prepareOutput()
                 self.prepared = True
         else:
@@ -240,6 +273,16 @@ class Module:
         :attention: It must be implemented in derived classes.
         """
         raise NotImplementedError("This class must be derived.")
+
+    def prepareBackup(self):
+        """
+        Initializes the `backupParams` of the module and its potential submodules.
+        """
+        #
+        if self.params:
+            for param_i in self.params:
+                data=np.array(param_i.get_value(),dtype=theano.config.floatX)
+                self.backupParams.append(theano.shared(value=data, name='backup_'+param_i.name, borrow=True))
 
     def prepareOutput(self):
         """
