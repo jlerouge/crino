@@ -40,7 +40,7 @@ if(learn):
     learning_rate = 2.0
     pretraining_learning_rate = 10.0
     minibatch_size = 100
-    epochs = 5
+    epochs = 2
 
 print '... loading training data'
 train_set = sio.loadmat('data/train.mat')
@@ -57,7 +57,7 @@ if(learn):
     nn.linkInputs(T.matrix('x'), nFeats)
     nn.prepare()
     nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
-    delta = nn.train(x_train, y_train, minibatch_size, learning_rate, pretraining_learning_rate, epochs, verbose=True)
+    delta = nn.train(x_train, y_train, minibatch_size, learning_rate, pretraining_learning_rate, epochs, verbose=True, pretrainLink=True)
     print '... learning lasted %s (s) ' % (delta)
     print '... saving the IODA network to data/ioda.nn'
     nn.save('data/ioda.nn')

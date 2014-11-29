@@ -399,17 +399,21 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
         :see: `pretrainAutoEncoders`, `finetune`
         """
         shared_x_train=theano.shared(x_train)
-        shared_y_train=theano.shared(y_train)         
+        shared_y_train=theano.shared(y_train)
+        
         if(verbose):
             print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
         totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         if(verbose):
             print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
+
+        if(verbose):            
             print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)             
         delta +=  self.finetune(shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
         totalDelta +=  delta
         if(verbose):
             print "-- End of fine-tuning (lasted %s) --" % (delta)
+        
         return totalDelta
 
 
@@ -474,18 +478,23 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
         :return: elapsed time, in deltatime.
         :see: `pretrainAutoEncoders`, `pretrainLink`, `finetune`
         """
+
         shared_x_train=theano.shared(x_train)
-        shared_y_train=theano.shared(y_train)         
+        shared_y_train=theano.shared(y_train)
+        
         if(verbose):
             print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
         totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         if(verbose):
             print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
+
+        if(verbose):            
             print "-- Beginning of output layers pre-training (%d epochs) --" % (epochs)
         delta = self.pretrainAutoEncoders(shared_y_train, self.outputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
         totalDelta += delta
         if(verbose):
             print "-- End of output layers pre-training (lasted %s) --" % (delta)
+            
         if(pretrainLink):
             if(verbose):
                 print "-- Beginning of link layer pre-training (%d epochs) --" % (epochs)
