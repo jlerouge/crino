@@ -200,6 +200,87 @@ class Module:
         else:
             return None
 
+    def criterionFunction(self, downcast=None, shared_x_data=None, shared_y_data=None):
+        """
+        Constructs and compiles a Theano function in order to compute the criterion on a given set.
+
+        :Parameters:
+
+            downcast : bool
+                If true, allows the inputs data to be downcasted
+                (e.g. from double to single precision floats for GPU use).
+        :return: a Theano-function that performs one step of gradient descent
+        :rtype: :theano:`function`
+        """
+        
+        shared_sets=False
+        if isinstance(shared_x_data,SharedVariable) and isinstance(shared_y_data,SharedVariable):
+            shared_sets=True
+
+        if self.params and self.criterion:
+
+            # Définition des variables symboliques
+            if shared_sets:
+                x_data = shared_x_data
+                y_data = shared_y_data
+            else:
+                x_data = T.matrix('x_data')
+                y_data = T.matrix('y_data')
+                
+            # Définition des entrées
+            if shared_sets:
+                inputs=[]
+            else:
+                inputs=[x_data, y_data]
+
+            # Construction de la fonction
+            return theano.function( inputs=inputs, outputs=self.criterion.expression, 
+                                    givens={
+                                        self.inputs: x_data,
+                                        self.criterion.targets: y_data
+                                    }, allow_input_downcast=downcast)
+        else:
+            return None
+
+    def forwardFunction(self, downcast=None, shared_x_data=None):
+        """
+        Constructs and compiles a Theano function in order to compute the forward on a given set.
+
+        :Parameters:
+
+            downcast : bool
+                If true, allows the inputs data to be downcasted
+                (e.g. from double to single precision floats for GPU use).
+        :return: a Theano-function that performs one step of gradient descent
+        :rtype: :theano:`function`
+        """
+        
+        shared_sets=False
+        if isinstance(shared_x_data,SharedVariable):
+            shared_sets=True
+
+        if self.params:
+
+            # Définition des variables symboliques
+            if shared_sets:
+                x_data = shared_x_data
+            else:
+                x_data = T.matrix('x_data')
+                
+            # Définition des entrées
+            if shared_sets:
+                inputs=[]
+            else:
+                inputs=[x_data]
+
+            # Construction de la fonction
+            return theano.function( inputs=inputs, outputs=self.outputs,
+                                    givens={
+                                        self.inputs: x_data
+                                    }, allow_input_downcast=downcast)
+        else:
+            return None         
+
     def forward(self, x_test):
         """
         Performs the forward step on the given test example.

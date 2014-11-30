@@ -27,14 +27,17 @@ import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as plt
 
+import theano
 import theano.tensor as T
 import crino
 from crino.criterion import NegativeLogLikelihood
 
-learning_rate = 2.0
-pretraining_learning_rate = 10.0
-minibatch_size = 100
-epochs = 10
+learning_params= {
+    'learning_rate' : 2.0,
+    'pretraining_learning_rate' : 10.0,
+    'batch_size' : 100,
+    'epochs' : 10
+}
 
 print '... generating training data'
 train_set = {}
@@ -68,10 +71,10 @@ arrtest = np.arange(x_test.shape[0])
 x_test=x_test[arrtest]
 y_test=y_test[arrtest]
 
-x_train = np.asarray(x_train, dtype='float32') # We convert to float32 to 
-y_train = np.asarray(y_train, dtype='float32') # compute on GPUs with CUDA
-x_test = np.asarray(x_test, dtype='float32') # We convert to float32 to 
-y_test = np.asarray(y_test, dtype='float32') # compute on GPUs with CUDA
+x_train = np.asarray(x_train, dtype=theano.config.floatX) # We convert to float32 to 
+y_train = np.asarray(y_train, dtype=theano.config.floatX) # compute on GPUs with CUDA
+x_test = np.asarray(x_test, dtype=theano.config.floatX) # We convert to float32 to 
+y_test = np.asarray(y_test, dtype=theano.config.floatX) # compute on GPUs with CUDA
 
 N = x_train.shape[0] # number of training examples
 nFeats = x_train.shape[1] # number of features per example
@@ -82,8 +85,8 @@ nn.linkInputs(T.matrix('x'), nFeats)
 nn.prepare()
 nn.criterion = NegativeLogLikelihood(nn.outputs, T.matrix('y'))
 
-delta = nn.train(x_train, y_train, minibatch_size, learning_rate, epochs, verbose=True)
-print '... learning lasted %f minutes ' % (delta / 60.)
+delta = nn.train(x_train, y_train, **learning_params)
+print '... learning lasted %s ' % (delta)
 
 
 

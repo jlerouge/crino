@@ -22,6 +22,9 @@
 import itertools as it
 import numpy as np
 import scipy.io as sio
+
+import matplotlib
+matplotlib.use('pdf')
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 
@@ -37,10 +40,24 @@ learn = True # False
 
 # Learning parameters
 if(learn):
-    learning_rate = 2.0
-    pretraining_learning_rate = 10.0
-    minibatch_size = 100
-    epochs = 2
+    input_pretraining_params={
+         'learning_rate': 10.0,
+         'batch_size' : 100,
+         'epochs' : 100
+         }
+    output_pretraining_params={
+         'learning_rate': 10.0,
+         'batch_size' : 100,
+         'epochs' : 50
+         }    
+    learning_params={
+        'learning_rate' : 2.0,
+        'batch_size' : 100,
+        'epochs' : 300,
+        'input_pretraining_params' : input_pretraining_params,
+        'output_pretraining_params' : output_pretraining_params 
+    }
+    hidden_size = 256
 
 print '... loading training data'
 train_set = sio.loadmat('data/train.mat')
@@ -49,15 +66,17 @@ y_train = np.asarray(train_set['y_train'], dtype=theano.config.floatX) # compute
 N = x_train.shape[0] # number of training examples
 nFeats = x_train.shape[1] # number of pixels per image
 xSize = int(np.sqrt(nFeats)) # with of a square image
+print("Image of size %d x %d"%(xSize,xSize))
+
 
 # Construct a IODA network on training data
 if(learn):
     print '... building and learning a IODA network'
-    nn = crino.network.InputOutputDeepArchitecture([nFeats, xSize*8, xSize*4], [xSize*4, xSize*8, nFeats], crino.module.Sigmoid)
+    nn = crino.network.InputOutputDeepArchitecture([nFeats, hidden_size], [hidden_size, nFeats], crino.module.Sigmoid)
     nn.linkInputs(T.matrix('x'), nFeats)
     nn.prepare()
     nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
-    delta = nn.train(x_train, y_train, minibatch_size, learning_rate, pretraining_learning_rate, epochs, verbose=True, pretrainLink=True)
+    delta = nn.train(x_train, y_train, **learning_params)
     print '... learning lasted %s (s) ' % (delta)
     print '... saving the IODA network to data/ioda.nn'
     nn.save('data/ioda.nn')
@@ -72,12 +91,14 @@ y_test = np.asarray(test_set['y_test'], dtype=theano.config.floatX) # compute on
 N = x_test.shape[0] # number of test examples
 
 print '... applying the learned IODA network on test data'
-#for k in xrange(N):
-for k in xrange(10):    
+plt.close('all')
+y_estim_full = nn.forward(x_test)
+
+for k in xrange(N):
+    print("Testing %d/%d"%(k+1,N))
     x_orig = np.reshape(x_test[k:k+1], (xSize, xSize), 'F')
     y_true = np.reshape(y_test[k:k+1], (xSize, xSize), 'F')
-    y_estim = nn.forward(x_test[k:k+1])
-    y_estim = np.reshape(y_estim, (xSize, xSize), 'F')
+    y_estim = np.reshape(y_estim_full[k:k+1], (xSize, xSize), 'F')
 
     # Plot the results
     plt.figure(k)
@@ -90,5 +111,5 @@ for k in xrange(10):
     plt.subplot(2,2,3)
     plt.imshow(y_estim, interpolation='bilinear', cmap=cm.gray)
     plt.title('Estimated output')
-    
-plt.show()
+    plt.savefig("figure/ioda_%03d.pdf"%(k,))
+    plt.close()

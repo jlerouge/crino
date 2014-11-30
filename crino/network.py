@@ -66,13 +66,34 @@ class MultiLayerPerceptron(Sequential):
         self.add(Linear(nUnits[-1]))
         self.add(outputActivation(nUnits[-1]))
         
+        
+        
     def initStoppingCriterion(self):
         pass
         
     def checkStoppingCriterion(self):
         return False
+    
+    def checkLearningParameters(self,param_dict):
+        known={}
+        unknown={}
+        known_keys=["batch_size","learning_rate", "epochs", "growth_factor", "growth_threshold","badmove_threshold","verbose"]
+        for (key, value) in param_dict.items():
+            if key in known_keys:
+                known[key]=value
+            else:
+                unknown[key]=value
+        return (known,unknown)
+    
+    def defaultLearningParameters(self,param_dict):
+        ret=dict(param_dict)
+        default_values={'batch_size':1, 'learning_rate':1.0, 'epochs':100, 'growth_factor':1.25, 'growth_threshold':5, 'badmove_threshold':10, 'verbose':True}
+        for key in default_values.keys():
+            if not(param_dict.has_key(key)):
+                ret[key]=default_values[key]
+        return ret
 
-    def finetune(self, shared_x_train, shared_y_train, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
+    def finetune(self, shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose):
         """
         Performs the supervised learning step of the `MultiLayerPerceptron`,
         using a batch-gradient backpropagation algorithm. The `learning_rate`
@@ -94,13 +115,16 @@ class MultiLayerPerceptron(Sequential):
                 The number of epochs to run the training algorithm.
             growth_factor : float
                 The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : float
+            growth_threshold : int
                 The number of successive loss-improving epochs after which the `learning_rate` must be updated.
+            badmove_threshold : int
+                The number of successive loss-non-improving gradient descents after which parameters must be updated.
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
 
         :return: elapsed time, in datetime.
         """
+        
         # Compilation d'une fonction theano pour l'apprentissage du modèle
         train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
         hold=self.holdFunction()
@@ -120,6 +144,7 @@ class MultiLayerPerceptron(Sequential):
             if(verbose):
                 print "",
             trial=True
+            badmoves=0
             while trial:
                 for i in xrange(n_train_batches):
                     loss = train(i)
@@ -136,10 +161,16 @@ class MultiLayerPerceptron(Sequential):
                 else:
                     if(verbose):
                         print "\r# Bad move %f > %f; Learning rate : %f > %f" % (mean_loss, new_mean_loss, learning_rate, learning_rate/growth_factor)
-                    restore()
-                    good_epochs = -1                    
-                    learning_rate = learning_rate/growth_factor
-                    train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
+                    badmoves+=1
+                    if badmoves<badmove_threshold:
+                        restore()
+                        good_epochs = -1                    
+                        learning_rate = learning_rate/growth_factor
+                        train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
+                    else:
+                        trial=False
+                        if(verbose):
+                            print("\r# Break Epoch on bad move threshold")
 
             mean_loss = new_mean_loss
 
@@ -158,7 +189,7 @@ class MultiLayerPerceptron(Sequential):
                 
         return (DT.datetime.now()-start_time)
 
-    def train(self, x_train, y_train, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
+    def train(self, x_train, y_train, **params):
         """
         Performs the supervised learning step of the `MultiLayerPerceptron`.
         This function explicitly calls `finetune`, but displays a bit more information.
@@ -176,18 +207,26 @@ class MultiLayerPerceptron(Sequential):
                 The number of epochs to run the training algorithm.
             growth_factor : float
                 The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : float
+            growth_threshold : int
                 The number of successive loss-improving epochs after which the `learning_rate` must be updated.
+            badmove_threshold : int
+                The number of successive loss-non-improving gradient descents after which parameters must be updated.
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
 
         :return: elapsed time, in datetime.
         :see: `finetune`
         """
-        print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
+        (learning_params,unknown)=self.checkLearningParameters(params)
+        if len(unknown)>0:
+            print("Waring unknown training parameters %s"%(unknown,))
+            
+        learning_params=self.defaultLearningParameters(learning_params)
+
+        print "-- Beginning of fine-tuning (%d epochs) --" % (learning_params['epochs'])
         shared_x_train=theano.shared(x_train)
         shared_y_train=theano.shared(y_train)        
-        delta = self.finetune(shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        delta = self.finetune(shared_x_train, shared_y_train, **learning_params)
         print "-- End of fine-tuning (lasted %s) --" % (delta)
         return delta
 
@@ -311,7 +350,7 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
             self.linkLinear.prepareParams()
             self.params.extend(self.linkLinear.params)
 
-    def pretrainAutoEncoders(self, data, autoEncoders, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
+    def pretrainAutoEncoders(self, data, autoEncoders, **params):
         """
         Performs the unsupervised learning step of the autoencoders,
         using a batch-gradient backpropagation algorithm. This step can
@@ -343,36 +382,41 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
             autoEncoders : `AutoEncoder` list
                 The list of autoencoders used for training (input or output autoencoders).
             batch_size : int
-                The number of training samples in each mini-batch.
+                The number of training examples in each mini-batch.
             learning_rate : float
                 The rate used to update the parameters with the gradient.
             epochs : int
                 The number of epochs to run the training algorithm.
             growth_factor : float
                 The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : float
+            growth_threshold : int
                 The number of successive loss-improving epochs after which the `learning_rate` must be updated.
+            badmove_threshold : int
+                The number of successive loss-non-improving gradient descents after which parameters must be updated.
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
         """
-        n_train_batches = data.shape[0]/batch_size
+        (learning_params,unknown)=self.checkLearningParameters(params)
+        if len(unknown)>0:
+            print("Waring unknown training parameters %s"%(unknown,))
+            
+        learning_params=self.defaultLearningParameters(learning_params)
+            
+        n_train_batches = data.shape[0]/learning_params['batch_size']
         shared_inputs= data
         start_time = DT.datetime.now()
         for (ae,layer) in zip(autoEncoders, xrange(len(autoEncoders))):
-            if verbose:
-                print("--- Learning AE %d ---"%(layer,))
-            delta=ae.finetune(shared_inputs, shared_inputs,
-                              batch_size=batch_size,learning_rate=learning_rate,
-                              epochs=epochs, growth_factor=growth_factor,
-                              growth_threshold=growth_threshold, verbose=verbose)
-            if verbose:
-                print("--- AE %d Learned, Duration (s) %d ---"%(layer,delta.total_seconds()))            
+            if learning_params['verbose']:
+                print("--- Learning AE %d/%d ---"%(layer+1,len(autoEncoders)))
+            delta=ae.finetune(shared_inputs, shared_inputs, **learning_params)
+            if learning_params['verbose']:
+                print("--- AE %d/%d Learned, Duration (s) %d ---"%(layer+1,len(autoEncoders),delta.total_seconds()))            
             inputs = (ae.hiddenValues(shared_inputs.get_value())+1)/2
             shared_inputs=theano.shared(inputs)
         self.linkData.append(inputs)
         return (DT.datetime.now()-start_time)
 
-    def train(self, x_train, y_train, batch_size=1, learning_rate=1.0, pretraining_learning_rate=2.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
+    def train(self, x_train, y_train, **params):
         """
         Performs the pretraining step for the input autoencoders (`pretrainAutoEncoders`),
         and the supervised learning step (`finetune`).
@@ -390,28 +434,44 @@ class DeepNeuralNetwork(MultiLayerPerceptron):
                 The number of epochs to run the training algorithm.
             growth_factor : float
                 The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : float
+            growth_threshold : int
                 The number of successive loss-improving epochs after which the `learning_rate` must be updated.
+            badmove_threshold : int
+                The number of successive loss-non-improving gradient descents after which parameters must be updated.
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
+            pretraining_params : dict
+                The paramaters the pretraining step,
+                possible keys: batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose                
 
         :return: elapsed time, in deltatime.
         :see: `pretrainAutoEncoders`, `finetune`
         """
+        (training_params,unknown)=self.checkLearningParameters(params)
+        if unknown.has_key("pretraining_params"):
+            pretraining_params=unknown.pop("pretraining_params")
+        else:
+            pretraining_params={'epochs':50}
+        if len(unknown)>0:
+            print("Waring unknown training parameters %s"%(unknown,))
+            
+        training_params=self.defaultLearningParameters(training_params)
+        pretraining_params=self.defaultLearningParameters(pretraining_params)
+        
         shared_x_train=theano.shared(x_train)
         shared_y_train=theano.shared(y_train)
         
-        if(verbose):
-            print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
-        totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
-        if(verbose):
+        if(training_params['verbose']):
+            print "-- Beginning of input layers pre-training (%d epochs) --" % (pretraining_params['epochs'])
+        totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, **pretraining_params)
+        if(training_params['verbose']):
             print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
 
-        if(verbose):            
-            print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)             
-        delta +=  self.finetune(shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        if(training_params['verbose']):            
+            print "-- Beginning of fine-tuning (%d epochs) --" % (training_params['epochs'])             
+        delta +=  self.finetune(shared_x_train, shared_y_train, **training_params)
         totalDelta +=  delta
-        if(verbose):
+        if(training_params['verbose']):
             print "-- End of fine-tuning (lasted %s) --" % (delta)
         
         return totalDelta
@@ -450,7 +510,7 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
         """
         DeepNeuralNetwork.__init__(self, nUnitsInput, nUnitsOutput, outputActivation)
 
-    def train(self, x_train, y_train, batch_size=1, learning_rate=1.0, pretraining_learning_rate=2.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True, pretrainLink=False):
+    def train(self, x_train, y_train, **params):
         """
         Performs the pretraining step for the input and output autoencoders
         (`pretrainAutoEncoders`), optionally the semi-supervised pretraining step
@@ -470,48 +530,90 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
                 The number of epochs to run the training algorithm.
             growth_factor : float
                 The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : float
+            growth_threshold : int
                 The number of successive loss-improving epochs after which the `learning_rate` must be updated.
+            badmove_threshold : int
+                The number of successive loss-non-improving gradient descents after which parameters must be updated.
             verbose : bool
                 If true, information about the training process will be displayed on the standard output.
+            input_pretraining_params : dict
+                The paramaters the pretraining step,
+                possible keys: batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose 
+            output_pretraining_params : dict
+                The paramaters the pretraining step,
+                possible keys: batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose
+            link_pretraining : bool
+                Should we pretrain the link layer (Default: False)
+            link_pretraining_params : dict
+                The paramaters the pretraining step,
+                possible keys: batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose                
 
         :return: elapsed time, in deltatime.
         :see: `pretrainAutoEncoders`, `pretrainLink`, `finetune`
         """
 
+        (training_params,unknown)=self.checkLearningParameters(params)
+        if unknown.has_key("input_pretraining_params"):
+            input_pretraining_params=unknown.pop("input_pretraining_params")        
+        else:
+            input_pretraining_params={'epochs':50}
+        
+        if unknown.has_key("output_pretraining_params"):
+            output_pretraining_params=unknown.pop("output_pretraining_params")        
+        else:
+            output_pretraining_params={'epochs':50}
+
+        if unknown.has_key("link_pretraining"):
+            link_pretraining=unknown.pop("link_pretraining")        
+        else:
+            link_pretraining=False
+            
+        if unknown.has_key("link_pretraining_params"):
+            link_pretraining_params=unknown.pop("link_pretraining_params")        
+        else:
+            link_pretraining_params={'epochs':50}
+            
+        if len(unknown)>0:
+            print("Waring unknown training parameters %s"%(unknown,))
+
+        training_params=self.defaultLearningParameters(training_params)
+        input_pretraining_params=self.defaultLearningParameters(input_pretraining_params)
+        output_pretraining_params=self.defaultLearningParameters(output_pretraining_params)  
+        link_pretraining_params=self.defaultLearningParameters(link_pretraining_params)  
+
         shared_x_train=theano.shared(x_train)
         shared_y_train=theano.shared(y_train)
         
-        if(verbose):
-            print "-- Beginning of input layers pre-training (%d epochs) --" % (epochs)
-        totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
-        if(verbose):
+        if(training_params['verbose']):
+            print "-- Beginning of input layers pre-training (%d epochs) --" % (input_pretraining_params['epochs'])
+        totalDelta = self.pretrainAutoEncoders(shared_x_train, self.inputAutoEncoders, **input_pretraining_params)
+        if(training_params['verbose']):
             print "-- End of input layers pre-training (lasted %s) --" % (totalDelta)
 
-        if(verbose):            
-            print "-- Beginning of output layers pre-training (%d epochs) --" % (epochs)
-        delta = self.pretrainAutoEncoders(shared_y_train, self.outputAutoEncoders, batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        if(training_params['verbose']):            
+            print "-- Beginning of output layers pre-training (%d epochs) --" % (output_pretraining_params['epochs'])
+        delta = self.pretrainAutoEncoders(shared_y_train, self.outputAutoEncoders, **output_pretraining_params)
         totalDelta += delta
-        if(verbose):
+        if(training_params['verbose']):
             print "-- End of output layers pre-training (lasted %s) --" % (delta)
             
-        if(pretrainLink):
-            if(verbose):
-                print "-- Beginning of link layer pre-training (%d epochs) --" % (epochs)
-            delta = self.pretrainLink(batch_size, pretraining_learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        if(link_pretraining):
+            if(training_params['verbose']):
+                print "-- Beginning of link layer pre-training (%d epochs) --" % (link_pretraining_params['epochs'])
+            delta = self.pretrainLink(**link_pretraining_params)
             totalDelta += delta
-            if(verbose):
+            if(training_params['verbose']):
                 print "-- End of link layer pre-training (lasted %s) --" % (delta)
 
-        if(verbose):
-            print "-- Beginning of fine-tuning (%d epochs) --" % (epochs)
-        delta = self.finetune(shared_x_train, shared_y_train, batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        if(training_params['verbose']):
+            print "-- Beginning of fine-tuning (%d epochs) --" % (training_params['epochs'])
+        delta = self.finetune(shared_x_train, shared_y_train, **training_params)
         totalDelta += delta
-        if(verbose):
+        if(training_params['verbose']):
             print "-- End of fine-tuning (lasted %s) --" % (delta)
         return totalDelta
 
-    def pretrainLink(self, batch_size=1, learning_rate=1.0, epochs=100, growth_factor=1.25, growth_threshold=5, verbose=True):
+    def pretrainLink(self, **params):
         """
         Performs the semi-supervised learning step of the link layer (i.e. the
         layer situated between input and output layers). This layer is taken
@@ -522,6 +624,11 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
         The learning process is the exactly the same that the one used for the
         `MultiLayerPerceptron`.
         """
+
+        (link_pretraining_params,unknown)=self.checkLearningParameters(params)
+        if len(unknown)>0:
+            print("Waring unknown training parameters %s"%(unknown,)) 
+ 
 
         x = T.matrix('x')
         y = T.matrix('y')
@@ -535,4 +642,4 @@ class InputOutputDeepArchitecture(DeepNeuralNetwork):
         mlp.prepareOutput()
         mlp.prepared = True
         mlp.criterion = MeanSquareError(mlp.outputs, y)
-        return mlp.train(self.linkData[0], self.linkData[1], batch_size, learning_rate, epochs, growth_factor, growth_threshold, verbose)
+        return mlp.train(self.linkData[0], self.linkData[1], **link_pretraining_params)
