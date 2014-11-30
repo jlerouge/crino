@@ -292,7 +292,8 @@ class Module:
         :return: a Theano function that performs one step of gradient descent
         :rtype: :theano:`function`
         """
-        forward = theano.function(inputs=[], outputs=self.outputs, givens={self.inputs: x_test})
+        shared_x_test=theano.shared(x_test)
+        forward = self.forwardFunction(downcast=None,shared_x_data=shared_x_test)
         return forward()
 
     def holdFunction(self):
