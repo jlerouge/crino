@@ -171,8 +171,6 @@ class MultiLayerPerceptron(Sequential):
             if(lvar['verbose']):
                 print "",
             
-            lvar['badmoves']=0
-            
             self.initBadmoveHook()            
             for lvar['badmoves'] in xrange(lvar['badmove_threshold']):
                 
