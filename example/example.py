@@ -43,36 +43,36 @@ if(learn):
     input_pretraining_params={
          'learning_rate': 10.0,
          'batch_size' : 100,
-         'epochs' : 3
+         'epochs' : 300
          }
     output_pretraining_params={
          'learning_rate': 10.0,
          'batch_size' : 100,
-         'epochs' : 3
+         'epochs' : 300
          }    
     link_pretraining_params={
          'learning_rate': 10.0,
          'batch_size' : 100,
-         'epochs' : 3
+         'epochs' : 300
          }  
     learning_params={
         'learning_rate' : 2.0,
         'batch_size' : 100,
-        'epochs' : 3,
+        'epochs' : 300,
         'input_pretraining_params' : input_pretraining_params,
         'output_pretraining_params' : output_pretraining_params,
         'link_pretraining_params' : link_pretraining_params,
-        'link_pretraining' : True
+        'link_pretraining' : False
         
     }
     
-    hidden_size = 10
-    inputlayers=[hidden_size, hidden_size]
+    hidden_size = 1024
     #inputlayers=[]
-    outputlayers=[hidden_size, hidden_size]
+    inputlayers=[hidden_size]
     #outputlayers=[]
-    linklayers=[hidden_size, hidden_size]
-    #linklayers=[]
+    outputlayers=[hidden_size]
+    linklayers=[]
+    
 print '... loading training data'
 train_set = sio.loadmat('data/train.mat')
 x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to 
