@@ -51,9 +51,9 @@ if(learn):
          'epochs' : 300
          }    
     link_pretraining_params={
-         'learning_rate': 10.0,
+         'learning_rate': 1.0,
          'batch_size' : 100,
-         'epochs' : 300
+         'epochs' : 10
          }  
     learning_params={
         'learning_rate' : 2.0,
@@ -62,7 +62,7 @@ if(learn):
         'input_pretraining_params' : input_pretraining_params,
         'output_pretraining_params' : output_pretraining_params,
         'link_pretraining_params' : link_pretraining_params,
-        'link_pretraining' : False
+        'link_pretraining' : True
         
     }
     
