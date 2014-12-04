@@ -175,8 +175,8 @@ class MultiLayerPerceptron(Sequential):
             for lvar['badmoves'] in xrange(lvar['badmove_threshold']):
                 
                 self.initBatchHook()
-                for i in xrange(lvar['n_train_batches']):
-                    loss = train(i)
+                for lvar['batch_index'] in xrange(lvar['n_train_batches']):
+                    loss = train(lvar['batch_index'])
                     lvar['loss_by_batch'].append(loss)
                     if(lvar['verbose']):
                         print "\r  | |_Batch %d/%d, loss : %f" % (i+1, lvar['n_train_batches'], loss),
