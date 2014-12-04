@@ -258,8 +258,8 @@ class Module:
         shared_sets=False
         if isinstance(shared_x_data,SharedVariable):
             shared_sets=True
-
-        if self.params:
+        
+        if self.prepared:
 
             # Définition des variables symboliques
             if shared_sets:
@@ -307,6 +307,9 @@ class Module:
             # Construction d'une fonction de hold
             return theano.function(inputs=[], updates=updates)                
         else:
+            print(self.params)
+            print(self.backupParams)
+            #print(self)
             return None                
 
     def restoreFunction(self):
@@ -334,7 +337,7 @@ class Module:
             else:
                 self.prepareGeometry()
                 self.prepareParams()
-                self.prepareBackup()                
+                self.prepareBackup()
                 self.prepareOutput()
                 self.prepared = True
         else:
@@ -363,7 +366,8 @@ class Module:
         #
         if self.params:
             for param_i in self.params:
-                data=np.array(param_i.get_value(),dtype=theano.config.floatX)
+                theShape=theano.function(inputs=[],outputs=param_i.shape)
+                data=np.zeros(theShape(),dtype=theano.config.floatX)
                 self.backupParams.append(theano.shared(value=data, name='backup_'+param_i.name, borrow=True))
 
     def prepareOutput(self):
