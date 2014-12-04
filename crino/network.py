@@ -68,10 +68,25 @@ class MultiLayerPerceptron(Sequential):
         
         
         
-    def initStoppingCriterion(self):
+    def initEpochHook(self):
         pass
         
-    def checkStoppingCriterion(self):
+    def checkEpochHook(self):
+        #print(self.fintunevars)
+        return False
+
+    def initBadmoveHook(self):
+        pass
+        
+    def checkBadmoveHook(self):
+        #print(self.fintunevars)
+        return False
+
+    def initBatchHook(self):
+        pass
+        
+    def checkBatchHook(self):
+        #print(self.fintunevars)
         return False
     
     def checkLearningParameters(self,param_dict):
@@ -125,69 +140,95 @@ class MultiLayerPerceptron(Sequential):
         :return: elapsed time, in datetime.
         """
         
+        self.fintunevars={}
+        lvar=self.fintunevars
+        
+        lvar['shared_x_train']=shared_x_train
+        lvar['shared_y_train']=shared_y_train
+        lvar['batch_size']=batch_size
+        lvar['learning_rate']=learning_rate
+        lvar['epochs']=epochs
+        lvar['growth_factor']=growth_factor
+        lvar['growth_threshold']=growth_threshold 
+        lvar['badmove_threshold']=badmove_threshold
+        lvar['verbose']=verbose
+        
         # Compilation d'une fonction theano pour l'apprentissage du modèle
-        train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
+        train = self.trainFunction(lvar['batch_size'], lvar['learning_rate'], True, lvar['shared_x_train'], lvar['shared_y_train'])
         hold=self.holdFunction()
         restore=self.restoreFunction()
-        n_train_batches = shared_x_train.get_value().shape[0]/batch_size
-        start_time = DT.datetime.now()
-        mean_loss = float('inf')
-        good_epochs = 0
-        self.finetune_history=[(-1,learning_rate,mean_loss)]
+        lvar['n_train_batches'] = lvar['shared_x_train'].get_value().shape[0]/lvar['batch_size']
+        lvar['start_time'] = DT.datetime.now()
+        lvar['mean_loss'] = float('inf')
+        lvar['good_epochs'] = 0
+        self.finetune_history=[(-1,lvar['learning_rate'],lvar['mean_loss'])]
         
-        self.initStoppingCriterion()
-        
-        for epoch in xrange(epochs):
-            epoch_start=DT.datetime.now()
-            c = []
+        self.initEpochHook()
+        for lvar['epoch'] in xrange(lvar['epochs']):
+            lvar['epoch_start']=DT.datetime.now()
+            lvar['loss_by_batch'] = []
             hold()
-            if(verbose):
+            if(lvar['verbose']):
                 print "",
-            trial=True
-            badmoves=0
-            while trial:
-                for i in xrange(n_train_batches):
-                    loss = train(i)
-                    c.append(loss)
-                    if(verbose):
-                        print "\r  | |_Batch %d/%d, loss : %f" % (i+1, n_train_batches, loss),
-                        sys.stdout.flush()
-
-                new_mean_loss = np.mean(c)
-                self.finetune_history.append((epoch,learning_rate,new_mean_loss))
-                if  new_mean_loss < mean_loss:
-                    trial=False
-                    good_epochs += 1
-                else:
-                    if(verbose):
-                        print "\r# Bad move %f > %f; Learning rate : %f > %f" % (mean_loss, new_mean_loss, learning_rate, learning_rate/growth_factor)
-                    badmoves+=1
-                    if badmoves<badmove_threshold:
-                        restore()
-                        good_epochs = -1                    
-                        learning_rate = learning_rate/growth_factor
-                        train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
-                    else:
-                        trial=False
-                        if(verbose):
-                            print("\r# Break Epoch on bad move threshold")
-
-            mean_loss = new_mean_loss
-
-            if(good_epochs >= growth_threshold):
-                good_epochs = 0
-                if(verbose):
-                    print "\r# Fast Track; Learning rate : %f > %f" % (learning_rate, learning_rate*growth_factor)
-                learning_rate = learning_rate*growth_factor
-                train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
-           
-            if(verbose):
-                print "\r  |_Epoch %d/%d, mean loss : %f, duration (s) : %s" % (epoch+1, epochs, new_mean_loss,(DT.datetime.now()-epoch_start).total_seconds())
             
-            if self.checkStoppingCriterion():
+            lvar['badmoves']=0
+            
+            self.initBadmoveHook()            
+            for lvar['badmoves'] in xrange(lvar['badmove_threshold']):
+                
+                self.initBatchHook()
+                for i in xrange(lvar['n_train_batches']):
+                    loss = train(i)
+                    lvar['loss_by_batch'].append(loss)
+                    if(lvar['verbose']):
+                        print "\r  | |_Batch %d/%d, loss : %f" % (i+1, lvar['n_train_batches'], loss),
+                        sys.stdout.flush()
+                    if self.checkBatchHook():
+                        break                    
+
+                lvar['new_mean_loss'] = np.mean(lvar['loss_by_batch'])
+                self.finetune_history.append((lvar['epoch'],lvar['learning_rate'],lvar['new_mean_loss']))
+                
+                if self.checkBadmoveHook():
+                    break 
+                
+                if  lvar['new_mean_loss'] < lvar['mean_loss']:
+                    lvar['good_epochs'] += 1
+                    break                
+                
+                if lvar['badmoves']+1<lvar['badmove_threshold']:
+                    if(lvar['verbose']):
+                        print "\r# Bad move %f > %f; Learning rate : %f > %f" % (lvar['mean_loss'], lvar['new_mean_loss'], lvar['learning_rate'], lvar['learning_rate']/lvar['growth_factor'])                    
+                    restore()                    
+                    lvar['learning_rate'] = lvar['learning_rate']/lvar['growth_factor']
+                    train = self.trainFunction(
+                        lvar['batch_size'], lvar['learning_rate'],True,
+                        lvar['shared_x_train'], lvar['shared_y_train'])
+                else:
+                    if(lvar['verbose']):
+                        print("\r# Break Epoch on bad move threshold")
+                        
+                lvar['good_epochs'] = 0
+
+
+            lvar['mean_loss'] = lvar['new_mean_loss']
+
+            if(lvar['good_epochs'] >= lvar['growth_threshold']):
+                lvar['good_epochs'] = 0
+                if(lvar['verbose']):
+                    print "\r# Fast Track; Learning rate : %f > %f" % (lvar['learning_rate'], lvar['learning_rate']*lvar['growth_factor'])
+                lvar['learning_rate'] = lvar['learning_rate']*lvar['growth_factor']
+                train = self.trainFunction(
+                    lvar['batch_size'], lvar['learning_rate'], True,
+                    lvar['shared_x_train'], lvar['shared_y_train'])
+           
+            if(lvar['verbose']):
+                print "\r  |_Epoch %d/%d, mean loss : %f, duration (s) : %s" % (lvar['epoch']+1, lvar['epochs'], lvar['new_mean_loss'],(DT.datetime.now()-lvar['epoch_start']).total_seconds())
+            
+            if self.checkEpochHook():
                 break
                 
-        return (DT.datetime.now()-start_time)
+        return (DT.datetime.now()-lvar['start_time'])
 
     def train(self, x_train, y_train, **params):
         """
