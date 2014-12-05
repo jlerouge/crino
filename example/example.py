@@ -43,22 +43,33 @@ if(learn):
     input_pretraining_params={
          'learning_rate': 10.0,
          'batch_size' : 100,
-         'epochs' : 100
+         'epochs' : 300
          }
     output_pretraining_params={
          'learning_rate': 10.0,
          'batch_size' : 100,
-         'epochs' : 50
+         'epochs' : 300
          }    
+    link_pretraining_params={
+         'learning_rate': 1.0,
+         'batch_size' : 100,
+         'epochs' : 10
+         }  
     learning_params={
         'learning_rate' : 2.0,
         'batch_size' : 100,
         'epochs' : 300,
         'input_pretraining_params' : input_pretraining_params,
-        'output_pretraining_params' : output_pretraining_params 
+        'output_pretraining_params' : output_pretraining_params,
+        'link_pretraining_params' : link_pretraining_params,
+        'link_pretraining' : True
+        
     }
-    hidden_size = 256
-
+    
+    hidden_size = 1024
+    inputlayers=[hidden_size]
+    outputlayers=[hidden_size]
+    
 print '... loading training data'
 train_set = sio.loadmat('data/train.mat')
 x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to 
@@ -72,7 +83,7 @@ print("Image of size %d x %d"%(xSize,xSize))
 # Construct a IODA network on training data
 if(learn):
     print '... building and learning a IODA network'
-    nn = crino.network.InputOutputDeepArchitecture([nFeats, hidden_size], [hidden_size, nFeats], crino.module.Sigmoid)
+    nn = crino.network.InputOutputDeepArchitecture([nFeats]+inputlayers,outputlayers+[nFeats],crino.module.Sigmoid)
     nn.linkInputs(T.matrix('x'), nFeats)
     nn.prepare()
     nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
@@ -90,12 +101,37 @@ x_test = np.asarray(test_set['x_test'], dtype=theano.config.floatX) # We convert
 y_test = np.asarray(test_set['y_test'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 N = x_test.shape[0] # number of test examples
 
+
+print '... applying the learned IODA network on train data'
+plt.close('all')
+y_estim_full = nn.forward(x_train)
+
+for k in xrange(N):
+    print("Plotting %d/%d"%(k+1,N))
+    x_orig = np.reshape(x_train[k:k+1], (xSize, xSize), 'F')
+    y_true = np.reshape(y_train[k:k+1], (xSize, xSize), 'F')
+    y_estim = np.reshape(y_estim_full[k:k+1], (xSize, xSize), 'F')
+
+    # Plot the results
+    plt.figure(k)
+    plt.subplot(2,2,1)
+    plt.imshow(x_orig, interpolation='bilinear', cmap=cm.gray)
+    plt.title('Original input')
+    plt.subplot(2,2,2)
+    plt.imshow(y_true, interpolation='bilinear', cmap=cm.gray)
+    plt.title('Target')
+    plt.subplot(2,2,3)
+    plt.imshow(y_estim, interpolation='bilinear', cmap=cm.gray)
+    plt.title('Estimated output')
+    plt.savefig("figure/train_ioda_%03d.pdf"%(k,))
+    plt.close()
+
 print '... applying the learned IODA network on test data'
 plt.close('all')
 y_estim_full = nn.forward(x_test)
 
 for k in xrange(N):
-    print("Testing %d/%d"%(k+1,N))
+    print("Plotting %d/%d"%(k+1,N))
     x_orig = np.reshape(x_test[k:k+1], (xSize, xSize), 'F')
     y_true = np.reshape(y_test[k:k+1], (xSize, xSize), 'F')
     y_estim = np.reshape(y_estim_full[k:k+1], (xSize, xSize), 'F')
@@ -111,5 +147,5 @@ for k in xrange(N):
     plt.subplot(2,2,3)
     plt.imshow(y_estim, interpolation='bilinear', cmap=cm.gray)
     plt.title('Estimated output')
-    plt.savefig("figure/ioda_%03d.pdf"%(k,))
+    plt.savefig("figure/test_ioda_%03d.pdf"%(k,))
     plt.close()
