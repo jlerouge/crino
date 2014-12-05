@@ -685,7 +685,7 @@ class DeepNeuralNetwork(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """    
-        PretrainedMLP.__init__(
+        PretrainedMLP.__init__(self,
             inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
             outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=nUnitsOutput[:-1], nUnitsOutput=[])
     
@@ -720,6 +720,6 @@ class InputOutputDeepArchitecture(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        PretrainedMLP.__init__(
+        PretrainedMLP.__init__(self,
             inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
             outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=[], nUnitsOutput=nUnitsOutput[:-1])   

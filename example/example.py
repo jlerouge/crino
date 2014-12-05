@@ -67,8 +67,8 @@ if(learn):
     }
     
     hidden_size = 1024
-    inputlayers=[nFeats,hidden_size]
-    outputlayers=[hidden_size,nFeats]
+    inputlayers=[hidden_size]
+    outputlayers=[hidden_size]
     
 print '... loading training data'
 train_set = sio.loadmat('data/train.mat')
@@ -83,7 +83,7 @@ print("Image of size %d x %d"%(xSize,xSize))
 # Construct a IODA network on training data
 if(learn):
     print '... building and learning a IODA network'
-    nn = crino.network.InputOutputDeepArchitecture(inputlayers,outputlayers,crino.module.Sigmoid)
+    nn = crino.network.InputOutputDeepArchitecture([nFeats]+inputlayers,outputlayers+[nFeats],crino.module.Sigmoid)
     nn.linkInputs(T.matrix('x'), nFeats)
     nn.prepare()
     nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
@@ -109,7 +109,7 @@ y_estim_full = nn.forward(x_train)
 for k in xrange(N):
     print("Plotting %d/%d"%(k+1,N))
     x_orig = np.reshape(x_train[k:k+1], (xSize, xSize), 'F')
-    y_true = np.reshape(y_traib=n[k:k+1], (xSize, xSize), 'F')
+    y_true = np.reshape(y_train[k:k+1], (xSize, xSize), 'F')
     y_estim = np.reshape(y_estim_full[k:k+1], (xSize, xSize), 'F')
 
     # Plot the results
