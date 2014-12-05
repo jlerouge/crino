@@ -662,3 +662,64 @@ class PretrainedMLP(MultiLayerPerceptron):
         if(training_params['verbose']):
             print "-- End of fine-tuning (lasted %s) --" % (delta)
         return totalDelta
+    
+class DeepNeuralNetwork(PretrainedMLP):
+    """
+    A `DeepNeuralNetwork` (DNN) is a specialization of the MLP, where the
+    layers are pretrained on the training examples (:math:`\mathbf{x})
+    using a Stacked `AutoEncoder` strategy. It has been specifically designed
+    for data that lies in a high-dimensional input space.
+
+    :see: `MultiLayerPerceptron`, http://www.deeplearning.net/tutorial/SdA.html
+    """
+    def __init__(self, nUnitsInput, nUnitsOutput, outputActivation=Sigmoid):
+        """
+        Constructs a new `DeepNeuralNetwork`.
+
+        :Parameters:
+            nUnitsInput : int list
+                The sizes of the (input and hidden) representations on the input side.
+            nUnitsOutput : int list
+                The sizes of the (hidden and output) representations on the output side.
+            outputActivation : class derived from `Activation`
+                The type of activation for the output layer.
+        :attention: `outputActivation` parameter is not an instance but a class.
+        """    
+        PretrainedMLP.__init__(
+            inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
+            outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=nUnitsOutput[:-1], nUnitsOutput=[])
+    
+class InputOutputDeepArchitecture(PretrainedMLP):
+    """
+    An `InputOutputDeepArchitecture` (IODA) is a specialization of the DNN,
+    where the layers are divided into three categories : the input layers,
+    the link layer and the output layers. It has been specifically designed
+    for cases where both the input and the output spaces are high-dimensional.
+
+    The input and output layers are pretrained on the training example
+    (:math:`\mathbf{x}) and the training labels (:math:`\mathbf{y}),
+    respectively, using a Stacked `AutoEncoder` strategy, as for DNNs.
+
+    The link layer can optionally be pretrained, using as input and output data
+    the hidden representations of the deepmost input and output autoencoders,
+    respectively.
+
+    :see: `DeepNeuralNetwork`, http://www.deeplearning.net/tutorial/SdA.html
+    """
+
+    def __init__(self, nUnitsInput, nUnitsOutput, outputActivation=Sigmoid):
+        """
+        Constructs a new `InputOutputDeepArchitecture`.
+
+        :Parameters:
+            nUnitsInput : int list
+                The sizes of the (input and hidden) representations on the input side.
+            nUnitsOutput : int list
+                The sizes of the (hidden and output) representations on the output side.
+            outputActivation : class derived from `Activation`
+                The type of activation for the output layer.
+        :attention: `outputActivation` parameter is not an instance but a class.
+        """
+        PretrainedMLP.__init__(
+            inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
+            outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=[], nUnitsOutput=nUnitsOutput[:-1])   
