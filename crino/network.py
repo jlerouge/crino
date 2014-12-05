@@ -72,21 +72,21 @@ class MultiLayerPerceptron(Sequential):
         pass
         
     def checkEpochHook(self):
-        #print(self.fintunevars)
+        #print(self.finetunevars)
         return False
 
     def initBadmoveHook(self):
         pass
         
     def checkBadmoveHook(self):
-        #print(self.fintunevars)
+        #print(self.finetunevars)
         return False
 
     def initBatchHook(self):
         pass
         
     def checkBatchHook(self):
-        #print(self.fintunevars)
+        #print(self.finetunevars)
         return False
     
     def checkLearningParameters(self,param_dict):
@@ -140,8 +140,8 @@ class MultiLayerPerceptron(Sequential):
         :return: elapsed time, in datetime.
         """
         
-        self.fintunevars={}
-        lvar=self.fintunevars
+        self.finetunevars={}
+        lvar=self.finetunevars
         
         lvar['shared_x_train']=shared_x_train
         lvar['shared_y_train']=shared_y_train
