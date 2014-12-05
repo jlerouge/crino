@@ -179,7 +179,7 @@ class MultiLayerPerceptron(Sequential):
                     loss = train(lvar['batch_index'])
                     lvar['loss_by_batch'].append(loss)
                     if(lvar['verbose']):
-                        print "\r  | |_Batch %d/%d, loss : %f" % (i+1, lvar['n_train_batches'], loss),
+                        print "\r  | |_Batch %d/%d, loss : %f" % (lvar['batch_index']+1, lvar['n_train_batches'], loss),
                         sys.stdout.flush()
                     if self.checkBatchHook():
                         break                    
