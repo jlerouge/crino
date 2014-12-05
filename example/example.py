@@ -60,7 +60,7 @@ if(learn):
     hidden_size = 256
 
 print '... loading training data'
-train_set = sio.loadmat('data/train.mat')
+train_set = sio.loadmat('data/fixed/train.mat')
 x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to 
 y_train = np.asarray(train_set['y_train'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 N = x_train.shape[0] # number of training examples
@@ -85,7 +85,7 @@ else:
     nn = crino.module.load('data/ioda.nn')
 
 print '... loading test data'
-test_set = sio.loadmat('data/test.mat')
+test_set = sio.loadmat('data/fixed/test.mat')
 x_test = np.asarray(test_set['x_test'], dtype=theano.config.floatX) # We convert to float32 to
 y_test = np.asarray(test_set['y_test'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 N = x_test.shape[0] # number of test examples
