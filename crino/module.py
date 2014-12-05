@@ -307,9 +307,6 @@ class Module:
             # Construction d'une fonction de hold
             return theano.function(inputs=[], updates=updates)                
         else:
-            print(self.params)
-            print(self.backupParams)
-            #print(self)
             return None                
 
     def restoreFunction(self):
