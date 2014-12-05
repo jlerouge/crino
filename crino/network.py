@@ -336,12 +336,12 @@ class OutputAutoEncoder(AutoEncoder):
             self.params.extend(self.modules[2].params)
             self.params.extend([self.modules[0].params[1]])        
 
-class DeepNeuralNetwork(MultiLayerPerceptron):
+class PretrainedMLP(MultiLayerPerceptron):
     """
-    A `DeepNeuralNetwork` (DNN) is a specialization of the MLP, where the
-    layers are pretrained on the training examples (:math:`\mathbf{x})
-    using a Stacked `AutoEncoder` strategy. It has been specifically designed
-    for data that lies in a high-dimensional input space.
+    A `PretrainedMLP` is a specialization of the MLP, where the
+    layers are pretrained, for input part on the training examples
+    (:math:`\mathbf{x}) or for output part on the training labels   
+    (:math:`\mathbf{y}) using a Stacked `AutoEncoder` strategy.
 
     :see: `MultiLayerPerceptron`, http://www.deeplearning.net/tutorial/SdA.html
     """
