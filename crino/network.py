@@ -71,20 +71,20 @@ class MultiLayerPerceptron(Sequential):
         if not(self.prepared):
             raise  ValueError("You can not get geometry on a non-prepared MLP")
         geometry=[self.nInputs]
-        geometry+=list(map(mod:mod.nOutputs,self.modules))
+        geometry+=list(map(lambda mod:mod.nOutputs,self.modules))
         
         return geometry
 
-    def getParams(self):
+    def getParameters(self):
         if not(self.prepared):
             raise  ValueError("You can not get params on a non-prepared MLP")
         params={}
         params['geometry']=self.getGeometry()
-        params['weights']=list(map(param:np.array(param.get_value()),self.params))
+        params['weights']=list(map(lambda param:np.array(param.get_value()),self.params))
   
         return params 
 
-    def setParams(self,params):
+    def setParameters(self,params):
         if not(self.prepared):
             raise  ValueError("You can not set params on a non-prepared MLP")
         if self.getGeometry()!=params['geometry']:
