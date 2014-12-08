@@ -38,7 +38,7 @@ def load(filename):
         filename : str
             The path to the saved module.
     """
-    return pickle.load(open(load_file, 'rb'))
+    return pickle.load(open(filename, 'rb'))
 
 class Module:
     """
