@@ -19,133 +19,157 @@
 #    You should have received a copy of the GNU Lesser General Public License
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
-import itertools as it
-import numpy as np
-import scipy.io as sio
 
-import matplotlib
-matplotlib.use('pdf')
-import matplotlib.cm as cm
-import matplotlib.pyplot as plt
+
+import numpy as np
+
+import scipy
+import scipy.io as sio
 
 import theano
 import theano.tensor as T
 
 import crino
+from crino.network import PretrainedMLP
 from crino.criterion import MeanSquareError
 
-# If learn is true, the example will learn a IODA network from training data
-# Else, it will load a IODA network saved from a previous run
-learn = True # False
+import cPickle as pickle
 
-# Learning parameters
-if(learn):
-    input_pretraining_params={
-         'learning_rate': 10.0,
-         'batch_size' : 100,
-         'epochs' : 300
-         }
-    output_pretraining_params={
-         'learning_rate': 10.0,
-         'batch_size' : 100,
-         'epochs' : 300
-         }    
-    link_pretraining_params={
-         'learning_rate': 1.0,
-         'batch_size' : 100,
-         'epochs' : 10
-         }  
-    learning_params={
-        'learning_rate' : 2.0,
+
+input_pretraining_params={
+        'learning_rate': 10.0,
         'batch_size' : 100,
-        'epochs' : 300,
-        'input_pretraining_params' : input_pretraining_params,
-        'output_pretraining_params' : output_pretraining_params,
-        'link_pretraining_params' : link_pretraining_params,
-        'link_pretraining' : True
+        'epochs' : 300
+        }
+output_pretraining_params={
+        'learning_rate': 10.0,
+        'batch_size' : 100,
+        'epochs' : 300
+        }    
+#link_pretraining_params={
+        #'learning_rate': 1.0,
+        #'batch_size' : 100,
+        #'epochs' : 10
+        #}  
+learning_params={
+    'learning_rate' : 2.0,
+    'batch_size' : 100,
+    'epochs' : 300,
+    'input_pretraining_params' : input_pretraining_params,
+    'output_pretraining_params' : output_pretraining_params,
+    #'link_pretraining_params' : link_pretraining_params,
+    'link_pretraining' : False  
+}
+    
+hidden_size = 1024
+
+
+class MyPretrainedMLP(PretrainedMLP):
+    def setTestSet(self,x_test,y_test):
+        self.shared_x_test=theano.shared(x_test)
+        self.shared_y_test=theano.shared(y_test)
         
-    }
-    
-    hidden_size = 1024
-    inputlayers=[hidden_size]
-    outputlayers=[hidden_size]
-    
-print '... loading training data'
-train_set = sio.loadmat('data/train.mat')
-x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to 
-y_train = np.asarray(train_set['y_train'], dtype=theano.config.floatX) # compute on GPUs with CUDA
-N = x_train.shape[0] # number of training examples
-nFeats = x_train.shape[1] # number of pixels per image
-xSize = int(np.sqrt(nFeats)) # with of a square image
-print("Image of size %d x %d"%(xSize,xSize))
+    def initEpochHook(self):
+        self.testCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_test, shared_y_data=self.shared_y_test)
+        self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)
+        
+        self.test_criterion_history=[np.mean(self.testCriterionFunction())]
+        self.test_forward_history=[(-1,self.testForwardFunction())]
+        
+        self.appForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.finetunevars['shared_x_train'])
+        self.app_forward_history=[(-1,self.appForwardFunction())]
+        
+    def checkEpochHook(self):
+        self.test_criterion_history.append(np.mean(self.testCriterionFunction()))
+        if self.finetunevars['epoch'] in [1,10,100,200,300]:
+            self.test_forward_history.append((self.finetunevars['epoch'],self.testForwardFunction()))
+            self.app_forward_history.append((self.finetunevars['epoch'],self.appForwardFunction()))
 
 
-# Construct a IODA network on training data
-if(learn):
-    print '... building and learning a IODA network'
-    nn = crino.network.InputOutputDeepArchitecture([nFeats]+inputlayers,outputlayers+[nFeats],crino.module.Sigmoid)
-    nn.linkInputs(T.matrix('x'), nFeats)
-    nn.prepare()
-    nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
-    delta = nn.train(x_train, y_train, **learning_params)
-    print '... learning lasted %s (s) ' % (delta)
-    print '... saving the IODA network to data/ioda.nn'
-    nn.save('data/ioda.nn')
-else:
-    print '... loading the existing IODA network from data/ioda.nn'
-    nn = crino.module.load('data/ioda.nn')
+def data2greyimg(filename, X):
+    Xn=(X-X.min())/(X.max()-X.min())*255
+    scipy.misc.imsave(filename, Xn)
 
-print '... loading test data'
-test_set = sio.loadmat('data/test.mat')
-x_test = np.asarray(test_set['x_test'], dtype=theano.config.floatX) # We convert to float32 to
-y_test = np.asarray(test_set['y_test'], dtype=theano.config.floatX) # compute on GPUs with CUDA
-N = x_test.shape[0] # number of test examples
+def main():   
+    print '... loading training data'
+    train_set = sio.loadmat('data/fixed/train.mat')
+    x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to 
+    y_train = np.asarray(train_set['y_train'], dtype=theano.config.floatX) # compute on GPUs with CUDA
+
+    print '... loading test data'
+    test_set = sio.loadmat('data/fixed/test.mat')
+    x_test = np.asarray(test_set['x_test'], dtype=theano.config.floatX) # We convert to float32 to
+    y_test = np.asarray(test_set['y_test'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 
 
-print '... applying the learned IODA network on train data'
-plt.close('all')
-y_estim_full = nn.forward(x_train)
+    nApp = x_train.shape[0] # number of training examples
+    nTest = x_test.shape[0] # number of training examples
+    nFeats = x_train.shape[1] # number of pixels per image
+    xSize = int(np.sqrt(nFeats)) # with of a square image
 
-for k in xrange(N):
-    print("Plotting %d/%d"%(k+1,N))
-    x_orig = np.reshape(x_train[k:k+1], (xSize, xSize), 'F')
-    y_true = np.reshape(y_train[k:k+1], (xSize, xSize), 'F')
-    y_estim = np.reshape(y_estim_full[k:k+1], (xSize, xSize), 'F')
+    nInputs=nFeats
+    nOutputs=nFeats
 
-    # Plot the results
-    plt.figure(k)
-    plt.subplot(2,2,1)
-    plt.imshow(x_orig, interpolation='bilinear', cmap=cm.gray)
-    plt.title('Original input')
-    plt.subplot(2,2,2)
-    plt.imshow(y_true, interpolation='bilinear', cmap=cm.gray)
-    plt.title('Target')
-    plt.subplot(2,2,3)
-    plt.imshow(y_estim, interpolation='bilinear', cmap=cm.gray)
-    plt.title('Estimated output')
-    plt.savefig("figure/train_ioda_%03d.pdf"%(k,))
-    plt.close()
+    # All configurations have the same geometry 3 layers and 4 representations
+    # with sizes [nFeats,hidden_size,hidden_size,nFeats].
+    # They only differ in the way layers are pretrained or not.
+    configurations=[]
+    # Standard MLP, no pretraining
+    configurations.append({'inputlayers':[],'linklayers':[hidden_size,hidden_size], 'outputlayers':[]})
+    # Two first layer pretrained input way
+    configurations.append({'inputlayers':[hidden_size,hidden_size],'linklayers':[], 'outputlayers':[]})
+    # First layer pretrained input way
+    configurations.append({'inputlayers':[hidden_size],'linklayers':[hidden_size], 'outputlayers':[]})
+    # First layer pretrained input way, and last layer pretrained output way
+    configurations.append({'inputlayers':[hidden_size],'linklayers':[], 'outputlayers':[hidden_size]})
+    # Last layer pretrained output way
+    configurations.append({'inputlayers':[],'linklayers':[hidden_size], 'outputlayers':[hidden_size]})
+    # Two last layer pretrained output way
+    configurations.append({'inputlayers':[],'linklayers':[], 'outputlayers':[hidden_size,hidden_size]})
 
-print '... applying the learned IODA network on test data'
-plt.close('all')
-y_estim_full = nn.forward(x_test)
+    parameters=None
+    #We throw random parameters only for the first conf and then reuse the same parameters for the remaining confs.
 
-for k in xrange(N):
-    print("Plotting %d/%d"%(k+1,N))
-    x_orig = np.reshape(x_test[k:k+1], (xSize, xSize), 'F')
-    y_true = np.reshape(y_test[k:k+1], (xSize, xSize), 'F')
-    y_estim = np.reshape(y_estim_full[k:k+1], (xSize, xSize), 'F')
+    results={}
 
-    # Plot the results
-    plt.figure(k)
-    plt.subplot(2,2,1)
-    plt.imshow(x_orig, interpolation='bilinear', cmap=cm.gray)
-    plt.title('Original input')
-    plt.subplot(2,2,2)
-    plt.imshow(y_true, interpolation='bilinear', cmap=cm.gray)
-    plt.title('Target')
-    plt.subplot(2,2,3)
-    plt.imshow(y_estim, interpolation='bilinear', cmap=cm.gray)
-    plt.title('Estimated output')
-    plt.savefig("figure/test_ioda_%03d.pdf"%(k,))
-    plt.close()
+    for conf in configurations:
+        expname="I%dL%dO%d"%(len(conf['inputlayers']),len(conf['linklayers']),len(conf['outputlayers']))
+        print '... building and learning a network %s'%(expname,)
+        nn = MyPretrainedMLP(inputRepresentationSize=nInputs, outputRepresentationSize=nOutputs,
+                            outputActivation=crino.module.Sigmoid,
+                            nUnitsInput=conf['inputlayers'], nUnitsLink=conf['linklayers'], nUnitsOutput=conf['outputlayers'])
+        nn.setTestSet(x_test,y_test)
+        nn.linkInputs(T.matrix('x'), nFeats)
+        nn.prepare()
+        nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
+        if parameters is None:
+            parameters=nn.getParameters()
+        else:
+            nn.setParameters(parameters)
+        delta = nn.train(x_train, y_train, **learning_params)
+        print '... learning lasted %s (s) ' % (delta)
+        
+        results[expname]={'train':nn.finetune_history,'test':nn.test_criterion_history}
+        
+        ex=10
+        
+        for phase,xdata,ydata,history in [
+                    ['train',x_train,y_train,nn.app_forward_history],
+                    ['test',x_test,y_test,nn.test_forward_history]]:
+            x_orig = np.reshape(xdata[ex:ex+1], (xSize, xSize), 'F')
+            data2greyimg("figure/%s_%s_-input.png"%(expname,phase),x_orig)
+            y_true = np.reshape(ydata[ex:ex+1], (xSize, xSize), 'F')
+            data2greyimg("figure/%s_%s_-target.png"%(expname,phase),y_true)
+            for epoch,forward in history:
+                if epoch==-1:
+                    continue
+                y_estim = np.reshape(forward[ex:ex+1], (xSize, xSize), 'F')
+                data2greyimg("figure/%s_%s_-estim%03d.png"%(expname,phase,epoch),y_estim)
+
+    pickle.dump(results,open('results.pck','w'))    
+
+if __name__=="__main__":
+    main()
+
+
+
