@@ -370,32 +370,29 @@ class PretrainedMLP(MultiLayerPerceptron):
 
     :see: `MultiLayerPerceptron`, http://www.deeplearning.net/tutorial/SdA.html
     """
-    def __init__(self, inputRepresentationSize, outputRepresentationSize, outputActivation=Sigmoid, nUnitsInput=[], nUnitsLink=[], nUnitsOutput=[]):
+    def __init__(self, nUnits, outputActivation=Sigmoid, nInputLayers=0, nOutputLayers=0):
         """
         Constructs a new `DeepNeuralNetwork`.
 
         :Parameters:
-            inputRepresentationSize: int
-                The size of the input representation
-            outputRepresentationSize: int
-                The size of the output representation                
-            nUnitsInput : int list
-                The hidden representations size list on the input side that will be pretrained.
-            nUnitsOutput : int list
-                The hidden representations size list on the output side that will be pretrained.
-            nUnitsLink : int list
-                The size list of hidden representations  in-between input and output representations.
+            nUnits : int list
+                The sizes of the (input, hidden* , output) representations.
             outputActivation : class derived from `Activation`
-                The type of activation for the output layer.
+                The type of activation for the output layer.                
+            nInputLayers : int
+                Number of layers starting from input to be stacked with AE
+            nOutputLayers : int
+                Number of layers starting from output to be stacked with AE
+                
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        MultiLayerPerceptron.__init__(self, [inputRepresentationSize]+ nUnitsInput + nUnitsLink + nUnitsOutput + [outputRepresentationSize], outputActivation)
+        MultiLayerPerceptron.__init__(self, nUnits, outputActivation)
         
-        self.inputRepresentationSize=inputRepresentationSize
-        self.outputRepresentationSize=outputRepresentationSize
-        self.nUnitsInput = nUnitsInput
-        self.nUnitsLink= nUnitsLink
-        self.nUnitsOutput = nUnitsOutput
+        self.inputRepresentationSize=nUnits[0]
+        self.outputRepresentationSize=nUnits[-1]
+        self.nUnitsInput = nUnits[0:nInputLayers]
+        self.nUnitsLink= nUnits[nInputLayers:-nOutputLayers]
+        self.nUnitsOutput = nUnits[-nOutputLayers:]
 
         # Construction des AutoEncoders
         self.inputAutoEncoders = []
@@ -710,9 +707,7 @@ class DeepNeuralNetwork(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """    
-        PretrainedMLP.__init__(self,
-            inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
-            outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=nUnitsOutput[:-1], nUnitsOutput=[])
+        PretrainedMLP.__init__(self, nOutputLayers+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1)
     
 class InputOutputDeepArchitecture(PretrainedMLP):
     """
@@ -745,6 +740,4 @@ class InputOutputDeepArchitecture(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        PretrainedMLP.__init__(self,
-            inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
-            outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=[], nUnitsOutput=nUnitsOutput[:-1])   
+        PretrainedMLP.__init__(self, nOutputLayers+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1,nOutputLayers=len(nUnitsOutput)-1)  
