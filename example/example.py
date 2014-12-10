@@ -109,23 +109,26 @@ def main():
 
     nInputs=nFeats
     nOutputs=nFeats
+    
+    geometry=[nFeats,hidden_size,hidden_size,nFeats]
+    nLayers=len(geometry)
 
     # All configurations have the same geometry 3 layers and 4 representations
     # with sizes [nFeats,hidden_size,hidden_size,nFeats].
     # They only differ in the way layers are pretrained or not.
     configurations=[]
     # Standard MLP, no pretraining
-    configurations.append({'inputlayers':[],'linklayers':[hidden_size,hidden_size], 'outputlayers':[]})
-    # Two first layer pretrained input way
-    configurations.append({'inputlayers':[hidden_size,hidden_size],'linklayers':[], 'outputlayers':[]})
+    configurations.append({'nInputLayers':0,'nOutputLayers':0})
     # First layer pretrained input way
-    configurations.append({'inputlayers':[hidden_size],'linklayers':[hidden_size], 'outputlayers':[]})
-    # First layer pretrained input way, and last layer pretrained output way
-    configurations.append({'inputlayers':[hidden_size],'linklayers':[], 'outputlayers':[hidden_size]})
+    configurations.append({'nInputLayers':1,'nOutputLayers':0})
+    # Two first layer pretrained input way
+    configurations.append({'nInputLayers':2,'nOutputLayers':0})
     # Last layer pretrained output way
-    configurations.append({'inputlayers':[],'linklayers':[hidden_size], 'outputlayers':[hidden_size]})
+    configurations.append({'nInputLayers':0,'nOutputLayers':1})
     # Two last layer pretrained output way
-    configurations.append({'inputlayers':[],'linklayers':[], 'outputlayers':[hidden_size,hidden_size]})
+    configurations.append({'nInputLayers':0,'nOutputLayers':2})
+    # First layer pretrained input way, and last layer pretrained output way
+    configurations.append({'nInputLayers':1,'nOutputLayers':1})
 
     parameters=None
     #We throw random parameters only for the first conf and then reuse the same parameters for the remaining confs.
@@ -133,11 +136,10 @@ def main():
     results={}
 
     for conf in configurations:
-        expname="I%dL%dO%d"%(len(conf['inputlayers']),len(conf['linklayers']),len(conf['outputlayers']))
+        
+        expname="I%dL%dO%d"%(conf['nInputLayers'],nLayers-conf['nInputLayers']-conf['nOutputLayers'],conf['nOutputLayers'])
         print '... building and learning a network %s'%(expname,)
-        nn = MyPretrainedMLP(inputRepresentationSize=nInputs, outputRepresentationSize=nOutputs,
-                            outputActivation=crino.module.Sigmoid,
-                            nUnitsInput=conf['inputlayers'], nUnitsLink=conf['linklayers'], nUnitsOutput=conf['outputlayers'])
+        nn = MyPretrainedMLP(geometry, outputActivation=crino.module.Sigmoid,**conf)
         nn.setTestSet(x_test,y_test)
         nn.linkInputs(T.matrix('x'), nFeats)
         nn.prepare()
@@ -146,6 +148,8 @@ def main():
             parameters=nn.getParameters()
         else:
             nn.setParameters(parameters)
+        print(conf)
+        print(nn.getGeometry())
         delta = nn.train(x_train, y_train, **learning_params)
         print '... learning lasted %s (s) ' % (delta)
         
