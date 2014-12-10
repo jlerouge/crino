@@ -388,11 +388,14 @@ class PretrainedMLP(MultiLayerPerceptron):
         """
         MultiLayerPerceptron.__init__(self, nUnits, outputActivation)
         
+        nLayers=len(nUnits)-1;
+        nLinkLayers=nLayers-nInputLayers-nOutputLayers;
+        
         self.inputRepresentationSize=nUnits[0]
+        self.nUnitsInput = nUnits[1:nInputLayers+1]
+        self.nUnitsLink= nUnits[nInputLayers+1:nInputLayers+nLinkLayers]
+        self.nUnitsOutput = nUnits[nInputLayers+nLinkLayers:-1]
         self.outputRepresentationSize=nUnits[-1]
-        self.nUnitsInput = nUnits[0:nInputLayers]
-        self.nUnitsLink= nUnits[nInputLayers:-nOutputLayers]
-        self.nUnitsOutput = nUnits[-nOutputLayers:]
 
         # Construction des AutoEncoders
         self.inputAutoEncoders = []
