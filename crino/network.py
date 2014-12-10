@@ -426,7 +426,7 @@ class PretrainedMLP(MultiLayerPerceptron):
             self.firstOutputSize=self.outputRepresentationSize                
             linkLayerLastActivation=outputActivation
    
-        self.linkLayer=MultiLayerPerceptron([self.lastInputSize]+nUnitsLink+[self.firstOutputSize], linkLayerLastActivation)
+        self.linkLayer=MultiLayerPerceptron([self.lastInputSize]+self.nUnitsLink+[self.firstOutputSize], linkLayerLastActivation)
         self.linkLayer.linkInputs(x,self.lastInputSize)
         self.linkLayer.prepare()
         
