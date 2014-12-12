@@ -163,6 +163,7 @@ def main():
         nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
         if parameters is None:
             parameters=nn.getParameters()
+            pickle.dump(parameters,open(os.path.join(absoutfolder,"starting_params.pck"),'w'),protocol=-1)
         else:
             nn.setParameters(parameters)
         delta = nn.train(x_train, y_train, **learning_params)
