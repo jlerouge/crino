@@ -19,7 +19,8 @@
 #    You should have received a copy of the GNU Lesser General Public License
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
-
+import os,os.path
+import sys
 
 import numpy as np
 
@@ -35,6 +36,7 @@ from crino.criterion import MeanSquareError
 
 import cPickle as pickle
 
+import csv
 
 input_pretraining_params={
         'learning_rate': 10.0,
@@ -63,6 +65,10 @@ learning_params={
     
 hidden_size = 1024
 
+outfolder='./results/'
+
+exemples=[10,50,100]
+
 
 class MyPretrainedMLP(PretrainedMLP):
     def setTestSet(self,x_test,y_test):
@@ -81,7 +87,7 @@ class MyPretrainedMLP(PretrainedMLP):
         
     def checkEpochHook(self):
         self.test_criterion_history.append(np.mean(self.testCriterionFunction()))
-        if self.finetunevars['epoch'] in [1,10,100,200,300]:
+        if self.finetunevars['epoch']+1 in [0,10,100,200,300]:
             self.test_forward_history.append((self.finetunevars['epoch'],self.testForwardFunction()))
             self.app_forward_history.append((self.finetunevars['epoch'],self.appForwardFunction()))
 
@@ -111,7 +117,7 @@ def main():
     nOutputs=nFeats
     
     geometry=[nFeats,hidden_size,hidden_size,nFeats]
-    nLayers=len(geometry)
+    nLayers=len(geometry)-1
 
     # All configurations have the same geometry 3 layers and 4 representations
     # with sizes [nFeats,hidden_size,hidden_size,nFeats].
@@ -133,11 +139,22 @@ def main():
     parameters=None
     #We throw random parameters only for the first conf and then reuse the same parameters for the remaining confs.
 
+    absoutfolder=os.path.abspath(outfolder)
+    if not os.path.exists(absoutfolder):
+        os.mkdir(absoutfolder)
+
     results={}
+  
+    for phase,xdata,ydata in [['train',x_train,y_train],['test',x_test,y_test]]:  
+        for ex in exemples:
+            x_orig = np.reshape(xdata[ex:ex+1], (xSize, xSize), 'F')
+            data2greyimg(os.path.join(absoutfolder,"%s_ex_%03d_input.png"%(phase,ex,)),x_orig)
+            y_true = np.reshape(ydata[ex:ex+1], (xSize, xSize), 'F')
+            data2greyimg(os.path.join(absoutfolder,"%s_ex_%03d_target.png"%(phase,ex,)),y_true)
 
     for conf in configurations:
         
-        expname="I%dL%dO%d"%(conf['nInputLayers'],nLayers-conf['nInputLayers']-conf['nOutputLayers'],conf['nOutputLayers'])
+        expname="I_%d_L_%d_O_%d"%(conf['nInputLayers'],nLayers-conf['nInputLayers']-conf['nOutputLayers'],conf['nOutputLayers'])
         print '... building and learning a network %s'%(expname,)
         nn = MyPretrainedMLP(geometry, outputActivation=crino.module.Sigmoid,**conf)
         nn.setTestSet(x_test,y_test)
@@ -148,32 +165,30 @@ def main():
             parameters=nn.getParameters()
         else:
             nn.setParameters(parameters)
-        print(conf)
-        print(nn.getGeometry())
         delta = nn.train(x_train, y_train, **learning_params)
         print '... learning lasted %s (s) ' % (delta)
         
-        results[expname]={'train':nn.finetune_history,'test':nn.test_criterion_history}
-        
-        ex=10
+        results[expname]={'I':conf['nInputLayers'],'L':nLayers-conf['nInputLayers']-conf['nOutputLayers'],'O':conf['nOutputLayers'],'train_criterion':nn.finetune_history[-1][-1],'train_history':nn.finetune_history,'test_criterion': nn.test_criterion_history[-1],'test_history':nn.test_criterion_history}
+        pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"%s_params.pck"%(expname,)),'w'),protocol=-1)
         
         for phase,xdata,ydata,history in [
                     ['train',x_train,y_train,nn.app_forward_history],
                     ['test',x_test,y_test,nn.test_forward_history]]:
-            x_orig = np.reshape(xdata[ex:ex+1], (xSize, xSize), 'F')
-            data2greyimg("figure/%s_%s_-input.png"%(expname,phase),x_orig)
-            y_true = np.reshape(ydata[ex:ex+1], (xSize, xSize), 'F')
-            data2greyimg("figure/%s_%s_-target.png"%(expname,phase),y_true)
-            for epoch,forward in history:
-                if epoch==-1:
-                    continue
-                y_estim = np.reshape(forward[ex:ex+1], (xSize, xSize), 'F')
-                data2greyimg("figure/%s_%s_-estim%03d.png"%(expname,phase,epoch),y_estim)
+            for ex in exemples:
+                for epoch,forward in history:
+                    y_estim = np.reshape(forward[ex:ex+1], (xSize, xSize), 'F')
+                    data2greyimg(os.path.join(absoutfolder,"%s_%s_ex_%03d_estim_%03d.png"%(expname,phase,ex,epoch+1)),y_estim)
+                    
+    pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
+    
+    table=[["Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Train", "Test"]]
+    for expname in results.keys():
+        table.append([results[expname]['I'],results[expname]['L'],results[expname]['O'],results[expname]['train_criterion'],results[expname]['test_criterion']])
 
-    pickle.dump(results,open('results.pck','w'))    
+    writer=csv.writer(open(os.path.join(absoutfolder,'results.csv'),'wb'),delimiter='\t')
+    for row in table:
+        writer.writerow(row)
+  
 
 if __name__=="__main__":
     main()
-
-
-
