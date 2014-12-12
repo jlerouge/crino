@@ -182,11 +182,14 @@ class MultiLayerPerceptron(Sequential):
         train = self.trainFunction(lvar['batch_size'], lvar['learning_rate'], True, lvar['shared_x_train'], lvar['shared_y_train'])
         hold=self.holdFunction()
         restore=self.restoreFunction()
+        trainCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=lvar['shared_x_train'], shared_y_data=lvar['shared_y_train'])
+        
         lvar['n_train_batches'] = lvar['shared_x_train'].get_value().shape[0]/lvar['batch_size']
         lvar['start_time'] = DT.datetime.now()
-        lvar['mean_loss'] = float('inf')
+        lvar['mean_loss'] = trainCriterionFunction()
         lvar['good_epochs'] = 0
-        self.finetune_history=[(-1,lvar['learning_rate'],lvar['mean_loss'])]
+        lvar['full_history']=[(-1,lvar['learning_rate'],lvar['mean_loss'])]
+        lvar['history']=[lvar['mean_loss']]
         
         self.initEpochHook()
         for lvar['epoch'] in xrange(lvar['epochs']):
@@ -210,7 +213,7 @@ class MultiLayerPerceptron(Sequential):
                         break                    
 
                 lvar['new_mean_loss'] = np.mean(lvar['loss_by_batch'])
-                self.finetune_history.append((lvar['epoch'],lvar['learning_rate'],lvar['new_mean_loss']))
+                lvar['full_history'].append((lvar['epoch'],lvar['learning_rate'],lvar['new_mean_loss']))
                 
                 if self.checkBadmoveHook():
                     break 
@@ -235,6 +238,7 @@ class MultiLayerPerceptron(Sequential):
 
 
             lvar['mean_loss'] = lvar['new_mean_loss']
+            lvar['history'].append(lvar['mean_loss'])
 
             if(lvar['good_epochs'] >= lvar['growth_threshold']):
                 lvar['good_epochs'] = 0
@@ -251,7 +255,7 @@ class MultiLayerPerceptron(Sequential):
             if self.checkEpochHook():
                 break
                 
-        return (DT.datetime.now()-lvar['start_time'])
+        return (DT.datetime.now()-lvar['start_time'])    
 
     def train(self, x_train, y_train, **params):
         """

@@ -68,6 +68,7 @@ hidden_size = 1024
 outfolder='./results/'
 
 exemples=[10,50,100]
+displayepochs=[0,10,100,200,300]
 
 
 class MyPretrainedMLP(PretrainedMLP):
@@ -87,7 +88,7 @@ class MyPretrainedMLP(PretrainedMLP):
         
     def checkEpochHook(self):
         self.test_criterion_history.append(np.mean(self.testCriterionFunction()))
-        if self.finetunevars['epoch']+1 in [0,10,100,200,300]:
+        if self.finetunevars['epoch']+1 in displayepochs:
             self.test_forward_history.append((self.finetunevars['epoch'],self.testForwardFunction()))
             self.app_forward_history.append((self.finetunevars['epoch'],self.appForwardFunction()))
 
@@ -169,7 +170,16 @@ def main():
         delta = nn.train(x_train, y_train, **learning_params)
         print '... learning lasted %s (s) ' % (delta)
         
-        results[expname]={'I':conf['nInputLayers'],'L':nLayers-conf['nInputLayers']-conf['nOutputLayers'],'O':conf['nOutputLayers'],'train_criterion':nn.finetune_history[-1][-1],'train_history':nn.finetune_history,'test_criterion': nn.test_criterion_history[-1],'test_history':nn.test_criterion_history}
+        results[expname]={
+            'I':conf['nInputLayers'],
+            'L':nLayers-conf['nInputLayers']-conf['nOutputLayers'],
+            'O':conf['nOutputLayers'],
+            'train_criterion':nn.finetunevars['history'][-1],
+            'train_history':nn.finetunevars['history'],
+            'train_full_history':nn.finetunevars['full_history'],
+            'test_criterion': nn.test_criterion_history[-1],
+            'test_history':nn.test_criterion_history,
+            }
         pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"%s_params.pck"%(expname,)),'w'),protocol=-1)
         
         for phase,xdata,ydata,history in [
@@ -182,9 +192,10 @@ def main():
                     
     pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
     
-    table=[["Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Train", "Test"]]
+    table=[["Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Test"]]
     for expname in results.keys():
-        table.append([results[expname]['I'],results[expname]['L'],results[expname]['O'],results[expname]['train_criterion'],results[expname]['test_criterion']])
+        for epoch in displayepochs:
+            table.append([results[expname]['I'],results[expname]['L'],results[expname]['O'],epoch,results[expname]['train_history'][epoch],results[expname]['test_history'][epoch]])
 
     writer=csv.writer(open(os.path.join(absoutfolder,'results.csv'),'wb'),delimiter='\t')
     for row in table:
