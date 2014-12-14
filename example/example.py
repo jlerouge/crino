@@ -128,11 +128,11 @@ def main():
     configurations.append({'nInputLayers':0,'nOutputLayers':0})
     # First layer pretrained input way
     configurations.append({'nInputLayers':1,'nOutputLayers':0})
-    # Two first layer pretrained input way
+    # Two first layers pretrained input way
     configurations.append({'nInputLayers':2,'nOutputLayers':0})
     # Last layer pretrained output way
     configurations.append({'nInputLayers':0,'nOutputLayers':1})
-    # Two last layer pretrained output way
+    # Two last layers pretrained output way
     configurations.append({'nInputLayers':0,'nOutputLayers':2})
     # First layer pretrained input way, and last layer pretrained output way
     configurations.append({'nInputLayers':1,'nOutputLayers':1})
