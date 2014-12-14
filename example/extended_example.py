@@ -65,7 +65,7 @@ learning_params={
     
 hidden_size = 512
 
-outfolder='./extented_results/'
+outfolder='./extended_results/'
 
 exemples=[10,50,100]
 displayepochs=[0,10,100,200,300]
