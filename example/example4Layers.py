@@ -63,7 +63,7 @@ learning_params={
     'link_pretraining' : False  
 }
     
-hidden_size = 512
+hidden_size = 1024
 
 exemples=[10,50,100]
 displayepochs=[0,10,100,200,300]
