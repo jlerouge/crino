@@ -63,12 +63,14 @@ learning_params={
     'link_pretraining' : False  
 }
     
-hidden_size = 512
-
-outfolder='./extended_results/'
+hidden_size = 1024
 
 exemples=[10,50,100]
 displayepochs=[0,10,100,200,300]
+
+hidden_layers=[hidden_size]*2
+
+outfolder='./results-%d-layers-%d-units/'%(len(hidden_layers)+1,hidden_size)
 
 
 class MyPretrainedMLP(PretrainedMLP):
@@ -117,7 +119,7 @@ def main():
     nInputs=nFeats
     nOutputs=nFeats
     
-    geometry=[nFeats, hidden_size, hidden_size, hidden_size, nFeats]
+    geometry=[nFeats]+hidden_layers+[nFeats]
     nLayers=len(geometry)-1
 
     # All configurations have the same geometry 3 layers and 4 representations
@@ -130,21 +132,13 @@ def main():
     configurations.append({'nInputLayers':1,'nOutputLayers':0})
     # Two first layers pretrained input way
     configurations.append({'nInputLayers':2,'nOutputLayers':0})
-    # Tree first layers pretrained input way
-    configurations.append({'nInputLayers':3,'nOutputLayers':0})
     # Last layer pretrained output way
     configurations.append({'nInputLayers':0,'nOutputLayers':1})
     # Two last layers pretrained output way
     configurations.append({'nInputLayers':0,'nOutputLayers':2})
-    # Tree last layers pretrained output way
-    configurations.append({'nInputLayers':0,'nOutputLayers':3})    
     # First layer pretrained input way, and last layer pretrained output way
     configurations.append({'nInputLayers':1,'nOutputLayers':1})
-    # Two First layers pretrained input way, and last layer pretrained output way
-    configurations.append({'nInputLayers':2,'nOutputLayers':1})
-    # First layer pretrained input way, and two last layer2 pretrained output way
-    configurations.append({'nInputLayers':1,'nOutputLayers':2})
-    
+
     parameters=None
     #We throw random parameters only for the first conf and then reuse the same parameters for the remaining confs.
 
