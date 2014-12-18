@@ -80,13 +80,14 @@ def defaultConfig():
     #Geometry of all hidden representations 
     config['hidden_geometry'] = [hidden_size,hidden_size]
 
-    #How many layers are pretrained (here 1 at input and 1 at output) 
+    #How many layers are pretrained
+    # (here 1 at input and 1 at output) 
     config['pretraining_geometry']={
         'nInputLayers': 1,
         'nOutputLayers': 1
     }
 
-    #Shall we used known init weights
+    #Shall we used known init weights (here no)
     config['init_weights'] = None
     #Shall we save init weights
     config['save_init_weights'] = True
@@ -103,16 +104,22 @@ def defaultConfig():
     return config
 
 
+
 class MyPretrainedMLP(PretrainedMLP):
-    
+# We subclass the Pretrained MLP class to gther some information during
+# learning phase and to folow the evolution of the criterion on an other
+# set than the training set
     def setDisplayedEpochs(self,displayed_epochs):
+    # set the epochs where we will compute a forward for the seperate set
         self.displayed_epochs=displayed_epochs        
     
     def setTestSet(self,x_test,y_test):
+    # set the seperate set not used as training set but used for displaying what is happening
         self.shared_x_test=theano.shared(x_test)
         self.shared_y_test=theano.shared(y_test)
         
     def initEpochHook(self):
+    # initialize storage variables before starting the great learning loop
         self.testCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_test, shared_y_data=self.shared_y_test)
         self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)
         
@@ -123,13 +130,16 @@ class MyPretrainedMLP(PretrainedMLP):
         self.app_forward_history=[(-1,self.appForwardFunction())]
         
     def checkEpochHook(self):
+    # compute the criterion (whithout backprop) on the separate set
         self.test_criterion_history.append(np.mean(self.testCriterionFunction()))
         if self.finetunevars['epoch']+1 in self.displayed_epochs:
+            # compute a forward pass only on certain epochs and sotre the results
             self.test_forward_history.append((self.finetunevars['epoch'],self.testForwardFunction()))
             self.app_forward_history.append((self.finetunevars['epoch'],self.appForwardFunction()))
 
 
 def data2greyimg(filename, X):
+# Convinient functoin to save 2D array as png
     Xn=(X-X.min())/(X.max()-X.min())*255
     scipy.misc.imsave(filename, Xn)
     
@@ -178,7 +188,6 @@ def experience(config):
     # Compute the number of layers
     nLayers=len(geometry)-1
 
-    results={}
   
     for phase,xdata,ydata in [['train',x_train,y_train],['test',x_test,y_test]]:  
         for ex in displayed_examples:
@@ -191,20 +200,32 @@ def experience(config):
     print '... building and learning a network'
     nn = MyPretrainedMLP(geometry, outputActivation=crino.module.Sigmoid,**pretraining_geometry)
     
+    # set the test set
     nn.setTestSet(x_test,y_test)
+    # set the epochs where we will have a particular look at
     nn.setDisplayedEpochs(displayed_epochs)
     
+    # bake the MLP and set the criterion 
     nn.linkInputs(T.matrix('x'), nFeats)
     nn.prepare()
     nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
+    
+    # set initial weights if they exists
     if not(init_weights is None):
         nn.setParameters(init_weights)
+    # save initial weights if ask
     if save_init_weights:
         pickle.dump(init_weights,open(os.path.join(absoutfolder,"starting_params.pck"),'w'),protocol=-1)
 
     delta = nn.train(x_train, y_train, **learning_params)
     print '... learning lasted %s (s) ' % (delta)
     
+    print '... saving results'
+    
+    # Save parameters in pythonic serialization
+    pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"learned_params.pck"),'w'),protocol=-1)
+    
+    # Save some history of the learning phase in pythonic serialization
     results={
         'I':pretraining_geometry['nInputLayers'],
         'L':nLayers-pretraining_geometry['nInputLayers']-pretraining_geometry['nOutputLayers'],
@@ -215,8 +236,9 @@ def experience(config):
         'test_criterion': nn.test_criterion_history[-1],
         'test_history':nn.test_criterion_history,
         }
-    pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"learned_params.pck"),'w'),protocol=-1)
+    pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
     
+    # Save images of displayed_examples at displayed_epochs
     for phase,xdata,ydata,history in [
                 ['train',x_train,y_train,nn.app_forward_history],
                 ['test',x_test,y_test,nn.test_forward_history]]:
@@ -225,8 +247,8 @@ def experience(config):
                 y_estim = np.reshape(forward[ex:ex+1], (xSize, xSize), 'F')
                 data2greyimg(os.path.join(absoutfolder,"%s_ex_%03d_estim_%03d.png"%(phase,ex,epoch+1)),y_estim)
                     
-    pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
     
+    # Save the sum-up of the experimentation in a csv file
     table=[["Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Test"]]
     for epoch in displayed_epochs:
         table.append([results['I'],results['L'],results['O'],epoch,results['train_history'][epoch],results['test_history'][epoch]])
