@@ -80,7 +80,7 @@ class MultiLayerPerceptron(Sequential):
             raise  ValueError("You can not get params on a non-prepared MLP")
         params={}
         params['geometry']=self.getGeometry()
-        params['weights']=list(map(lambda param:np.array(param.get_value()),self.params))
+        params['weights_biases']=list(map(lambda param:np.array(param.get_value()),self.params))
 
         return params
 
@@ -90,7 +90,7 @@ class MultiLayerPerceptron(Sequential):
         if self.getGeometry()!=params['geometry']:
             raise  ValueError("Params geometry does not match MLP geoemtry")
         
-        for param,w in zip(self.params,params['weights']):
+        for param,w in zip(self.params,params['weights_biases']):
             param.set_value(w)
         
     def initEpochHook(self):
@@ -374,7 +374,7 @@ class PretrainedMLP(MultiLayerPerceptron):
 
     :see: `MultiLayerPerceptron`, http://www.deeplearning.net/tutorial/SdA.html
     """
-    def __init__(self, nUnits, outputActivation=Sigmoid, nInputLayers=0, nOutputLayers=0):
+    def __init__(self, nUnits, outputActivation=Sigmoid, nInputLayers=0, nOutputLayers=0, InputAutoEncoderClass=AutoEncoder,OutputAutoEncoderClass=OutputAutoEncoder):
         """
         Constructs a new `DeepNeuralNetwork`.
 
@@ -387,6 +387,10 @@ class PretrainedMLP(MultiLayerPerceptron):
                 Number of layers starting from input to be stacked with AE
             nOutputLayers : int
                 Number of layers starting from output to be stacked with AE
+            InputAutoEncoderClass : AutoEncoder sub class
+                Class to be used for Input Auto Encoders
+            OutputAutoEncoderClass : OutputAutoEncoder sub class
+                Class to be used for Output Auto Encoders
                 
         :attention: `outputActivation` parameter is not an instance but a class.
         """
@@ -411,7 +415,7 @@ class PretrainedMLP(MultiLayerPerceptron):
         
         if len(self.nUnitsInput)>0:
             for nVisibles,nHidden in zip([self.inputRepresentationSize]+self.nUnitsInput[:-1], self.nUnitsInput):
-                ae = AutoEncoder(nVisibles, nHidden)
+                ae = InputAutoEncoderClass(nVisibles, nHidden)
                 ae.linkInputs(x,nVisibles)
                 ae.prepare()
                 ae.criterion = CrossEntropy(ae.outputs, y)
@@ -422,7 +426,7 @@ class PretrainedMLP(MultiLayerPerceptron):
 
         if len(self.nUnitsOutput)>0:
             for nHidden,nVisibles in zip(self.nUnitsOutput, self.nUnitsOutput[1:]+[self.outputRepresentationSize]):
-                ae = OutputAutoEncoder(nVisibles, nHidden)
+                ae = OutputAutoEncoderClass(nVisibles, nHidden)
                 ae.linkInputs(x,nVisibles)
                 ae.prepare()
                 ae.criterion = CrossEntropy(ae.outputs, y)
