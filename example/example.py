@@ -38,6 +38,7 @@ import cPickle as pickle
 import json
 import csv
 
+import datetime as DT
 
 def defaultConfig():
 
@@ -99,7 +100,7 @@ def defaultConfig():
     config['displayed_epochs']=[0,10,100,200,300]
 
     #Where to store results
-    config['outfolder']='./default_config_example_results/'
+    config['outfolder']='./default_config_example_results-%s/'%(DT.datetime.now().strftime("%Y-%m-%d-%H-%M"),)
     
     return config
 
