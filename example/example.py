@@ -38,6 +38,7 @@ import cPickle as pickle
 import json
 import csv
 
+import datetime as DT
 
 def defaultConfig():
 
@@ -99,7 +100,7 @@ def defaultConfig():
     config['displayed_epochs']=[0,10,100,200,300]
 
     #Where to store results
-    config['outfolder']='./default_config_example_results/'
+    config['outfolder']='./default_config_example_results-%s/'%(DT.datetime.now().strftime("%Y-%m-%d-%H-%M"),)
     
     return config
 
@@ -118,7 +119,7 @@ class MyPretrainedMLP(PretrainedMLP):
         self.shared_x_test=theano.shared(x_test)
         self.shared_y_test=theano.shared(y_test)
         
-    def initEpochHook(self):
+    def initEpochHook(self,finetune_vars):
     # initialize storage variables before starting the great learning loop
         self.testCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_test, shared_y_data=self.shared_y_test)
         self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)
@@ -126,16 +127,16 @@ class MyPretrainedMLP(PretrainedMLP):
         self.test_criterion_history=[np.mean(self.testCriterionFunction())]
         self.test_forward_history=[(-1,self.testForwardFunction())]
         
-        self.appForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.finetunevars['shared_x_train'])
+        self.appForwardFunction=self.forwardFunction(downcast=True, shared_x_data=finetune_vars['shared_x_train'])
         self.app_forward_history=[(-1,self.appForwardFunction())]
         
-    def checkEpochHook(self):
+    def checkEpochHook(self,finetune_vars):
     # compute the criterion (whithout backprop) on the separate set
         self.test_criterion_history.append(np.mean(self.testCriterionFunction()))
-        if self.finetunevars['epoch']+1 in self.displayed_epochs:
+        if finetune_vars['epoch']+1 in self.displayed_epochs:
             # compute a forward pass only on certain epochs and sotre the results
-            self.test_forward_history.append((self.finetunevars['epoch'],self.testForwardFunction()))
-            self.app_forward_history.append((self.finetunevars['epoch'],self.appForwardFunction()))
+            self.test_forward_history.append((finetune_vars['epoch'],self.testForwardFunction()))
+            self.app_forward_history.append((finetune_vars['epoch'],self.appForwardFunction()))
 
 
 def data2greyimg(filename, X):
@@ -152,8 +153,19 @@ def experience(config):
     for aParam in needed_params:
         if not( aParam in config.keys()):
             raise ValueError("Experience configuration does not contain %s parameter"%(aParam))
-        exec '%s=pickle.loads("""%s""")'%(aParam,pickle.dumps(config[aParam]))
-        used_config[aParam]=config[aParam]
+        if aParam!='init_weights':
+            used_config[aParam]=config[aParam]
+        elif not (config[aParam] is None):
+            used_config['init_weights']= []
+
+    learning_params=config['learning_params']
+    hidden_geometry=config['hidden_geometry']
+    pretraining_geometry=config['pretraining_geometry']
+    init_weights=config['init_weights']
+    save_init_weights=config['save_init_weights']
+    displayed_examples=config['displayed_examples']
+    displayed_epochs=config['displayed_epochs']
+    outfolder=config['outfolder']
 
     absoutfolder=os.path.abspath(outfolder)
     if not os.path.exists(absoutfolder):
@@ -215,7 +227,7 @@ def experience(config):
         nn.setParameters(init_weights)
     # save initial weights if ask
     if save_init_weights:
-        pickle.dump(init_weights,open(os.path.join(absoutfolder,"starting_params.pck"),'w'),protocol=-1)
+        pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"starting_params.pck"),'w'),protocol=-1)
 
     delta = nn.train(x_train, y_train, **learning_params)
     print '... learning lasted %s (s) ' % (delta)
@@ -230,9 +242,9 @@ def experience(config):
         'I':pretraining_geometry['nInputLayers'],
         'L':nLayers-pretraining_geometry['nInputLayers']-pretraining_geometry['nOutputLayers'],
         'O':pretraining_geometry['nOutputLayers'],
-        'train_criterion':nn.finetunevars['history'][-1],
-        'train_history':nn.finetunevars['history'],
-        'train_full_history':nn.finetunevars['full_history'],
+        'train_criterion':nn.finetune_history[-1],
+        'train_history':nn.finetune_history,
+        'train_full_history':nn.finetune_full_history,
         'test_criterion': nn.test_criterion_history[-1],
         'test_history':nn.test_criterion_history,
         }
