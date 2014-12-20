@@ -46,34 +46,34 @@ def defaultConfig():
     
     #Learning parameters of the input pretraining
     input_pretraining_params={
-            'learning_rate': 1.0,
+            'learning_rate': 10.0,
             'batch_size' : 100,
             'epochs' : 300
             }
     
     #Learning parameters of the output pretraining
     output_pretraining_params={
-            'learning_rate': 1.0,
+            'learning_rate': 10.0,
             'batch_size' : 100,
             'epochs' : 300
             }
     
-    #Learning parameters of the link pretraining
-    link_pretraining_params={
-            'learning_rate': 1.0,
-            'batch_size' : 100,
-            'epochs' : 300
-            }
+    ##Learning parameters of the link pretraining
+    #link_pretraining_params={
+            #'learning_rate': 1.0,
+            #'batch_size' : 100,
+            #'epochs' : 300
+            #}
     
     #Learning parameters of the supervised training + pretrainings
     config['learning_params']={
-        'learning_rate' : 1.0,
+        'learning_rate' : 2.0,
         'batch_size' : 100,
         'epochs' : 300,
         'input_pretraining_params' : input_pretraining_params,
         'output_pretraining_params' : output_pretraining_params,
-        'link_pretraining_params' : link_pretraining_params,
-        'link_pretraining' : True
+        #'link_pretraining_params' : link_pretraining_params,
+        'link_pretraining' : False
     }
     
     #Size of one hidden representation
