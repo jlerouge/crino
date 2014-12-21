@@ -170,6 +170,11 @@ def experience(config):
     absoutfolder=os.path.abspath(outfolder)
     if not os.path.exists(absoutfolder):
         os.mkdir(absoutfolder)
+
+    mystdoutpath=os.path.join(absoutfolder,"experience.log")
+    print('switch stdout to %s'%(mystdoutpath,))
+    mystdout=open(mystdoutpath,'wb')
+    sys.stdout=mystdout
     
     print('... saving used configuration')
     json.dump(used_config,open(os.path.join(absoutfolder,"configuration.json"),'wb'),indent=2)
@@ -268,6 +273,9 @@ def experience(config):
     writer=csv.writer(open(os.path.join(absoutfolder,'results.csv'),'wb'),delimiter='\t')
     for row in table:
         writer.writerow(row)
+
+    sys.stdout=sys.__stdout__
+    print('reverts stdout to console')
 
 def main():
     experience(defaultConfig())
