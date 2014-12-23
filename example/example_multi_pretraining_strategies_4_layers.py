@@ -60,7 +60,7 @@ def fourLayersConfig():
     }
     
     #Size of one hidden representation
-    hidden_size = 1024
+    hidden_size = 512
     #Geometry of all hidden representations 
     config['hidden_geometry'] = [hidden_size, hidden_size/2, hidden_size]
 
