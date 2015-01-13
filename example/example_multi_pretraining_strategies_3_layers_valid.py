@@ -291,7 +291,7 @@ def experience_multiple_pretraining_geometry(config):
         print '... learning lasted %s (s) ' % (delta)
         
         print('... performing test criterion')
-        test_criterion=nn.testForwardFunction()
+        test_criterion=nn.testCriterionFunction()
         
 
         
@@ -305,12 +305,15 @@ def experience_multiple_pretraining_geometry(config):
             'valid_criterion': nn.valid_criterion_history[-1],
             'valid_history':nn.valid_criterion_history,
             'test_criterion': test_criterion,
-            'last_epoch': nn.valid_criterion_history[-1][0],
+            'last_epoch': nn.finetune_full_history[-1][0],
             'first_hidden_representation': hidden_geometry[0]
             }
         pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"%s_params.pck"%(expname,)),'w'),protocol=-1)
-        
-	print("RESULT %s: train: %f valid: %f test: %f learning epochs %d"%(expname,results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion'],results[expname]['last_epoch']))
+       
+	#print(results[expname]) 
+	print("RESULT %s: train: %f valid: %f test: %f learning epochs %d"%(expname,results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion'],results[expname]['last_epoch']+1))
+
+	print("... saving figures")
 
         for phase,xdata,ydata,history in [
                     ['train',x_train,y_train,nn.app_forward_history],
@@ -319,14 +322,21 @@ def experience_multiple_pretraining_geometry(config):
                 for epoch,forward in history:
                     y_estim = np.reshape(forward[ex:ex+1], (xSize, xSize), 'F')
                     data2greyimg(os.path.join(absoutfolder,"%s_%s_ex_%03d_estim_%03d.png"%(expname,phase,ex,epoch+1)),y_estim)
-                    
+
+        test_forward=nn.testForwardFunction()
+        for ex in displayed_examples:
+            y_estim = np.reshape(test_forward[ex:ex+1], (xSize, xSize), 'F')
+            data2greyimg(os.path.join(absoutfolder,"%s_%s_ex_%03d_estim_%03d.png"%(expname,'test',ex,results[expname]['last_epoch']+1)),y_estim)
+    
+
+    print("... saving results")                
     pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
     
-    table=[["Units","Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Valid","Test"]]
+    table=[["Units","Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Valid"]]
     for expname in results.keys():
         displayed_epochs_before_last=filter(lambda e:e<=results[expname]['last_epoch'],displayed_epochs)
         for epoch in displayed_epochs_before_last:
-            table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],epoch,results[expname]['train_history'][epoch],results[expname]['valid_history'][epoch]],"N/A")
+            table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],epoch,results[expname]['train_history'][epoch],results[expname]['valid_history'][epoch]])
         table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],
                       results[expname]['last_epoch'],
                       results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion']])        
