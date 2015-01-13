@@ -66,27 +66,49 @@ class MultiLayerPerceptron(Sequential):
         self.add(Linear(nUnits[-1]))
         self.add(outputActivation(nUnits[-1]))
         
+
+    def getGeometry(self):
+        if not(self.prepared):
+            raise  ValueError("You can not get geometry on a non-prepared MLP")
+        geometry=[self.nInputs]
+        geometry+=list(map(lambda mod:mod.nOutputs,self.modules))
+
+        return geometry
+
+    def getParameters(self):
+        if not(self.prepared):
+            raise  ValueError("You can not get params on a non-prepared MLP")
+        params={}
+        params['geometry']=self.getGeometry()
+        params['weights_biases']=list(map(lambda param:np.array(param.get_value()),self.params))
+
+        return params
+
+    def setParameters(self,params):
+        if not(self.prepared):
+            raise  ValueError("You can not set params on a non-prepared MLP")
+        if self.getGeometry()!=params['geometry']:
+            raise  ValueError("Params geometry does not match MLP geoemtry")
         
+        for param,w in zip(self.params,params['weights_biases']):
+            param.set_value(w)
         
-    def initEpochHook(self):
+    def initEpochHook(self,finetune_vars):
         pass
         
-    def checkEpochHook(self):
-        #print(self.finetunevars)
+    def checkEpochHook(self,finetune_vars):
         return False
 
-    def initBadmoveHook(self):
+    def initBadmoveHook(self,finetune_vars):
         pass
         
-    def checkBadmoveHook(self):
-        #print(self.finetunevars)
+    def checkBadmoveHook(self,finetune_vars):
         return False
 
-    def initBatchHook(self):
+    def initBatchHook(self,finetune_vars):
         pass
         
-    def checkBatchHook(self):
-        #print(self.finetunevars)
+    def checkBatchHook(self,finetune_vars):
         return False
     
     def checkLearningParameters(self,param_dict):
@@ -140,93 +162,85 @@ class MultiLayerPerceptron(Sequential):
         :return: elapsed time, in datetime.
         """
         
-        self.finetunevars={}
-        lvar=self.finetunevars
-        
-        lvar['shared_x_train']=shared_x_train
-        lvar['shared_y_train']=shared_y_train
-        lvar['batch_size']=batch_size
-        lvar['learning_rate']=learning_rate
-        lvar['epochs']=epochs
-        lvar['growth_factor']=growth_factor
-        lvar['growth_threshold']=growth_threshold 
-        lvar['badmove_threshold']=badmove_threshold
-        lvar['verbose']=verbose
         
         # Compilation d'une fonction theano pour l'apprentissage du modèle
-        train = self.trainFunction(lvar['batch_size'], lvar['learning_rate'], True, lvar['shared_x_train'], lvar['shared_y_train'])
+        train = self.trainFunction(batch_size, learning_rate, True, shared_x_train, shared_y_train)
         hold=self.holdFunction()
         restore=self.restoreFunction()
-        lvar['n_train_batches'] = lvar['shared_x_train'].get_value().shape[0]/lvar['batch_size']
-        lvar['start_time'] = DT.datetime.now()
-        lvar['mean_loss'] = float('inf')
-        lvar['good_epochs'] = 0
-        self.finetune_history=[(-1,lvar['learning_rate'],lvar['mean_loss'])]
+        trainCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=shared_x_train, shared_y_data=shared_y_train)
         
-        self.initEpochHook()
-        for lvar['epoch'] in xrange(lvar['epochs']):
-            lvar['epoch_start']=DT.datetime.now()
-            lvar['loss_by_batch'] = []
+        n_train_batches = shared_x_train.get_value().shape[0]/batch_size
+        finetune_start_time = DT.datetime.now()
+        mean_loss = trainCriterionFunction()
+        good_epochs = 0
+        self.finetune_full_history=[(-1,learning_rate,mean_loss)]
+        self.finetune_history=[mean_loss]
+        
+        self.initEpochHook(locals())
+        for epoch in xrange(epochs):
+            epoch_start_time=DT.datetime.now()
+            loss_by_batch = []
             hold()
-            if(lvar['verbose']):
+            if(verbose):
                 print "",
             
-            self.initBadmoveHook()            
-            for lvar['badmoves'] in xrange(lvar['badmove_threshold']):
+            self.initBadmoveHook(locals())            
+            for badmoves in xrange(badmove_threshold):
                 
-                self.initBatchHook()
-                for lvar['batch_index'] in xrange(lvar['n_train_batches']):
-                    loss = train(lvar['batch_index'])
-                    lvar['loss_by_batch'].append(loss)
-                    if(lvar['verbose']):
-                        print "\r  | |_Batch %d/%d, loss : %f" % (lvar['batch_index']+1, lvar['n_train_batches'], loss),
+                self.initBatchHook(locals())
+                for lbatch_index in xrange(n_train_batches):
+                    loss = train(lbatch_index)
+                    loss_by_batch.append(loss)
+                    if(verbose):
+                        print "\r  | |_Batch %d/%d, loss : %f" % (lbatch_index+1, n_train_batches, loss),
                         sys.stdout.flush()
-                    if self.checkBatchHook():
+                    if self.checkBatchHook(locals()):
                         break                    
 
-                lvar['new_mean_loss'] = np.mean(lvar['loss_by_batch'])
-                self.finetune_history.append((lvar['epoch'],lvar['learning_rate'],lvar['new_mean_loss']))
+                new_mean_loss = np.mean(loss_by_batch)
+                self.finetune_full_history.append((epoch,learning_rate,new_mean_loss))
                 
-                if self.checkBadmoveHook():
+                if self.checkBadmoveHook(locals()):
                     break 
                 
-                if  lvar['new_mean_loss'] < lvar['mean_loss']:
-                    lvar['good_epochs'] += 1
+                if  new_mean_loss < mean_loss:
+                    good_epochs += 1
                     break                
                 
-                if lvar['badmoves']+1<lvar['badmove_threshold']:
-                    if(lvar['verbose']):
-                        print "\r# Bad move %f > %f; Learning rate : %f > %f" % (lvar['mean_loss'], lvar['new_mean_loss'], lvar['learning_rate'], lvar['learning_rate']/lvar['growth_factor'])                    
+                if badmoves+1<badmove_threshold:
+                    if(verbose):
+                        print "\r# Bad move %f > %f; Learning rate : %f > %f" % (mean_loss, new_mean_loss, learning_rate, learning_rate/growth_factor)                    
                     restore()                    
-                    lvar['learning_rate'] = lvar['learning_rate']/lvar['growth_factor']
+                    learning_rate = learning_rate/growth_factor
                     train = self.trainFunction(
-                        lvar['batch_size'], lvar['learning_rate'],True,
-                        lvar['shared_x_train'], lvar['shared_y_train'])
+                        batch_size, learning_rate,True,
+                        shared_x_train, shared_y_train)
                 else:
-                    if(lvar['verbose']):
+                    if(verbose):
                         print("\r# Break Epoch on bad move threshold")
                         
-                lvar['good_epochs'] = 0
+                good_epochs = 0
 
 
-            lvar['mean_loss'] = lvar['new_mean_loss']
+            mean_loss = new_mean_loss
+            self.finetune_history.append(mean_loss)
 
-            if(lvar['good_epochs'] >= lvar['growth_threshold']):
-                lvar['good_epochs'] = 0
-                if(lvar['verbose']):
-                    print "\r# Fast Track; Learning rate : %f > %f" % (lvar['learning_rate'], lvar['learning_rate']*lvar['growth_factor'])
-                lvar['learning_rate'] = lvar['learning_rate']*lvar['growth_factor']
+            if(good_epochs >= growth_threshold):
+                good_epochs = 0
+                if(verbose):
+                    print "\r# Fast Track; Learning rate : %f > %f" % (learning_rate, learning_rate*growth_factor)
+                learning_rate = learning_rate*growth_factor
                 train = self.trainFunction(
-                    lvar['batch_size'], lvar['learning_rate'], True,
-                    lvar['shared_x_train'], lvar['shared_y_train'])
+                    batch_size, learning_rate, True,
+                    shared_x_train, shared_y_train)
            
-            if(lvar['verbose']):
-                print "\r  |_Epoch %d/%d, mean loss : %f, duration (s) : %s" % (lvar['epoch']+1, lvar['epochs'], lvar['new_mean_loss'],(DT.datetime.now()-lvar['epoch_start']).total_seconds())
+            if(verbose):
+                print "\r  |_Epoch %d/%d, mean loss : %f, duration (s) : %s" % (epoch+1, epochs, new_mean_loss,(DT.datetime.now()-epoch_start_time).total_seconds())
             
-            if self.checkEpochHook():
+            if self.checkEpochHook(locals()):
                 break
                 
-        return (DT.datetime.now()-lvar['start_time'])
+        return (DT.datetime.now()-finetune_start_time)    
 
     def train(self, x_train, y_train, **params):
         """
@@ -345,32 +359,36 @@ class PretrainedMLP(MultiLayerPerceptron):
 
     :see: `MultiLayerPerceptron`, http://www.deeplearning.net/tutorial/SdA.html
     """
-    def __init__(self, inputRepresentationSize, outputRepresentationSize, outputActivation=Sigmoid, nUnitsInput=[], nUnitsLink=[], nUnitsOutput=[]):
+    def __init__(self, nUnits, outputActivation=Sigmoid, nInputLayers=0, nOutputLayers=0, InputAutoEncoderClass=AutoEncoder,OutputAutoEncoderClass=OutputAutoEncoder):
         """
         Constructs a new `DeepNeuralNetwork`.
 
         :Parameters:
-            inputRepresentationSize: int
-                The size of the input representation
-            outputRepresentationSize: int
-                The size of the output representation                
-            nUnitsInput : int list
-                The hidden representations size list on the input side that will be pretrained.
-            nUnitsOutput : int list
-                The hidden representations size list on the output side that will be pretrained.
-            nUnitsLink : int list
-                The size list of hidden representations  in-between input and output representations.
+            nUnits : int list
+                The sizes of the (input, hidden* , output) representations.
             outputActivation : class derived from `Activation`
-                The type of activation for the output layer.
+                The type of activation for the output layer.                
+            nInputLayers : int
+                Number of layers starting from input to be stacked with AE
+            nOutputLayers : int
+                Number of layers starting from output to be stacked with AE
+            InputAutoEncoderClass : AutoEncoder sub class
+                Class to be used for Input Auto Encoders
+            OutputAutoEncoderClass : OutputAutoEncoder sub class
+                Class to be used for Output Auto Encoders
+                
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        MultiLayerPerceptron.__init__(self, [inputRepresentationSize]+ nUnitsInput + nUnitsLink + nUnitsOutput + [outputRepresentationSize], outputActivation)
+        MultiLayerPerceptron.__init__(self, nUnits, outputActivation)
         
-        self.inputRepresentationSize=inputRepresentationSize
-        self.outputRepresentationSize=outputRepresentationSize
-        self.nUnitsInput = nUnitsInput
-        self.nUnitsLink= nUnitsLink
-        self.nUnitsOutput = nUnitsOutput
+        nLayers=len(nUnits)-1;
+        nLinkLayers=nLayers-nInputLayers-nOutputLayers;
+        
+        self.inputRepresentationSize=nUnits[0]
+        self.nUnitsInput = nUnits[1:nInputLayers+1]
+        self.nUnitsLink= nUnits[nInputLayers+1:nInputLayers+nLinkLayers]
+        self.nUnitsOutput = nUnits[nInputLayers+nLinkLayers:-1]
+        self.outputRepresentationSize=nUnits[-1]
 
         # Construction des AutoEncoders
         self.inputAutoEncoders = []
@@ -382,7 +400,7 @@ class PretrainedMLP(MultiLayerPerceptron):
         
         if len(self.nUnitsInput)>0:
             for nVisibles,nHidden in zip([self.inputRepresentationSize]+self.nUnitsInput[:-1], self.nUnitsInput):
-                ae = AutoEncoder(nVisibles, nHidden)
+                ae = InputAutoEncoderClass(nVisibles, nHidden)
                 ae.linkInputs(x,nVisibles)
                 ae.prepare()
                 ae.criterion = CrossEntropy(ae.outputs, y)
@@ -393,7 +411,7 @@ class PretrainedMLP(MultiLayerPerceptron):
 
         if len(self.nUnitsOutput)>0:
             for nHidden,nVisibles in zip(self.nUnitsOutput, self.nUnitsOutput[1:]+[self.outputRepresentationSize]):
-                ae = OutputAutoEncoder(nVisibles, nHidden)
+                ae = OutputAutoEncoderClass(nVisibles, nHidden)
                 ae.linkInputs(x,nVisibles)
                 ae.prepare()
                 ae.criterion = CrossEntropy(ae.outputs, y)
@@ -404,7 +422,7 @@ class PretrainedMLP(MultiLayerPerceptron):
             self.firstOutputSize=self.outputRepresentationSize                
             linkLayerLastActivation=outputActivation
    
-        self.linkLayer=MultiLayerPerceptron([self.lastInputSize]+nUnitsLink+[self.firstOutputSize], linkLayerLastActivation)
+        self.linkLayer=MultiLayerPerceptron([self.lastInputSize]+self.nUnitsLink+[self.firstOutputSize], linkLayerLastActivation)
         self.linkLayer.linkInputs(x,self.lastInputSize)
         self.linkLayer.prepare()
         
@@ -685,9 +703,7 @@ class DeepNeuralNetwork(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """    
-        PretrainedMLP.__init__(self,
-            inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
-            outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=nUnitsOutput[:-1], nUnitsOutput=[])
+        PretrainedMLP.__init__(self, nOutputLayers+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1)
     
 class InputOutputDeepArchitecture(PretrainedMLP):
     """
@@ -720,6 +736,4 @@ class InputOutputDeepArchitecture(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        PretrainedMLP.__init__(self,
-            inputRepresentationSize=nUnitsInput[0], outputRepresentationSize=nUnitsOutput[-1],
-            outputActivation=outputActivation, nUnitsInput=nUnitsInput[1:], nUnitsLink=[], nUnitsOutput=nUnitsOutput[:-1])   
+        PretrainedMLP.__init__(self, nOutputLayers+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1,nOutputLayers=len(nUnitsOutput)-1)  

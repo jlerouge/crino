@@ -33,8 +33,7 @@ import crino
 from crino.criterion import NegativeLogLikelihood
 
 learning_params= {
-    'learning_rate' : 2.0,
-    'pretraining_learning_rate' : 10.0,
+    'learning_rate' : 0.5,
     'batch_size' : 100,
     'epochs' : 10
 }
