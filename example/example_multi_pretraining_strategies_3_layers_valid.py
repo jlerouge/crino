@@ -177,7 +177,7 @@ class MyValidPretrainedMLP(PretrainedMLP):
         if (np.array(self.valid_criterion_history[-self.valid_threshold]) > self.valid_error_min).all():
             self.break_on_epoch=finetune_vars['epoch']
             return True
-        else
+        else:
             return False
        
 
@@ -220,8 +220,8 @@ def experience_multiple_pretraining_geometry(config):
 
     print '... loading valid data'
     valid_set = sio.loadmat('data/fixed/valid.mat')
-    x_valid = np.asarray(valid_set['x_valid'], dtype=theano.config.floatX) # We convert to float32 to
-    y_valid = np.asarray(valid_set['y_valid'], dtype=theano.config.floatX) # compute on GPUs with CUDA
+    x_valid = np.asarray(valid_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to
+    y_valid = np.asarray(valid_set['y_train'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 
     print '... loading test data'
     test_set = sio.loadmat('data/fixed/test.mat')
@@ -305,7 +305,7 @@ def experience_multiple_pretraining_geometry(config):
             'valid_criterion': nn.valid_criterion_history[-1],
             'valid_history':nn.valid_criterion_history,
             'test_criterion': test_criterion,
-            'last_epoch': nn.valid_criterion_history[-1][0]
+            'last_epoch': nn.valid_criterion_history[-1][0],
             'first_hidden_representation': hidden_geometry[0]
             }
         pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"%s_params.pck"%(expname,)),'w'),protocol=-1)
@@ -329,7 +329,7 @@ def experience_multiple_pretraining_geometry(config):
             table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],epoch,results[expname]['train_history'][epoch],results[expname]['valid_history'][epoch]],"N/A")
         table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],
                       results[expname]['last_epoch'],
-                      results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion'])        
+                      results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion']])        
 
     writer=csv.writer(open(os.path.join(absoutfolder,'intremediateresults.csv'),'wb'),delimiter='\t')
     for row in table:
@@ -340,7 +340,7 @@ def experience_multiple_pretraining_geometry(config):
     for expname in results.keys():
         table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],
                       results[expname]['last_epoch'],
-                      results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion'])        
+                      results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion']])        
 
     writer=csv.writer(open(os.path.join(absoutfolder,'finalresults.csv'),'wb'),delimiter='\t')
     for row in table:
