@@ -141,7 +141,7 @@ class MyValidPretrainedMLP(PretrainedMLP):
         
     def setValidThreshold(self,n):
     # set the number of epochs with a valid error above the valid error min to accept without breaking
-        self.valid_threshold
+        self.valid_threshold=n
         
     def initEpochHook(self,finetune_vars):
     # initialize storage variables before starting the great learning loop
@@ -174,7 +174,7 @@ class MyValidPretrainedMLP(PretrainedMLP):
             self.valid_forward_history.append((finetune_vars['epoch'],self.validForwardFunction()))
             self.app_forward_history.append((finetune_vars['epoch'],self.appForwardFunction()))
 
-        if (np.array(self.valid_criterion_history[-self.valid_threshold]) > self.valid_error_min).all():
+        if (np.array(self.valid_criterion_history[-self.valid_threshold:]) > self.valid_error_min).all():
             self.break_on_epoch=finetune_vars['epoch']
             return True
         else:
