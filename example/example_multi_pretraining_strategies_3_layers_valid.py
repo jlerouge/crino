@@ -174,7 +174,7 @@ class MyValidPretrainedMLP(PretrainedMLP):
             self.valid_forward_history.append((finetune_vars['epoch'],self.validForwardFunction()))
             self.app_forward_history.append((finetune_vars['epoch'],self.appForwardFunction()))
 
-        if np.array(self.valid_criterion_history[-self.valid_threshold]) > self.valid_error_min:
+        if (np.array(self.valid_criterion_history[-self.valid_threshold]) > self.valid_error_min).all():
             self.break_on_epoch=finetune_vars['epoch']
             return True
         else
