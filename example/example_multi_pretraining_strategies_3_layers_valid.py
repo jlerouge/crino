@@ -220,8 +220,8 @@ def experience_multiple_pretraining_geometry(config):
 
     print '... loading valid data'
     valid_set = sio.loadmat('data/fixed/valid.mat')
-    x_valid = np.asarray(valid_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to
-    y_valid = np.asarray(valid_set['y_train'], dtype=theano.config.floatX) # compute on GPUs with CUDA
+    x_valid = np.asarray(valid_set['x_valid'], dtype=theano.config.floatX) # We convert to float32 to
+    y_valid = np.asarray(valid_set['y_valid'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 
     print '... loading test data'
     test_set = sio.loadmat('data/fixed/test.mat')
