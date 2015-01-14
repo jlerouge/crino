@@ -139,6 +139,66 @@ class MyPretrainedMLP(PretrainedMLP):
             self.app_forward_history.append((finetune_vars['epoch'],self.appForwardFunction()))
 
 
+class MyValidPretrainedMLP(PretrainedMLP):
+# We subclass the Pretrained MLP class to gther some information during
+# learning phase and to folow the evolution of the criterion on an other
+# set than the training set
+    def setDisplayedEpochs(self,displayed_epochs):
+    # set the epochs where we will compute a forward for the seperate set
+        self.displayed_epochs=displayed_epochs        
+    
+    def setTestSet(self,x_test,y_test):
+    # set a seperate test set 
+        self.shared_x_test=theano.shared(x_test)
+        self.shared_y_test=theano.shared(y_test)
+
+    def setValidSet(self,x_valid,y_valid):
+    # set the seperate valid set
+        self.shared_x_valid=theano.shared(x_valid)
+        self.shared_y_valid=theano.shared(y_valid)
+        
+    def setValidThreshold(self,n):
+    # set the number of epochs with a valid error above the valid error min to accept without breaking
+        self.valid_threshold=n
+        
+    def initEpochHook(self,finetune_vars):
+    # initialize storage variables before starting the great learning loop
+
+        self.testCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_test, shared_y_data=self.shared_y_test)
+        self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)    
+    
+        self.validCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_valid, shared_y_data=self.shared_y_valid)
+        self.validForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_valid)
+        
+        self.valid_criterion_history=[np.mean(self.validCriterionFunction())]
+        self.valid_forward_history=[(-1,self.validForwardFunction())]
+        self.valid_error_min=None
+        
+        self.appForwardFunction=self.forwardFunction(downcast=True, shared_x_data=finetune_vars['shared_x_train'])
+        self.app_forward_history=[(-1,self.appForwardFunction())]
+        
+        self.break_on_epoch=None
+        
+        
+    def checkEpochHook(self,finetune_vars):
+    # compute the criterion (whithout backprop) on the separate set
+        valid_error=np.mean(self.validCriterionFunction())
+        self.valid_criterion_history.append(valid_error)
+        if (self.valid_error_min is None ) or (self.valid_error_min > valid_error) :
+            self.valid_error_min=valid_error
+       
+        if finetune_vars['epoch']+1 in self.displayed_epochs:
+            # compute a forward pass only on certain epochs and sotre the results
+            self.valid_forward_history.append((finetune_vars['epoch'],self.validForwardFunction()))
+            self.app_forward_history.append((finetune_vars['epoch'],self.appForwardFunction()))
+
+        if (np.array(self.valid_criterion_history[-self.valid_threshold:]) > self.valid_error_min).all():
+            self.break_on_epoch=finetune_vars['epoch']
+            return True
+        else:
+            return False
+
+
 def data2greyimg(filename, X):
 # Convinient functoin to save 2D array as png
     Xn=(X-X.min())/(X.max()-X.min())*255

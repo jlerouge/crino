@@ -40,9 +40,20 @@ import csv
 
 import json
 
-from example import data2greyimg
+from example import data2greyimg,MyValidPretrainedMLP
 
 import datetime as DT
+
+
+outformat='pdf'
+if outformat=='pdf':
+  outback='pdf'
+else:
+  outback='cairo'
+import matplotlib
+matplotlib.use(outback)
+import matplotlib.pyplot as plt
+
 
 def defaultConfig():
 
@@ -120,65 +131,6 @@ def defaultConfig():
     config['outfolder']='./results-valid-%d-layers-%d-units-%s/'%(len(config['hidden_geometry'])+1,hidden_size,DT.datetime.now().strftime("%Y-%m-%d-%H-%M"))
 
     return config
-
-class MyValidPretrainedMLP(PretrainedMLP):
-# We subclass the Pretrained MLP class to gther some information during
-# learning phase and to folow the evolution of the criterion on an other
-# set than the training set
-    def setDisplayedEpochs(self,displayed_epochs):
-    # set the epochs where we will compute a forward for the seperate set
-        self.displayed_epochs=displayed_epochs        
-    
-    def setTestSet(self,x_test,y_test):
-    # set a seperate test set 
-        self.shared_x_test=theano.shared(x_test)
-        self.shared_y_test=theano.shared(y_test)
-
-    def setValidSet(self,x_valid,y_valid):
-    # set the seperate valid set
-        self.shared_x_valid=theano.shared(x_valid)
-        self.shared_y_valid=theano.shared(y_valid)
-        
-    def setValidThreshold(self,n):
-    # set the number of epochs with a valid error above the valid error min to accept without breaking
-        self.valid_threshold=n
-        
-    def initEpochHook(self,finetune_vars):
-    # initialize storage variables before starting the great learning loop
-
-        self.testCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_test, shared_y_data=self.shared_y_test)
-        self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)    
-    
-        self.validCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_valid, shared_y_data=self.shared_y_valid)
-        self.validForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_valid)
-        
-        self.valid_criterion_history=[np.mean(self.validCriterionFunction())]
-        self.valid_forward_history=[(-1,self.validForwardFunction())]
-        self.valid_error_min=None
-        
-        self.appForwardFunction=self.forwardFunction(downcast=True, shared_x_data=finetune_vars['shared_x_train'])
-        self.app_forward_history=[(-1,self.appForwardFunction())]
-        
-        self.break_on_epoch=None
-        
-        
-    def checkEpochHook(self,finetune_vars):
-    # compute the criterion (whithout backprop) on the separate set
-        valid_error=np.mean(self.validCriterionFunction())
-        self.valid_criterion_history.append(valid_error)
-        if (self.valid_error_min is None ) or (self.valid_error_min > valid_error) :
-            self.valid_error_min=valid_error
-       
-        if finetune_vars['epoch']+1 in self.displayed_epochs:
-            # compute a forward pass only on certain epochs and sotre the results
-            self.valid_forward_history.append((finetune_vars['epoch'],self.validForwardFunction()))
-            self.app_forward_history.append((finetune_vars['epoch'],self.appForwardFunction()))
-
-        if (np.array(self.valid_criterion_history[-self.valid_threshold:]) > self.valid_error_min).all():
-            self.break_on_epoch=finetune_vars['epoch']
-            return True
-        else:
-            return False
        
 
 def experience_multiple_pretraining_geometry(config):
@@ -310,10 +262,10 @@ def experience_multiple_pretraining_geometry(config):
             }
         pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"%s_params.pck"%(expname,)),'w'),protocol=-1)
        
-	#print(results[expname]) 
-	print("RESULT %s: train: %f valid: %f test: %f learning epochs %d"%(expname,results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion'],results[expname]['last_epoch']+1))
+        #print(results[expname]) 
+        print("RESULT %s: train: %f valid: %f test: %f learning epochs %d"%(expname,results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion'],results[expname]['last_epoch']+1))
 
-	print("... saving figures")
+        print("... saving figures")
 
         for phase,xdata,ydata,history in [
                     ['train',x_train,y_train,nn.app_forward_history],
@@ -327,7 +279,14 @@ def experience_multiple_pretraining_geometry(config):
         for ex in displayed_examples:
             y_estim = np.reshape(test_forward[ex:ex+1], (xSize, xSize), 'F')
             data2greyimg(os.path.join(absoutfolder,"%s_%s_ex_%03d_estim_%03d.png"%(expname,'test',ex,results[expname]['last_epoch']+1)),y_estim)
-    
+        
+        plt.close('all')
+        plt.figure(1)
+        plt.plot(nn.valid_criterion_history)
+        plt.ylabel('criterion')
+        plt.xlabel('epochs')
+        plt.savefig(os.path.join(absoutfolder,"%s_valid_criterion.pdf"%(expname,)))
+        plt.close(1)
 
     print("... saving results")                
     pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
