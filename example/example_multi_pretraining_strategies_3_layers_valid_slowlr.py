@@ -19,11 +19,11 @@
 #    You should have received a copy of the GNU Lesser General Public License
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
-from example_multi_pretraining_strategies_3_layers_valid_slowlr import experience_multiple_pretraining_geometry_and_valid
+from example_multi_pretraining_strategies_3_layers_valid import experience_multiple_pretraining_geometry_and_valid
 
 from example import data2greyimg
 
-
+import datetime as DT
 
 def slowConfig():
 
