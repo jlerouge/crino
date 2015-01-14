@@ -84,7 +84,7 @@ def defaultConfig():
     config['learning_params']={
         'learning_rate' : 2.0,
         'batch_size' : 100,
-        'epochs' : 1000,
+        'epochs' : 2000,
         'input_pretraining_params' : input_pretraining_params,
         'output_pretraining_params' : output_pretraining_params,
         #'link_pretraining_params' : link_pretraining_params,
@@ -133,7 +133,7 @@ def defaultConfig():
     return config
        
 
-def experience_multiple_pretraining_geometry(config):
+def experience_multiple_pretraining_geometry_and_valid(config):
 
     needed_params=['learning_params','hidden_geometry','pretraining_geometries','init_weights','save_init_weights','displayed_examples','displayed_epochs','outfolder','valid_threshold']
 
@@ -319,7 +319,7 @@ def experience_multiple_pretraining_geometry(config):
     print('reverts stdout to console')  
 
 def main():
-    experience_multiple_pretraining_geometry(defaultConfig())
+    experience_multiple_pretraining_geometry_and_valid(defaultConfig())
 
 if __name__=="__main__":
     main()
