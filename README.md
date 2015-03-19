@@ -2,21 +2,19 @@
 
 Crino is an open-source Python library aimed at building and training artificial neural-networks. It has been developed on top of [Theano](http://deeplearning.net/software/theano/), by researchers from the [LITIS laboratory](http://www.litislab.eu).
 
-Crino lets you "hand-craft" neural-network architectures, using a modular framework inspired by [Torch](http://torch5.sourceforge.net/manual/nn/). Our library also provides standard implementations for :
+Crino lets you "hand-craft" neural-network architectures, using a modular framework inspired by [Torch](http://torch5.sourceforge.net/manual/nn/). Our library also provides standard implementations as long as learning algorithms for :
 * auto-encoders (AE)
 * multi-layer perceptrons (MLP)
 * deep neural networks (DNN)
 * input-output deep architectures (IODA)
 
 ## IODA
-IODA is a specialization of the DNNs, specifically designed for cases where you have to deal with high-dimensional input and output spaces. The input and output layers are initialized with an unsupervised pre-training step. Then, the backpropagation algorithm performs the supervised learning final step. This process is based on the stacked auto-encoder strategy, commonly used by DNN training algorithms.
-
-We are currently writing an article on IODA, we'll inform you as soon as it is ready to publish.
+IODA is a DNN architecture, which is useful in cases where both input and output spaces are high-dimensional, and where there are strong interdependences between output labels. The input and output layers of a IODA are initialized with an unsupervised pre-training step, based on the stacked auto-encoder strategy, commonly used in DNN training algorithms. Then, the backpropagation algorithm performs the final supervised learning step.
 
 ## Getting started
 * Install Crino :
 ```bash
-cd to/your/preferred/path
+cd to/some/path
 git clone https://github.com/jlerouge/crino.git
 cd crino
 sudo python setup.py install
@@ -43,12 +41,14 @@ You can contact us with the following e-mail address : crino-contact@litislab.fr
 Feel free to open a new [issue](https://github.com/jlerouge/crino/issues) in case you have found a bug in Crino.
 
 ## Credits
-Crino is based on Theano :
+If you use Crino for academic research, you are highly encouraged (though not required) to cite the following paper:
+* J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski. "IODA: an Input/Output Deep Architecture for image labeling". *Accepted for publication in Pattern Recognition* (2015)
+
+We would like to thank the authors of [Theano](http://deeplearning.net/software/theano/) :
 * J. Bergstra, O. Breuleux, F. Bastien, P. Lamblin, R. Pascanu, G. Desjardins, J. Turian, D. Warde-Farley and Y. Bengio. [“Theano: A CPU and GPU Math Expression Compiler”](http://www.iro.umontreal.ca/~lisa/pointeurs/theano_scipy2010.pdf). Proceedings of the Python for Scientific Computing Conference (SciPy) 2010. June 30 - July 3, Austin, TX
 
-IODA is based on B. Labbé's et al. work :
+IODA is partly based on the original work of B. Labbé et al. :
 * B. Labbé, R. Hérault and C. Chatelain . [“Learning Deep Neural Networks for High Dimensional Output Problems”](http://hal.archives-ouvertes.fr/docs/00/43/87/14/PDF/icmla09.pdf). In IEEE International Conference on Machine Learning and Applications (ICMLA'09), December 2009.
-
 
 ## Disclaimer
 Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
