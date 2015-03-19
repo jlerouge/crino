@@ -27,7 +27,9 @@ chmod +x example.py
 ./example.py
 ```
 * Adapt it to your needs! Crino is natively compatible with Matlab-like data or any format handled by SciPy/NumPy.
-* Check the project [documentation](http://jlerouge.github.io/crino/doc)
+
+### Documentation
+Check the project [documentation](http://jlerouge.github.io/crino/doc).
 
 ### FAQ
 * **What does "device gpu is not available" mean ?**
@@ -35,7 +37,7 @@ chmod +x example.py
 * **Where does the name "Crino" come from ?**
     We developed this library as an extension of Theano. In Greek mythology, Crino is the daughter of Theano.
 
-## About this project
+## About our project
 ### Citing Crino/IODA
 If you use Crino and/or our IODA framework for academic research, you are highly encouraged (though not required) to cite the following paper:
 * J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski. "IODA: an Input/Output Deep Architecture for image labeling". *Accepted for publication in Pattern Recognition* (2015)
