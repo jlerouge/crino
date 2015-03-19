@@ -7,9 +7,12 @@ Crino lets you "hand-craft" neural-network architectures, using a modular framew
 * multi-layer perceptrons (MLP)
 * deep neural networks (DNN)
 * input-output deep architectures (IODA)
+ 
+IODA is a novel DNN architecture, which is useful in cases where both input and output spaces are high-dimensional, and where there are strong interdependences between output labels. The input and output layers of a IODA are initialized with an unsupervised pre-training step, based on the stacked auto-encoder strategy, commonly used in DNN training algorithms. Then, the backpropagation algorithm performs the final supervised learning step.
 
-## IODA
-IODA is a DNN architecture, which is useful in cases where both input and output spaces are high-dimensional, and where there are strong interdependences between output labels. The input and output layers of a IODA are initialized with an unsupervised pre-training step, based on the stacked auto-encoder strategy, commonly used in DNN training algorithms. Then, the backpropagation algorithm performs the final supervised learning step.
+## Citing Crino/IODA
+If you use Crino and/or our IODA framework for academic research, you are highly encouraged (though not required) to cite the following paper:
+* J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski. "IODA: an Input/Output Deep Architecture for image labeling". *Accepted for publication in Pattern Recognition* (2015)
 
 ## Getting started
 * Install Crino :
@@ -37,12 +40,7 @@ chmod +x example.py
 
 ## Contact
 You can contact us with the following e-mail address : crino-contact@litislab.fr.
-
 Feel free to open a new [issue](https://github.com/jlerouge/crino/issues) in case you have found a bug in Crino.
-
-## Citing Crino/IODA
-If you use Crino and/or our IODA framework for academic research, you are highly encouraged (though not required) to cite the following paper:
-* J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski. "IODA: an Input/Output Deep Architecture for image labeling". *Accepted for publication in Pattern Recognition* (2015)
 
 ## Credits
 We would like to thank the authors of [Theano](http://deeplearning.net/software/theano/) :
