@@ -10,11 +10,8 @@ Crino lets you "hand-craft" neural-network architectures, using a modular framew
  
 IODA is a novel DNN architecture, which is useful in cases where both input and output spaces are high-dimensional, and where there are strong interdependences between output labels. The input and output layers of a IODA are initialized with an unsupervised pre-training step, based on the stacked auto-encoder strategy, commonly used in DNN training algorithms. Then, the backpropagation algorithm performs the final supervised learning step.
 
-## Citing Crino/IODA
-If you use Crino and/or our IODA framework for academic research, you are highly encouraged (though not required) to cite the following paper:
-* J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski. "IODA: an Input/Output Deep Architecture for image labeling". *Accepted for publication in Pattern Recognition* (2015)
-
-## Getting started
+## Usage
+### Getting started
 * Install Crino :
 ```bash
 cd to/some/path
@@ -32,19 +29,24 @@ chmod +x example.py
 * Adapt it to your needs! Crino is natively compatible with Matlab-like data or any format handled by SciPy/NumPy.
 * Check the project [documentation](http://jlerouge.github.io/crino/doc)
 
-## FAQ
+### FAQ
 * **What does "device gpu is not available" mean ?**
     Your GPU card may not be compatible with CUDA technology (check http://www.geforce.com/hardware/technology/cuda/supported-gpus). If so, there is nothing to do. Otherwise, your theano installation may have a  problem (see http://deeplearning.net/software/theano/install.html#using-the-gpu).
 * **Where does the name "Crino" come from ?**
     We developed this library as an extension of Theano. In Greek mythology, Crino is the daughter of Theano.
 
-## Credits
+## About this project
+### Citing Crino/IODA
+If you use Crino and/or our IODA framework for academic research, you are highly encouraged (though not required) to cite the following paper:
+* J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski. "IODA: an Input/Output Deep Architecture for image labeling". *Accepted for publication in Pattern Recognition* (2015)
+
+### Credits
 We would like to thank the authors of [Theano](http://deeplearning.net/software/theano/) :
 * J. Bergstra, O. Breuleux, F. Bastien, P. Lamblin, R. Pascanu, G. Desjardins, J. Turian, D. Warde-Farley and Y. Bengio. [“Theano: A CPU and GPU Math Expression Compiler”](http://www.iro.umontreal.ca/~lisa/pointeurs/theano_scipy2010.pdf). Proceedings of the Python for Scientific Computing Conference (SciPy) 2010. June 30 - July 3, Austin, TX
 
 IODA is partly based on the original work of B. Labbé et al. :
 * B. Labbé, R. Hérault and C. Chatelain . [“Learning Deep Neural Networks for High Dimensional Output Problems”](http://hal.archives-ouvertes.fr/docs/00/43/87/14/PDF/icmla09.pdf). In IEEE International Conference on Machine Learning and Applications (ICMLA'09), December 2009.
 
-## Contact
+### Contact
 You can contact us with the following e-mail address : crino-contact@litislab.fr.
 Feel free to open a new [issue](https://github.com/jlerouge/crino/issues) in case you have found a bug in Crino.
