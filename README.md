@@ -38,13 +38,13 @@ chmod +x example.py
 * **Where does the name "Crino" come from ?**
     We developed this library as an extension of Theano. In Greek mythology, Crino is the daughter of Theano.
 
-## Contact
-You can contact us with the following e-mail address : crino-contact@litislab.fr.
-Feel free to open a new [issue](https://github.com/jlerouge/crino/issues) in case you have found a bug in Crino.
-
 ## Credits
 We would like to thank the authors of [Theano](http://deeplearning.net/software/theano/) :
 * J. Bergstra, O. Breuleux, F. Bastien, P. Lamblin, R. Pascanu, G. Desjardins, J. Turian, D. Warde-Farley and Y. Bengio. [“Theano: A CPU and GPU Math Expression Compiler”](http://www.iro.umontreal.ca/~lisa/pointeurs/theano_scipy2010.pdf). Proceedings of the Python for Scientific Computing Conference (SciPy) 2010. June 30 - July 3, Austin, TX
 
 IODA is partly based on the original work of B. Labbé et al. :
 * B. Labbé, R. Hérault and C. Chatelain . [“Learning Deep Neural Networks for High Dimensional Output Problems”](http://hal.archives-ouvertes.fr/docs/00/43/87/14/PDF/icmla09.pdf). In IEEE International Conference on Machine Learning and Applications (ICMLA'09), December 2009.
+
+## Contact
+You can contact us with the following e-mail address : crino-contact@litislab.fr.
+Feel free to open a new [issue](https://github.com/jlerouge/crino/issues) in case you have found a bug in Crino.
