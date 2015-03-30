@@ -10,8 +10,7 @@ Crino lets you "hand-craft" neural-network architectures, using a modular framew
  
 IODA is a novel DNN architecture, which is useful in cases where both input and output spaces are high-dimensional, and where there are strong interdependences between output labels. The input and output layers of a IODA are initialized with an unsupervised pre-training step, based on the stacked auto-encoder strategy, commonly used in DNN training algorithms. Then, the backpropagation algorithm performs the final supervised learning step.
 
-## Usage
-### Getting started
+## Getting started
 * Install Crino :
 ```bash
 cd to/some/path
@@ -29,7 +28,7 @@ chmod +x example.py
 * Adapt it to your needs! Crino is natively compatible with Matlab-like data or any format handled by SciPy/NumPy.
 * Check the project [documentation](http://jlerouge.github.io/crino/doc).
 
-### FAQ
+## FAQ
 * **What does "device gpu is not available" mean ?**
     Your GPU card may not be compatible with CUDA technology (check http://www.geforce.com/hardware/technology/cuda/supported-gpus). If so, there is nothing to do. Otherwise, your theano installation may have a  problem (see http://deeplearning.net/software/theano/install.html#using-the-gpu).
 * **Where does the name "Crino" come from ?**
