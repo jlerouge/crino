@@ -40,7 +40,7 @@ Check the project [documentation](http://jlerouge.github.io/crino/doc).
 ## About our project
 ### Citing Crino/IODA
 If you use Crino and/or our IODA framework for academic research, you are highly encouraged (though not required) to cite the following paper:
-* J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski. "IODA: an Input/Output Deep Architecture for image labeling". *Accepted for publication in Pattern Recognition* (2015)
+* J. Lerouge, R. Herault, C. Chatelain, F. Jardin and R. Modzelewski, ["IODA: an Input/Output Deep Architecture for image labeling"](http://www.sciencedirect.com/science/article/pii/S0031320315001181), Pattern Recognition (2015), DOI: 10.1016/j.patcog.2015.03.017 [Epub ahead of print]
 
 ### Credits
 We would like to thank the authors of [Theano](http://deeplearning.net/software/theano/) :
