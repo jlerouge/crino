@@ -27,9 +27,7 @@ chmod +x example.py
 ./example.py
 ```
 * Adapt it to your needs! Crino is natively compatible with Matlab-like data or any format handled by SciPy/NumPy.
-
-### Documentation
-Check the project [documentation](http://jlerouge.github.io/crino/doc).
+* Check the project [documentation](http://jlerouge.github.io/crino/doc).
 
 ### FAQ
 * **What does "device gpu is not available" mean ?**
