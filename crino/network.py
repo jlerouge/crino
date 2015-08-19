@@ -20,7 +20,18 @@
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
 """
-provides some ready-to-use neural networks, such as MLP's, DNN's and IODA's.
+The `network` module provides some ready-to-use neural network architectures,
+along with pretraining and supervised learning methods.
+
+The currently implemented neural network architectures are :
+    - `AutoEncoder` and its counterpart `OutputAutoEncoder`
+    - `MultiLayerPerceptron`
+    - `DeepNeuralNetwork`
+    - `InputOutputDeepArchitecture`
+
+See their respective documentations for more details about their use.
+
+:see: `criterion`, `network`
 """
 
 import datetime as DT
@@ -136,14 +147,17 @@ class MultiLayerPerceptron(Sequential):
         Performs the supervised learning step of the `MultiLayerPerceptron`,
         using a batch-gradient backpropagation algorithm. The `learning_rate`
         is made adaptative with the `growth_factor` multiplier. If the mean loss
-        a number is improved during `growth_threshold` successive epochs, then
-        the `learning_rate` is increased, and if the mean loss is degraded during
-        one epoch, then the `learning_rate` is decreased.
+        is improved during `growth_threshold` successive epochs, then the
+        `learning_rate` is increased. If the mean loss is degraded, the epoche
+        is called a "bad move", and the `learning_rate` is decreased until the
+        mean loss is improved again. If the mean loss cannot be improved within
+        `badmove_threshold` trials, then the last trained parameters are kept
+        even though, and the finetuning goes further.
 
         :Parameters:
-            x_train : SharedVariable from :numpy:`ndarray`
+            shared_x_train : :theano:`SharedVariable` from :numpy:`ndarray`
                 The training examples.
-            y_train : SharedVariable from :numpy:`ndarray`
+            shared_y_train : :theano:`SharedVariable` from :numpy:`ndarray`
                 The training labels.
             batch_size : int
                 The number of training examples in each mini-batch.
@@ -210,7 +224,7 @@ class MultiLayerPerceptron(Sequential):
 
                 if badmoves+1<badmove_threshold:
                     if(verbose):
-                        print "\r# Bad move %f > %f; Learning rate : %f > %f" % (mean_loss, new_mean_loss, learning_rate, learning_rate/growth_factor)
+                        print "\r# Bad move %f < %f; Learning rate : %f --> %f" % (mean_loss, new_mean_loss, learning_rate, learning_rate/growth_factor)
                     restore()
                     learning_rate = learning_rate/growth_factor
                     train = self.trainFunction(
@@ -253,20 +267,12 @@ class MultiLayerPerceptron(Sequential):
                 The training examples.
             y_train : :numpy:`ndarray`
                 The training labels.
-            batch_size : int
-                The number of training examples in each mini-batch.
-            learning_rate : float
-                The rate used to update the parameters with the gradient.
-            epochs : int
-                The number of epochs to run the training algorithm.
-            growth_factor : float
-                The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : int
-                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
-            badmove_threshold : int
-                The number of successive loss-non-improving gradient descents after which parameters must be updated.
-            verbose : bool
-                If true, information about the training process will be displayed on the standard output.
+            params : dict
+                The learning parameters, encoded in a dictionary, that are used
+                in the `finetune` method.
+
+                Possible keys: batch_size, learning_rate, epochs, growth_factor,
+                growth_threshold, badmove_threshold, verbose.
 
         :return: elapsed time, in datetime.
         :see: `finetune`
@@ -308,7 +314,7 @@ class AutoEncoder(MultiLayerPerceptron):
 
         :Parameters:
             nVisibles : int
-                The `visibles` size.
+                The size of the visible representation.
             nHidden : int
                 The size of the hidden representation.
             outputActivation : class derived from `Activation`
@@ -343,7 +349,6 @@ class AutoEncoder(MultiLayerPerceptron):
         return self.modules[1].forward(linear)
 
 class OutputAutoEncoder(AutoEncoder):
-
     def prepareParams(self):
         if(self.modules):
             self.modules[2].prepareParams()
@@ -427,7 +432,6 @@ class PretrainedMLP(MultiLayerPerceptron):
         self.linkLayer.linkInputs(x,self.lastInputSize)
         self.linkLayer.prepare()
 
-
         self.linkInputData=None
         self.linkOutputData=None
 
@@ -464,28 +468,12 @@ class PretrainedMLP(MultiLayerPerceptron):
         to initialize the network layers. The backprojection (decoding) part is not useful
         anymore.
 
-        The `learning_rate` is made adaptative with the `growth_factor` multiplier.
-        If the mean loss a number is improved during `growth_threshold` successive epochs,
-        then the `learning_rate` is increased, and if the mean loss is degraded during
-        one epoch, then the `learning_rate` is decreased.
-
         :Parameters:
-            data : SharedVariable from :numpy:`ndarray`
+            data : :theano:`SharedVariable` from :numpy:`ndarray`
                 The training data (typically example features).
-            batch_size : int
-                The number of training examples in each mini-batch.
-            learning_rate : float
-                The rate used to update the parameters with the gradient.
-            epochs : int
-                The number of epochs to run the training algorithm.
-            growth_factor : float
-                The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : int
-                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
-            badmove_threshold : int
-                The number of successive loss-non-improving gradient descents after which parameters must be updated.
-            verbose : bool
-                If true, information about the training process will be displayed on the standard output.
+            params : dict
+                The learning parameters, encoded in a dictionary, that are used
+                in the `finetune` method.
         """
         (learning_params,unknown)=self.checkLearningParameters(params)
         if len(unknown)>0:
@@ -512,7 +500,7 @@ class PretrainedMLP(MultiLayerPerceptron):
         Performs the unsupervised learning step of the output autoencoders,
         using a batch-gradient backpropagation algorithm.
 
-        The `OutputOutputDeepArchitecture`  pretrains the output autoencoders,
+        The `InputOutputDeepArchitecture` pretrains the output autoencoders,
         in the same way the `DeepNeuralNetwork` does for input autoencoders. In
         this case, the given training data are the labels (:math:`\mathbf{y}`)
         and not the examples (:math:`\mathbf{x}`) (i.e. the labels that the network
@@ -522,28 +510,12 @@ class PretrainedMLP(MultiLayerPerceptron):
         to initialize the network layers. The projection (encoding) part is not useful
         anymore.
 
-        The `learning_rate` is made adaptative with the `growth_factor` multiplier.
-        If the mean loss a number is improved during `growth_threshold` successive epochs,
-        then the `learning_rate` is increased, and if the mean loss is degraded during
-        one epoch, then the `learning_rate` is decreased.
-
         :Parameters:
-            data : SharedVariable from :numpy:`ndarray`
+            data : :theano:`SharedVariable` from :numpy:`ndarray`
                 The training data (typically example labels).
-            batch_size : int
-                The number of training examples in each mini-batch.
-            learning_rate : float
-                The rate used to update the parameters with the gradient.
-            epochs : int
-                The number of epochs to run the training algorithm.
-            growth_factor : float
-                The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : int
-                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
-            badmove_threshold : int
-                The number of successive loss-non-improving gradient descents after which parameters must be updated.
-            verbose : bool
-                If true, information about the training process will be displayed on the standard output.
+            params : dict
+                The learning parameters, encoded in a dictionary, that are used
+                in the `finetune` method.
         """
         (learning_params,unknown)=self.checkLearningParameters(params)
         if len(unknown)>0:
@@ -568,42 +540,35 @@ class PretrainedMLP(MultiLayerPerceptron):
     def train(self, x_train, y_train, **params):
         """
         Performs the pretraining step for the input and output autoencoders,
-        optionally the semi-supervised pretraining step of the link layer, and finally the supervised learning
-        step (`finetune`).
+        optionally the semi-supervised pretraining step of the link layer, and
+        finally the supervised learning step (`finetune`).
 
         :Parameters:
             x_train : :numpy:`ndarray`
                 The training examples.
             y_train : :numpy:`ndarray`
                 The training labels.
-            batch_size : int
-                The number of training examples in each mini-batch.
-            learning_rate : float
-                The rate used to update the parameters with the gradient.
-            epochs : int
-                The number of epochs to run the training algorithm.
-            growth_factor : float
-                The multiplier factor used to increase or decrease the `learning_rate`.
-            growth_threshold : int
-                The number of successive loss-improving epochs after which the `learning_rate` must be updated.
-            badmove_threshold : int
-                The number of successive loss-non-improving gradient descents after which parameters must be updated.
-            verbose : bool
-                If true, information about the training process will be displayed on the standard output.
-            input_pretraining_params : dict
-                The paramaters the pretraining step,
-                possible keys: batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose
-            output_pretraining_params : dict
-                The paramaters the pretraining step,
-                possible keys: batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose
-            link_pretraining : bool
-                Should we pretrain the link layer (Default: False)
-            link_pretraining_params : dict
-                The paramaters the pretraining step,
-                possible keys: batch_size, learning_rate, epochs, growth_factor, growth_threshold, badmove_threshold, verbose
+            params : dict
+                The learning parameters, encoded in a dictionary, that are used
+                during the autoencoders pretraining (`pretrainInputAutoEncoders`,
+                `pretrainOutputAutoEncoders`), the link layer pretraining, and
+                the final learning (`finetune`) steps.
+
+                Possible keys: batch_size, learning_rate, epochs, growth_factor,
+                growth_threshold, badmove_threshold, verbose,
+                input_pretraining_params, output_pretraining_params,
+                link_pretraining, link_pretraining_params.
+
+                The link_pretraining parameter controls whether the link layer
+                is pretrained or not (default: False).
+
+                The input_pretraining_params, output_pretraining_params and
+                link_pretraining_params parameters are themselves dictionaries
+                containing the training parameters for each pretraining step.
 
         :return: elapsed time, in deltatime.
-        :see: `pretrainAutoEncoders`, `pretrainLink`, `finetune`
+        :see: `pretrainInputAutoEncoders`, `pretrainOutputAutoEncoders`,
+              `finetune`
         """
 
         (training_params,unknown)=self.checkLearningParameters(params)
@@ -628,7 +593,7 @@ class PretrainedMLP(MultiLayerPerceptron):
             link_pretraining_params={'epochs':50}
 
         if len(unknown)>0:
-            print("Waring unknown training parameters %s"%(unknown,))
+            print("Warning: unknown training parameters %s"%(unknown,))
 
         training_params=self.defaultLearningParameters(training_params)
         input_pretraining_params=self.defaultLearningParameters(input_pretraining_params)
@@ -714,14 +679,14 @@ class InputOutputDeepArchitecture(PretrainedMLP):
     for cases where both the input and the output spaces are high-dimensional.
 
     The input and output layers are pretrained on the training example
-    (:math:`\mathbf{x}) and the training labels (:math:`\mathbf{y}),
+    (:math:`\mathbf{x}`) and the training labels (:math:`\mathbf{y}`),
     respectively, using a Stacked `AutoEncoder` strategy, as for DNNs.
 
     The link layer can optionally be pretrained, using as input and output data
     the hidden representations of the deepmost input and output autoencoders,
     respectively.
 
-    :see: `DeepNeuralNetwork`, http://www.deeplearning.net/tutorial/SdA.html
+    :see: `DeepNeuralNetwork`, `Stacked Denoising Autoencoders tutorial <http://www.deeplearning.net/tutorial/SdA.html>`_
     """
 
     def __init__(self, nUnitsInput, nUnitsOutput, outputActivation=Sigmoid):

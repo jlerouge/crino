@@ -20,8 +20,19 @@
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
 """
-provides some differentiable loss functions in order to
+The `criterion` module provides some differentiable loss functions in order to
 perform a gradient descent on a hand-crafted neural network.
+
+The currently implemented criterions are :
+    - `CrossEntropy`
+    - `MeanSquareError`
+    - `MeanAbsoluteError`
+    - `NegativeLogLikelihood`
+
+See their respective documentations for their mathematical expressions and their
+use cases.
+ 
+:see: `module`
 """
 
 import theano.tensor as T

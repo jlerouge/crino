@@ -20,7 +20,27 @@
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
 """
-provides a modular architecture to build a neural network.
+The `module` module provides a modular architecture to build a neural network.
+
+These modules can be either `Standalone` modules, i.e. modules that doesn't have
+submodules, or `Container` modules, i.e. modules that are composed of one or
+several other module(s). The `Container` modules are typically used to create
+arbitrarily complex neural network architectures, while `Standalone` modules
+acts as `Linear` regression layers or non-linear `Activation` layers.
+
+The currently implemented `Standalone` modules are :
+    - `Linear`
+    - `Sigmoid`
+    - `Softmax`
+    - `Tanh`
+
+The currently implemented `Container` modules are :
+    - `Concat`
+    - `Sequential`
+
+See their respective documentations for more details about their use.
+
+:see: `criterion`, `network`
 """
 
 import theano
