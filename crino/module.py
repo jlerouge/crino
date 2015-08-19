@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014-2015 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
-#    
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
+#
 #    This file is part of Crino.
 #
 #    Crino is free software: you can redistribute it and/or modify
@@ -163,7 +164,7 @@ class Module:
         :return: a Theano-function that performs one step of gradient descent
         :rtype: :theano:`function`
         """
-        
+
         shared_sets=False
         if isinstance(shared_x_train,SharedVariable) and isinstance(shared_y_train,SharedVariable):
             shared_sets=True
@@ -184,7 +185,7 @@ class Module:
             updates = []
             for param_i, grad_i in zip(self.params, self.gparams):
                 updates.append((param_i, param_i - lr*grad_i))
-                
+
             # Définition des entrées
             if shared_sets:
                 inputs=[index]
@@ -212,7 +213,7 @@ class Module:
         :return: a Theano-function that performs one step of gradient descent
         :rtype: :theano:`function`
         """
-        
+
         shared_sets=False
         if isinstance(shared_x_data,SharedVariable) and isinstance(shared_y_data,SharedVariable):
             shared_sets=True
@@ -226,7 +227,7 @@ class Module:
             else:
                 x_data = T.matrix('x_data')
                 y_data = T.matrix('y_data')
-                
+
             # Définition des entrées
             if shared_sets:
                 inputs=[]
@@ -234,7 +235,7 @@ class Module:
                 inputs=[x_data, y_data]
 
             # Construction de la fonction
-            return theano.function( inputs=inputs, outputs=self.criterion.expression, 
+            return theano.function( inputs=inputs, outputs=self.criterion.expression,
                                     givens={
                                         self.inputs: x_data,
                                         self.criterion.targets: y_data
@@ -254,11 +255,11 @@ class Module:
         :return: a Theano-function that performs one step of gradient descent
         :rtype: :theano:`function`
         """
-        
+
         shared_sets=False
         if isinstance(shared_x_data,SharedVariable):
             shared_sets=True
-        
+
         if self.prepared:
 
             # Définition des variables symboliques
@@ -266,7 +267,7 @@ class Module:
                 x_data = shared_x_data
             else:
                 x_data = T.matrix('x_data')
-                
+
             # Définition des entrées
             if shared_sets:
                 inputs=[]
@@ -279,7 +280,7 @@ class Module:
                                         self.inputs: x_data
                                     }, allow_input_downcast=downcast)
         else:
-            return None         
+            return None
 
     def forward(self, x_test):
         """
@@ -297,30 +298,30 @@ class Module:
         return forward()
 
     def holdFunction(self):
-        
+
         if self.params and self.backupParams:
             # Définition des mises à jour
             updates = []
             for param_i, backup_param_i in zip(self.params, self.backupParams):
                 updates.append((backup_param_i, param_i))
-            
+
             # Construction d'une fonction de hold
-            return theano.function(inputs=[], updates=updates)                
+            return theano.function(inputs=[], updates=updates)
         else:
-            return None                
+            return None
 
     def restoreFunction(self):
-        
+
         if self.params and self.backupParams:
             # Définition des mises à jour
             updates = []
             for param_i, backup_param_i in zip(self.params, self.backupParams):
                 updates.append((param_i, backup_param_i))
-            
+
             # Construction d'une fonction de restore
-            return theano.function(inputs=[], updates=updates)                
+            return theano.function(inputs=[], updates=updates)
         else:
-            return None 
+            return None
 
     def prepare(self):
         """
@@ -680,7 +681,7 @@ class Activation(Standalone):
     def __init__(self, nOutputs, nInputs=None):
         """
         Constructs a new `Activation` module.
-        
+
         :Parameters:
             nOutputs : int
                 The `outputs` size.
@@ -720,7 +721,7 @@ class Tanh(Activation):
         Computes the tanh function :math:`\mathbf{\hat{y}} = = [\dfrac{exp(x_i)-exp(-x_i)}{exp(x_i)+exp(-x_i)}]_{i=1}^n`
         """
         self.outputs = T.tanh(self.inputs)
-        
+
 class Sigmoid(Activation):
     """
     A `Sigmoid` activation module computes its `outputs` with the
@@ -745,7 +746,7 @@ class Sigmoid(Activation):
         Computes the sigmoid function :math:`\mathbf{\hat{y}} = [1/(1+exp(-x_i))]_{i=1}^n`
         """
         self.outputs = T.nnet.sigmoid(self.inputs)
-        
+
 class Softmax(Activation):
     """
     A `Softmax` activation module computes its `outputs` with the
@@ -753,7 +754,7 @@ class Softmax(Activation):
     :math:`softmax(\mathbf{x}) = [exp(x_i)/\sum_{i=1}^n exp(x_i)]_{i=1}^n`,
     with :math:`\mathbf{x} = [x_1, x_2, \dots, x_n] \in \mathbb{R}^n`.
     """
-    
+
     def __init__(self, nOutputs, nInputs=None):
         """
         Constructs a new `Softmax` activation module.

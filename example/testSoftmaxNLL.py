@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
-#    
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
+#
 #    This file is part of Crino.
 #
 #    Crino is free software: you can redistribute it and/or modify
@@ -59,8 +60,8 @@ for c,(mu,sigma,napp,ntest) in enumerate(zip(mus,sigmas,napps,ntests)):
     y_train=np.vstack([y_train,y])
     x_test=np.vstack([x_test,np.random.multivariate_normal(mu,sigma,ntest)])
     y=np.zeros((ntest,nClasses))
-    y[:,c]=1    
-    y_test=np.vstack([y_test,y])    
+    y[:,c]=1
+    y_test=np.vstack([y_test,y])
 
 arrtrain = np.arange(x_train.shape[0])
 x_train=x_train[arrtrain]
@@ -70,9 +71,9 @@ arrtest = np.arange(x_test.shape[0])
 x_test=x_test[arrtest]
 y_test=y_test[arrtest]
 
-x_train = np.asarray(x_train, dtype=theano.config.floatX) # We convert to float32 to 
+x_train = np.asarray(x_train, dtype=theano.config.floatX) # We convert to float32 to
 y_train = np.asarray(y_train, dtype=theano.config.floatX) # compute on GPUs with CUDA
-x_test = np.asarray(x_test, dtype=theano.config.floatX) # We convert to float32 to 
+x_test = np.asarray(x_test, dtype=theano.config.floatX) # We convert to float32 to
 y_test = np.asarray(y_test, dtype=theano.config.floatX) # compute on GPUs with CUDA
 
 N = x_train.shape[0] # number of training examples

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014-2015 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
 #
 #    This file is part of Crino.
 #

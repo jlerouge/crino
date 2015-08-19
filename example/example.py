@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
-#    
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
+#
 #    This file is part of Crino.
 #
 #    Crino is free software: you can redistribute it and/or modify
@@ -43,28 +44,28 @@ import datetime as DT
 def defaultConfig():
 
     config={}
-    
+
     #Learning parameters of the input pretraining
     input_pretraining_params={
             'learning_rate': 10.0,
             'batch_size' : 100,
             'epochs' : 300
             }
-    
+
     #Learning parameters of the output pretraining
     output_pretraining_params={
             'learning_rate': 10.0,
             'batch_size' : 100,
             'epochs' : 300
             }
-    
+
     ##Learning parameters of the link pretraining
     #link_pretraining_params={
             #'learning_rate': 1.0,
             #'batch_size' : 100,
             #'epochs' : 300
             #}
-    
+
     #Learning parameters of the supervised training + pretrainings
     config['learning_params']={
         'learning_rate' : 2.0,
@@ -75,14 +76,14 @@ def defaultConfig():
         #'link_pretraining_params' : link_pretraining_params,
         'link_pretraining' : False
     }
-    
+
     #Size of one hidden representation
     hidden_size = 1024
-    #Geometry of all hidden representations 
+    #Geometry of all hidden representations
     config['hidden_geometry'] = [hidden_size,hidden_size]
 
     #How many layers are pretrained
-    # (here 1 at input and 1 at output) 
+    # (here 1 at input and 1 at output)
     config['pretraining_geometry']={
         'nInputLayers': 1,
         'nOutputLayers': 1
@@ -92,7 +93,7 @@ def defaultConfig():
     config['init_weights'] = None
     #Shall we save init weights
     config['save_init_weights'] = True
-    
+
     #Examples to be displayed at testing
     config['displayed_examples']=[10,50,100]
 
@@ -101,7 +102,7 @@ def defaultConfig():
 
     #Where to store results
     config['outfolder']='./default_config_example_results-%s/'%(DT.datetime.now().strftime("%Y-%m-%d-%H-%M"),)
-    
+
     return config
 
 
@@ -112,24 +113,24 @@ class MyPretrainedMLP(PretrainedMLP):
 # set than the training set
     def setDisplayedEpochs(self,displayed_epochs):
     # set the epochs where we will compute a forward for the seperate set
-        self.displayed_epochs=displayed_epochs        
-    
+        self.displayed_epochs=displayed_epochs
+
     def setTestSet(self,x_test,y_test):
     # set the seperate set not used as training set but used for displaying what is happening
         self.shared_x_test=theano.shared(x_test)
         self.shared_y_test=theano.shared(y_test)
-        
+
     def initEpochHook(self,finetune_vars):
     # initialize storage variables before starting the great learning loop
         self.testCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_test, shared_y_data=self.shared_y_test)
         self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)
-        
+
         self.test_criterion_history=[np.mean(self.testCriterionFunction())]
         self.test_forward_history=[(-1,self.testForwardFunction())]
-        
+
         self.appForwardFunction=self.forwardFunction(downcast=True, shared_x_data=finetune_vars['shared_x_train'])
         self.app_forward_history=[(-1,self.appForwardFunction())]
-        
+
     def checkEpochHook(self,finetune_vars):
     # compute the criterion (whithout backprop) on the separate set
         self.test_criterion_history.append(np.mean(self.testCriterionFunction()))
@@ -145,10 +146,10 @@ class MyValidPretrainedMLP(PretrainedMLP):
 # set than the training set
     def setDisplayedEpochs(self,displayed_epochs):
     # set the epochs where we will compute a forward for the seperate set
-        self.displayed_epochs=displayed_epochs        
-    
+        self.displayed_epochs=displayed_epochs
+
     def setTestSet(self,x_test,y_test):
-    # set a seperate test set 
+    # set a seperate test set
         self.shared_x_test=theano.shared(x_test)
         self.shared_y_test=theano.shared(y_test)
 
@@ -156,37 +157,37 @@ class MyValidPretrainedMLP(PretrainedMLP):
     # set the seperate valid set
         self.shared_x_valid=theano.shared(x_valid)
         self.shared_y_valid=theano.shared(y_valid)
-        
+
     def setValidThreshold(self,n):
     # set the number of epochs with a valid error above the valid error min to accept without breaking
         self.valid_threshold=n
-        
+
     def initEpochHook(self,finetune_vars):
     # initialize storage variables before starting the great learning loop
 
         self.testCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_test, shared_y_data=self.shared_y_test)
-        self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)    
-    
+        self.testForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_test)
+
         self.validCriterionFunction=self.criterionFunction(downcast=True, shared_x_data=self.shared_x_valid, shared_y_data=self.shared_y_valid)
         self.validForwardFunction=self.forwardFunction(downcast=True, shared_x_data=self.shared_x_valid)
-        
+
         self.valid_criterion_history=[np.mean(self.validCriterionFunction())]
         self.valid_forward_history=[(-1,self.validForwardFunction())]
         self.valid_error_min=None
-        
+
         self.appForwardFunction=self.forwardFunction(downcast=True, shared_x_data=finetune_vars['shared_x_train'])
         self.app_forward_history=[(-1,self.appForwardFunction())]
-        
+
         self.break_on_epoch=None
-        
-        
+
+
     def checkEpochHook(self,finetune_vars):
     # compute the criterion (whithout backprop) on the separate set
         valid_error=np.mean(self.validCriterionFunction())
         self.valid_criterion_history.append(valid_error)
         if (self.valid_error_min is None ) or (self.valid_error_min > valid_error) :
             self.valid_error_min=valid_error
-       
+
         if finetune_vars['epoch']+1 in self.displayed_epochs:
             # compute a forward pass only on certain epochs and sotre the results
             self.valid_forward_history.append((finetune_vars['epoch'],self.validForwardFunction()))
@@ -203,10 +204,10 @@ def data2greyimg(filename, X):
 # Convinient functoin to save 2D array as png
     Xn=(X-X.min())/(X.max()-X.min())*255
     scipy.misc.imsave(filename, Xn)
-    
+
 
 def experience(config):
-    
+
     needed_params=['learning_params','hidden_geometry','pretraining_geometry','init_weights','save_init_weights','displayed_examples','displayed_epochs','outfolder']
 
     used_config={}
@@ -235,13 +236,13 @@ def experience(config):
     print('switch stdout to %s'%(mystdoutpath,))
     mystdout=open(mystdoutpath,'wb')
     sys.stdout=mystdout
-    
+
     print('... saving used configuration')
     json.dump(used_config,open(os.path.join(absoutfolder,"configuration.json"),'wb'),indent=2)
-    
+
     print '... loading training data'
     train_set = sio.loadmat('data/fixed/train.mat')
-    x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to 
+    x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to
     y_train = np.asarray(train_set['y_train'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 
     print '... loading test data'
@@ -259,14 +260,14 @@ def experience(config):
     nInputs=nFeats
     # Output representation size is the number of pixel
     nOutputs=nFeats
-    
+
     # Compute the full geometry of the MLP
     geometry=[nFeats] + hidden_geometry+[nFeats]
     # Compute the number of layers
     nLayers=len(geometry)-1
 
-  
-    for phase,xdata,ydata in [['train',x_train,y_train],['test',x_test,y_test]]:  
+
+    for phase,xdata,ydata in [['train',x_train,y_train],['test',x_test,y_test]]:
         for ex in displayed_examples:
             x_orig = np.reshape(xdata[ex:ex+1], (xSize, xSize), 'F')
             data2greyimg(os.path.join(absoutfolder,"%s_ex_%03d_input.png"%(phase,ex,)),x_orig)
@@ -276,17 +277,17 @@ def experience(config):
 
     print '... building and learning a network'
     nn = MyPretrainedMLP(geometry, outputActivation=crino.module.Sigmoid,**pretraining_geometry)
-    
+
     # set the test set
     nn.setTestSet(x_test,y_test)
     # set the epochs where we will have a particular look at
     nn.setDisplayedEpochs(displayed_epochs)
-    
-    # bake the MLP and set the criterion 
+
+    # bake the MLP and set the criterion
     nn.linkInputs(T.matrix('x'), nFeats)
     nn.prepare()
     nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
-    
+
     # set initial weights if they exists
     if not(init_weights is None):
         nn.setParameters(init_weights)
@@ -296,12 +297,12 @@ def experience(config):
 
     delta = nn.train(x_train, y_train, **learning_params)
     print '... learning lasted %s (s) ' % (delta)
-    
+
     print '... saving results'
-    
+
     # Save parameters in pythonic serialization
     pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"learned_params.pck"),'w'),protocol=-1)
-    
+
     # Save some history of the learning phase in pythonic serialization
     results={
         'I':pretraining_geometry['nInputLayers'],
@@ -313,8 +314,8 @@ def experience(config):
         'test_criterion': nn.test_criterion_history[-1],
         'test_history':nn.test_criterion_history,
         }
-    pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
-    
+    pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)
+
     # Save images of displayed_examples at displayed_epochs
     for phase,xdata,ydata,history in [
                 ['train',x_train,y_train,nn.app_forward_history],
@@ -323,8 +324,8 @@ def experience(config):
             for epoch,forward in history:
                 y_estim = np.reshape(forward[ex:ex+1], (xSize, xSize), 'F')
                 data2greyimg(os.path.join(absoutfolder,"%s_ex_%03d_estim_%03d.png"%(phase,ex,epoch+1)),y_estim)
-                    
-    
+
+
     # Save the sum-up of the experimentation in a csv file
     table=[["Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Test"]]
     for epoch in displayed_epochs:

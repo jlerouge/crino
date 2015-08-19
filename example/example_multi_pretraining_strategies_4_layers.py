@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
-#    
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
+#
 #    This file is part of Crino.
 #
 #    Crino is free software: you can redistribute it and/or modify
@@ -26,28 +27,28 @@ import datetime as DT
 def fourLayersConfig():
 
     config={}
-    
+
     #Learning parameters of the input pretraining
     input_pretraining_params={
             'learning_rate': 10.0,
             'batch_size' : 100,
             'epochs' : 300
             }
-    
+
     #Learning parameters of the output pretraining
     output_pretraining_params={
             'learning_rate': 10.0,
             'batch_size' : 100,
             'epochs' : 300
             }
-    
+
     ##Learning parameters of the link pretraining
     #link_pretraining_params={
             #'learning_rate': 1.0,
             #'batch_size' : 100,
             #'epochs' : 300
             #}
-    
+
     #Learning parameters of the supervised training + pretrainings
     config['learning_params']={
         'learning_rate' : 2.0,
@@ -58,10 +59,10 @@ def fourLayersConfig():
         #'link_pretraining_params' : link_pretraining_params,
         'link_pretraining' : False
     }
-    
+
     #Size of one hidden representation
     hidden_size = 512
-    #Geometry of all hidden representations 
+    #Geometry of all hidden representations
     config['hidden_geometry'] = [hidden_size, hidden_size/2, hidden_size]
 
     # All config['pretraining_geometries'] have the same geometry 3 layers and 4 representations
@@ -81,7 +82,7 @@ def fourLayersConfig():
     # Two last layers pretrained output way
     config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':2})
     # Tree last layers pretrained output way
-    config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':3})    
+    config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':3})
     # First layer pretrained input way, and last layer pretrained output way
     config['pretraining_geometries'].append({'nInputLayers':1,'nOutputLayers':1})
     # Two First layers pretrained input way, and last layer pretrained output way
@@ -93,7 +94,7 @@ def fourLayersConfig():
     config['init_weights'] = None
     #Shall we save init weights
     config['save_init_weights'] = True
-    
+
     #Examples to be displayed at testing
     config['displayed_examples']=[10,50,100]
 
@@ -105,7 +106,7 @@ def fourLayersConfig():
 
     return config
 
-  
+
 
 def main():
     experience_multiple_pretraining_geometry(fourLayersConfig())

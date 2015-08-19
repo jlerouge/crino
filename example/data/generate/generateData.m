@@ -20,7 +20,7 @@ rng('shuffle');
 fg = imnormalize(double(imread('D17.gif')));
 bg = imnormalize(double(imread('D77.gif')));
 
-%% Paramètres
+%% ParamÃ¨tres
 width = 128;
 height = 128;
 min_radius = min(width, height)/4;
