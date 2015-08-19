@@ -23,22 +23,22 @@ from example_multi_pretraining_strategies import *
 
 import datetime as DT
 
-def fourLayersConfig():
+def threeLayersOnlineConfig():
 
     config={}
     
     #Learning parameters of the input pretraining
     input_pretraining_params={
-            'learning_rate': 10.0,
-            'batch_size' : 100,
-            'epochs' : 300
+            'learning_rate': 1e-1,
+            'batch_size' : 1,
+            'epochs' : 150
             }
     
     #Learning parameters of the output pretraining
     output_pretraining_params={
-            'learning_rate': 10.0,
-            'batch_size' : 100,
-            'epochs' : 300
+            'learning_rate': 1e-1,
+            'batch_size' : 1,
+            'epochs' : 150
             }
     
     ##Learning parameters of the link pretraining
@@ -50,8 +50,8 @@ def fourLayersConfig():
     
     #Learning parameters of the supervised training + pretrainings
     config['learning_params']={
-        'learning_rate' : 2.0,
-        'batch_size' : 100,
+        'learning_rate' : 1e-1,
+        'batch_size' : 1,
         'epochs' : 300,
         'input_pretraining_params' : input_pretraining_params,
         'output_pretraining_params' : output_pretraining_params,
@@ -60,9 +60,9 @@ def fourLayersConfig():
     }
     
     #Size of one hidden representation
-    hidden_size = 512
+    hidden_size = 1024
     #Geometry of all hidden representations 
-    config['hidden_geometry'] = [hidden_size, hidden_size/2, hidden_size]
+    config['hidden_geometry'] = [hidden_size, hidden_size]
 
     # All config['pretraining_geometries'] have the same geometry 3 layers and 4 representations
     # with sizes [nFeats,hidden_size,hidden_size,nFeats].
@@ -74,20 +74,12 @@ def fourLayersConfig():
     config['pretraining_geometries'].append({'nInputLayers':1,'nOutputLayers':0})
     # Two first layers pretrained input way
     config['pretraining_geometries'].append({'nInputLayers':2,'nOutputLayers':0})
-    # Tree first layers pretrained input way
-    config['pretraining_geometries'].append({'nInputLayers':3,'nOutputLayers':0})
     # Last layer pretrained output way
     config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':1})
     # Two last layers pretrained output way
     config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':2})
-    # Tree last layers pretrained output way
-    config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':3})    
     # First layer pretrained input way, and last layer pretrained output way
     config['pretraining_geometries'].append({'nInputLayers':1,'nOutputLayers':1})
-    # Two First layers pretrained input way, and last layer pretrained output way
-    config['pretraining_geometries'].append({'nInputLayers':2,'nOutputLayers':1})
-    # First layer pretrained input way, and two last layer2 pretrained output way
-    config['pretraining_geometries'].append({'nInputLayers':1,'nOutputLayers':2})
 
     #Shall we used known init weights (here no)
     config['init_weights'] = None
@@ -101,14 +93,14 @@ def fourLayersConfig():
     config['displayed_epochs']=[0,10,100,200,300]
 
     #Where to store results
-    config['outfolder']='./results-%d-layers-%d-units-%s/'%(len(config['hidden_geometry'])+1,hidden_size,DT.datetime.now().strftime("%Y-%m-%d-%H-%M"))
+    config['outfolder']='./results-online-%d-layers-%d-units-%s/'%(len(config['hidden_geometry'])+1,hidden_size,DT.datetime.now().strftime("%Y-%m-%d-%H-%M"))
 
     return config
 
   
 
 def main():
-    experience_multiple_pretraining_geometry(fourLayersConfig())
+    experience_multiple_pretraining_geometry(threeLayersOnlineConfig())
 
 if __name__=="__main__":
     main()

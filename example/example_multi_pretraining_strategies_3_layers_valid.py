@@ -40,9 +40,20 @@ import csv
 
 import json
 
-from example import MyPretrainedMLP,data2greyimg
+from example import data2greyimg,MyValidPretrainedMLP
 
 import datetime as DT
+
+
+outformat='pdf'
+if outformat=='pdf':
+  outback='pdf'
+else:
+  outback='cairo'
+import matplotlib
+matplotlib.use(outback)
+import matplotlib.pyplot as plt
+
 
 def defaultConfig():
 
@@ -73,7 +84,7 @@ def defaultConfig():
     config['learning_params']={
         'learning_rate' : 2.0,
         'batch_size' : 100,
-        'epochs' : 300,
+        'epochs' : 2000,
         'input_pretraining_params' : input_pretraining_params,
         'output_pretraining_params' : output_pretraining_params,
         #'link_pretraining_params' : link_pretraining_params,
@@ -111,16 +122,20 @@ def defaultConfig():
     config['displayed_examples']=[10,50,100]
 
     #Epochs to be displayed at testing
-    config['displayed_epochs']=[0,10,100,200,300]
+    config['displayed_epochs']=[0,10,100,200,300,400,600,700,800,900,1000]
+    
+    # Number of epochs before breaking the learning
+    config['valid_threshold']=5
 
     #Where to store results
-    config['outfolder']='./results-%d-layers-%d-units-%s/'%(len(config['hidden_geometry'])+1,hidden_size,DT.datetime.now().strftime("%Y-%m-%d-%H-%M"))
+    config['outfolder']='./results-valid-%d-layers-%d-units-%s/'%(len(config['hidden_geometry'])+1,hidden_size,DT.datetime.now().strftime("%Y-%m-%d-%H-%M"))
 
     return config
+       
 
-def experience_multiple_pretraining_geometry(config):
+def experience_multiple_pretraining_geometry_and_valid(config):
 
-    needed_params=['learning_params','hidden_geometry','pretraining_geometries','init_weights','save_init_weights','displayed_examples','displayed_epochs','outfolder']
+    needed_params=['learning_params','hidden_geometry','pretraining_geometries','init_weights','save_init_weights','displayed_examples','displayed_epochs','outfolder','valid_threshold']
 
     used_config={}
     for aParam in needed_params:
@@ -139,6 +154,7 @@ def experience_multiple_pretraining_geometry(config):
     displayed_examples=config['displayed_examples']
     displayed_epochs=config['displayed_epochs']
     outfolder=config['outfolder']
+    valid_threshold=config['valid_threshold']
 
     absoutfolder=os.path.abspath(outfolder)
     if not os.path.exists(absoutfolder):
@@ -154,10 +170,17 @@ def experience_multiple_pretraining_geometry(config):
     x_train = np.asarray(train_set['x_train'], dtype=theano.config.floatX) # We convert to float32 to 
     y_train = np.asarray(train_set['y_train'], dtype=theano.config.floatX) # compute on GPUs with CUDA
 
+    print '... loading valid data'
+    valid_set = sio.loadmat('data/fixed/valid.mat')
+    x_valid = np.asarray(valid_set['x_valid'], dtype=theano.config.floatX) # We convert to float32 to
+    y_valid = np.asarray(valid_set['y_valid'], dtype=theano.config.floatX) # compute on GPUs with CUDA
+
     print '... loading test data'
     test_set = sio.loadmat('data/fixed/test.mat')
     x_test = np.asarray(test_set['x_test'], dtype=theano.config.floatX) # We convert to float32 to
     y_test = np.asarray(test_set['y_test'], dtype=theano.config.floatX) # compute on GPUs with CUDA
+
+
 
 
     nApp = x_train.shape[0] # number of training examples
@@ -199,8 +222,10 @@ def experience_multiple_pretraining_geometry(config):
             current_learning_params['link_pretraining'] = False
         
         print '... building and learning a network %s'%(expname,)
-        nn = MyPretrainedMLP(geometry, outputActivation=crino.module.Sigmoid,**pretraining_geometry)
+        nn = MyValidPretrainedMLP(geometry, outputActivation=crino.module.Sigmoid,**pretraining_geometry)
+        nn.setValidSet(x_valid,y_valid)
         nn.setTestSet(x_test,y_test)
+        nn.setValidThreshold(valid_threshold)
         
         # set the epochs where we will have a particular look at
         nn.setDisplayedEpochs(displayed_epochs)
@@ -217,6 +242,11 @@ def experience_multiple_pretraining_geometry(config):
         delta = nn.train(x_train, y_train, **current_learning_params)
         print '... learning lasted %s (s) ' % (delta)
         
+        print('... performing test criterion')
+        test_criterion=nn.testCriterionFunction()
+        
+
+        
         results[expname]={
             'I':pretraining_geometry['nInputLayers'],
             'L':nLayers-pretraining_geometry['nInputLayers']-pretraining_geometry['nOutputLayers'],
@@ -224,29 +254,64 @@ def experience_multiple_pretraining_geometry(config):
             'train_criterion':nn.finetune_history[-1],
             'train_history':nn.finetune_history,
             'train_full_history':nn.finetune_full_history,
-            'test_criterion': nn.test_criterion_history[-1],
-            'test_history':nn.test_criterion_history,
+            'valid_criterion': nn.valid_criterion_history[-1],
+            'valid_history':nn.valid_criterion_history,
+            'test_criterion': test_criterion,
+            'last_epoch': nn.finetune_full_history[-1][0],
+            'first_hidden_representation': hidden_geometry[0]
             }
         pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"%s_params.pck"%(expname,)),'w'),protocol=-1)
-        
-	print("RESULT %s: train: %f test: %f"%(expname,nn.finetune_history[-1],nn.test_criterion_history[-1]))
+       
+        #print(results[expname]) 
+        print("RESULT %s: train: %f valid: %f test: %f learning epochs %d"%(expname,results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion'],results[expname]['last_epoch']+1))
+
+        print("... saving figures")
 
         for phase,xdata,ydata,history in [
                     ['train',x_train,y_train,nn.app_forward_history],
-                    ['test',x_test,y_test,nn.test_forward_history]]:
+                    ['valid',x_valid,y_valid,nn.valid_forward_history]]:
             for ex in displayed_examples:
                 for epoch,forward in history:
                     y_estim = np.reshape(forward[ex:ex+1], (xSize, xSize), 'F')
                     data2greyimg(os.path.join(absoutfolder,"%s_%s_ex_%03d_estim_%03d.png"%(expname,phase,ex,epoch+1)),y_estim)
-                    
+
+        test_forward=nn.testForwardFunction()
+        for ex in displayed_examples:
+            y_estim = np.reshape(test_forward[ex:ex+1], (xSize, xSize), 'F')
+            data2greyimg(os.path.join(absoutfolder,"%s_%s_ex_%03d_estim_%03d.png"%(expname,'test',ex,results[expname]['last_epoch']+1)),y_estim)
+        
+        plt.close('all')
+        plt.figure(1)
+        plt.plot(nn.valid_criterion_history)
+        plt.ylabel('criterion')
+        plt.xlabel('epochs')
+        plt.savefig(os.path.join(absoutfolder,"%s_valid_criterion.pdf"%(expname,)))
+        plt.close(1)
+
+    print("... saving results")                
     pickle.dump(results,open(os.path.join(absoutfolder,'results.pck'),'w'),protocol=-1)  
     
-    table=[["Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Test"]]
+    table=[["Units","Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Valid"]]
     for expname in results.keys():
-        for epoch in displayed_epochs:
-            table.append([results[expname]['I'],results[expname]['L'],results[expname]['O'],epoch,results[expname]['train_history'][epoch],results[expname]['test_history'][epoch]])
+        displayed_epochs_before_last=filter(lambda e:e<=results[expname]['last_epoch'],displayed_epochs)
+        for epoch in displayed_epochs_before_last:
+            table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],epoch,results[expname]['train_history'][epoch],results[expname]['valid_history'][epoch]])
+        table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],
+                      results[expname]['last_epoch'],
+                      results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion']])        
 
-    writer=csv.writer(open(os.path.join(absoutfolder,'results.csv'),'wb'),delimiter='\t')
+    writer=csv.writer(open(os.path.join(absoutfolder,'intremediateresults.csv'),'wb'),delimiter='\t')
+    for row in table:
+        writer.writerow(row)
+
+
+    table=[["Units","Input Pretrained Layers","Link Layers","Output Pretrained Layers", "Epoch","Train", "Valid","Test"]]
+    for expname in results.keys():
+        table.append([results[expname]['first_hidden_representation'],results[expname]['I'],results[expname]['L'],results[expname]['O'],
+                      results[expname]['last_epoch'],
+                      results[expname]['train_criterion'],results[expname]['valid_criterion'],results[expname]['test_criterion']])        
+
+    writer=csv.writer(open(os.path.join(absoutfolder,'finalresults.csv'),'wb'),delimiter='\t')
     for row in table:
         writer.writerow(row)
 
@@ -254,7 +319,7 @@ def experience_multiple_pretraining_geometry(config):
     print('reverts stdout to console')  
 
 def main():
-    experience_multiple_pretraining_geometry(defaultConfig())
+    experience_multiple_pretraining_geometry_and_valid(defaultConfig())
 
 if __name__=="__main__":
     main()
