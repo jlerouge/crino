@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
+#    Copyright (c) 2014-2015 Clément Chatelain, Romain Hérault, Julien Lerouge,
 #    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
 #    
 #    This file is part of Crino.
@@ -19,7 +19,7 @@
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
 # Init file for crino
-__version__ = "0.1.0b2"
+__version__ = "0.2.0"
 import crino.criterion
 import crino.module
 import crino.network
