@@ -1,14 +1,14 @@
 # Crino: a neural-network library based on Theano
 
-Crino is an open-source Python library aimed at building and training artificial neural-networks. It has been developed on top of [Theano](http://deeplearning.net/software/theano/), by researchers from the [LITIS laboratory](http://www.litislab.eu).
-
-Crino lets you "hand-craft" neural-network architectures, using a modular framework inspired by [Torch](http://torch5.sourceforge.net/manual/nn/). Our library also provides standard implementations as long as learning algorithms for :
+Crino is an open-source Python library aimed at building and training artificial neural-networks. It has been developed on top of [Theano](http://deeplearning.net/software/theano/), by researchers from the [LITIS laboratory](http://www.litislab.eu). It helps scientists and/or programmers to design neural-network architectures adapted to their needs, using a modular framework inspired by [Torch](http://torch5.sourceforge.net/manual/nn/). Our library also provides vanilla implementations, and learning algorithms, for these architectures :
 * auto-encoders (AE)
 * multi-layer perceptrons (MLP)
 * deep neural networks (DNN)
 * input-output deep architectures (IODA)
  
 IODA is a novel DNN architecture, which is useful in cases where both input and output spaces are high-dimensional, and where there are strong interdependences between output labels. The input and output layers of a IODA are initialized with an unsupervised pre-training step, based on the stacked auto-encoder strategy, commonly used in DNN training algorithms. Then, the backpropagation algorithm performs the final supervised learning step.
+
+Crino and IODA are research topics of the [Deep in Normandy](http://deep.normastic.fr/) research program of the  [NormaSTIC](http://www.normastic.fr/) federation, which has been awarded as a [NVIDIA GPU Research Center](https://developer.nvidia.com/academia/centers/normastic) in 2015.
 
 ## Getting started
 * Install Crino :
