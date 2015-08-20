@@ -55,7 +55,40 @@
 </table>
 <!-- ==================== PACKAGE DESCRIPTION ==================== -->
 <h1 class="epydoc">Package crino</h1><p class="nomargin-top"><span class="codelink"><a href="crino-pysrc.html">source&nbsp;code</a></span></p>
-<!-- ==================== SUBMODULES ==================== -->
+<p><strong>Crino: a neural-network library based on Theano</strong></p>
+<p>Crino is an open-source <a class="rst-reference external" href="http://www.python.org/" target="_top">Python</a> library aimed at
+building and training artificial neural-networks. It has been developed on top
+of <a class="rst-reference external" href="http://deeplearning.net/software/theano/" target="_top">Theano</a>, by researchers from the
+<a class="rst-reference external" href="http://www.litislab.eu" target="_top">LITIS</a> laboratory. It helps scientists and/or
+programmers to design neural-network architectures adapted to their needs, using
+a modular framework inspired by Torch. Our library also provides vanilla
+implementations, and learning algorithms, for these architectures :</p>
+<blockquote>
+<ul class="rst-simple">
+<li>auto-encoders (AE)</li>
+<li>multi-layer perceptrons (MLP)</li>
+<li>deep neural networks (DNN)</li>
+<li>input-output deep architectures (IODA)</li>
+</ul>
+</blockquote>
+<p>IODA is an extension of DNN architectures, which is useful in cases where both
+input and output spaces are high-dimensional, and where there are strong
+interdependences between output labels. The input and output layers of a IODA
+are initialized with an unsupervised pre-training step, based on the stacked
+auto-encoder strategy, commonly used in DNN training algorithms. Then, the
+backpropagation algorithm performs the final supervised learning step.</p>
+<p>Crino and IODA are research topics of the <a class="rst-reference external" href="http://deep.normastic.fr/" target="_top">Deep in Normandy</a> research program, which is a <a class="rst-reference external" href="https://developer.nvidia.com/academia/centers/normastic" target="_top">NVIDIA GPU Research
+Center</a>.</p>
+
+<hr />
+<div class="fields">      <p><strong>See Also:</strong>
+        <a class="rst-reference external" href="https://github.com/jlerouge/crino" target="_top">GitHub repository</a>,
+<a class="rst-reference external" href="http://julien.lerouge.me/crino/" target="_top">Project homepage</a>
+      </p>
+      <p><strong>Version:</strong>
+        0.2.0
+      </p>
+</div><!-- ==================== SUBMODULES ==================== -->
 <a name="section-Submodules"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
@@ -74,39 +107,15 @@
 </tr>
   <tr><td class="summary">
   <ul class="nomargin">
-    <li> <strong class="uidlink"><a href="crino.criterion-module.html">crino.criterion</a></strong>: <em class="summary">provides some differentiable loss functions in order to
+    <li> <strong class="uidlink"><a href="crino.criterion-module.html">crino.criterion</a></strong>: <em class="summary">The <a href="crino.criterion-module.html" class="link">criterion</a> module provides some differentiable loss functions in order to
 perform a gradient descent on a hand-crafted neural network.</em>    </li>
-    <li> <strong class="uidlink"><a href="crino.module-module.html">crino.module</a></strong>: <em class="summary">provides a modular architecture to build a neural network.</em>    </li>
-    <li> <strong class="uidlink"><a href="crino.network-module.html">crino.network</a></strong>: <em class="summary">provides some ready-to-use neural networks, such as MLP's, DNN's and IODA's.</em>    </li>
+    <li> <strong class="uidlink"><a href="crino.module-module.html">crino.module</a></strong>: <em class="summary">The <a href="crino.module-module.html" class="link">module</a> module provides a modular architecture to build a neural network.</em>    </li>
+    <li> <strong class="uidlink"><a href="crino.network-module.html">crino.network</a></strong>: <em class="summary">The <a href="crino.network-module.html" class="link">network</a> module provides some ready-to-use neural network architectures,
+along with pretraining and supervised learning methods.</em>    </li>
   </ul></td></tr>
 </table>
 
 <br />
-<!-- ==================== VARIABLES ==================== -->
-<a name="section-Variables"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Variables</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Variables"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'crino'"><code class="variable-quote">'</code><code class="variable-string">crino</code><code class="variable-quote">'</code></code>
-    </td>
-  </tr>
-</table>
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
@@ -133,7 +142,8 @@ perform a gradient descent on a hand-crafted neural network.</em>    </li>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:01 2014
+    Generated by Epydoc 3.0.2
+    on Thu Aug 20 13:34:14 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

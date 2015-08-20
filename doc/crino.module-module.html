@@ -56,9 +56,35 @@
 </table>
 <!-- ==================== MODULE DESCRIPTION ==================== -->
 <h1 class="epydoc">Module module</h1><p class="nomargin-top"><span class="codelink"><a href="crino.module-pysrc.html">source&nbsp;code</a></span></p>
-provides a modular architecture to build a neural network.
+<p>The <a href="crino.module-module.html" class="link">module</a> module provides a modular architecture to build a neural network.</p>
+<p>These modules can be either <a href="crino.module.Standalone-class.html" class="link">Standalone</a> modules, i.e. modules that doesn't have
+submodules, or <a href="crino.module.Container-class.html" class="link">Container</a> modules, i.e. modules that are composed of one or
+several other module(s). The <a href="crino.module.Container-class.html" class="link">Container</a> modules are typically used to create
+arbitrarily complex neural network architectures, while <a href="crino.module.Standalone-class.html" class="link">Standalone</a> modules
+acts as <a href="crino.module.Linear-class.html" class="link">Linear</a> regression layers or non-linear <a href="crino.module.Activation-class.html" class="link">Activation</a> layers.</p>
+<dl class="rst-docutils">
+<dt>The currently implemented <a href="crino.module.Standalone-class.html" class="link">Standalone</a> modules are :</dt>
+<dd><ul class="rst-first rst-last rst-simple">
+<li><a href="crino.module.Linear-class.html" class="link">Linear</a></li>
+<li><a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a></li>
+<li><a href="crino.module.Softmax-class.html" class="link">Softmax</a></li>
+<li><a href="crino.module.Tanh-class.html" class="link">Tanh</a></li>
+</ul>
+</dd>
+<dt>The currently implemented <a href="crino.module.Container-class.html" class="link">Container</a> modules are :</dt>
+<dd><ul class="rst-first rst-last rst-simple">
+<li><a href="crino.module.Concat-class.html" class="link">Concat</a></li>
+<li><a href="crino.module.Sequential-class.html" class="link">Sequential</a></li>
+</ul>
+</dd>
+</dl>
+<p>See their respective documentations for more details about their use.</p>
 
-<!-- ==================== CLASSES ==================== -->
+<hr />
+<div class="fields">      <p><strong>See Also:</strong>
+        <a href="crino.criterion-module.html" class="link">criterion</a>, <a href="crino.network-module.html" class="link">network</a>
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
@@ -76,71 +102,55 @@ provides a modular architecture to build a neural network.
   </td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Module-class.html" class="summary-name">Module</a><br />
       A <a href="crino.module.Module-class.html" class="link">Module</a> is a part of a neural network architecture,
 that may have parameters.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Standalone-class.html" class="summary-name">Standalone</a><br />
       A <a href="crino.module.Standalone-class.html" class="link">Standalone</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> without relying
 on other modules, i.e.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Linear-class.html" class="summary-name">Linear</a><br />
       A <a href="crino.module.Linear-class.html" class="link">Linear</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> as a linear transformation of its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a>.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Container-class.html" class="summary-name">Container</a><br />
       A <a href="crino.module.Container-class.html" class="link">Container</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> thanks to
 other modules, i.e.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Sequential-class.html" class="summary-name">Sequential</a><br />
       A <a href="crino.module.Sequential-class.html" class="link">Sequential</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> sequentially,
 i.e.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Concat-class.html" class="summary-name">Concat</a><br />
       A <a href="crino.module.Concat-class.html" class="link">Concat</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> in parallel,
 i.e.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Activation-class.html" class="summary-name">Activation</a><br />
       An <a href="crino.module.Activation-class.html" class="link">Activation</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> without any parameter, but with a function
 <span class="rst-formula"><i>f</i> : &#8477;<sup><i>n</i></sup>&#8197;&#8722;&#8197;&#8197;&gt;&#8197;&#8477;<sup><i>n</i></sup></span> applied to its <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> vector.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Tanh-class.html" class="summary-name">Tanh</a><br />
       A <a href="crino.module.Tanh-class.html" class="link">Tanh</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
 non-linear element-wise hyperbolic tangent function, that can be defined as
@@ -149,9 +159,7 @@ with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#81
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Sigmoid-class.html" class="summary-name">Sigmoid</a><br />
       A <a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
 non-linear element-wise sigmoid function, that can be defined as
@@ -160,9 +168,7 @@ with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#81
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.module.Softmax-class.html" class="summary-name">Softmax</a><br />
       A <a href="crino.module.Softmax-class.html" class="link">Softmax</a> activation module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> with the
 non-linear softmax function, that can be defined as
@@ -203,31 +209,6 @@ with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#81
         </tr>
       </table>
       
-    </td>
-  </tr>
-</table>
-<!-- ==================== VARIABLES ==================== -->
-<a name="section-Variables"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Variables</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Variables"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'crino'"><code class="variable-quote">'</code><code class="variable-string">crino</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 </table>
@@ -299,7 +280,8 @@ with <span class="rst-formula"><b>x</b>&#8197;=&#8197;[<i>x</i><sub>1</sub>,&#81
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:01 2014
+    Generated by Epydoc 3.0.2
+    on Thu Aug 20 13:34:14 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

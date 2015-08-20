@@ -59,18 +59,23 @@
 <h1 class="epydoc">Class Container</h1><p class="nomargin-top"><span class="codelink"><a href="crino.module-pysrc.html#Container">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="class_hierarchy_for_container" name="class_hierarchy_for_container">
-<area shape="rect" id="node1" href="crino.module.Concat-class.html" title="Concat" alt="" coords="47,123,111,151"/>
-<area shape="rect" id="node2" href="crino.module.Container-class.html" title="Container" alt="" coords="88,65,165,93"/>
-<area shape="rect" id="node4" href="crino.module.Sequential-class.html" title="Sequential" alt="" coords="135,123,217,151"/>
-<area shape="rect" id="node3" href="crino.module.Module-class.html" title="Module" alt="" coords="95,6,159,34"/>
-<area shape="rect" id="node5" href="crino.network.AutoEncoder-class.html" title="network.AutoEncoder" alt="" coords="5,182,152,210"/>
-<area shape="rect" id="node8" href="crino.network.MultiLayerPerceptron-class.html" title="network.MultiLayerPerceptron" alt="" coords="176,182,371,210"/>
-<area shape="rect" id="node6" href="crino.network.DeepNeuralNetwork-class.html" title="network.DeepNeuralNetwork" alt="" coords="179,241,368,269"/>
-<area shape="rect" id="node7" href="crino.network.InputOutputDeepArchitecture-class.html" title="network.InputOutputDeepArchitecture" alt="" coords="153,299,393,327"/>
+<area shape="rect" id="node1" href="crino.module.Container-class.html" title="Container" alt="" coords="175,62,253,87"/>
+<area shape="rect" id="node3" href="crino.module.Sequential-class.html" title="Sequential" alt="" coords="125,118,207,143"/>
+<area shape="rect" id="node4" href="crino.module.Concat-class.html" title="Concat" alt="" coords="232,118,296,143"/>
+<area shape="rect" id="node2" href="crino.module.Module-class.html" title="Module" alt="" coords="183,6,247,31"/>
+<area shape="rect" id="node5" href="crino.network.MultiLayerPerceptron-class.html" title="network.MultiLayerPerceptron" alt="" coords="69,174,264,199"/>
+<area shape="rect" id="node6" href="crino.network.AutoEncoder-class.html" title="network.AutoEncoder" alt="" coords="5,230,152,255"/>
+<area shape="rect" id="node7" href="crino.network.PretrainedMLP-class.html" title="network.PretrainedMLP" alt="" coords="177,230,335,255"/>
 </map>
   <img src="class_hierarchy_for_container.gif" alt='' usemap="#class_hierarchy_for_container" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="crino.module.Sequential-class.html">Sequential</a></li><li>, <a href="crino.module.Concat-class.html">Concat</a></li>  </ul>
+</dd></dl>
+
 <hr />
 A <a href="crino.module.Container-class.html" class="link">Container</a> module computes its <a href="crino.module.Module-class.html#outputs" class="link">outputs</a> thanks to
 other modules, i.e. it includes several submodules.
@@ -138,13 +143,18 @@ implementation.
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#criterionFunction">criterionFunction</a></code>,
       <code><a href="crino.module.Module-class.html#forward">forward</a></code>,
+      <code><a href="crino.module.Module-class.html#forwardFunction">forwardFunction</a></code>,
+      <code><a href="crino.module.Module-class.html#holdFunction">holdFunction</a></code>,
       <code><a href="crino.module.Module-class.html#linkInputs">linkInputs</a></code>,
       <code><a href="crino.module.Module-class.html#linkModule">linkModule</a></code>,
       <code><a href="crino.module.Module-class.html#prepare">prepare</a></code>,
+      <code><a href="crino.module.Module-class.html#prepareBackup">prepareBackup</a></code>,
       <code><a href="crino.module.Module-class.html#prepareGeometry">prepareGeometry</a></code>,
       <code><a href="crino.module.Module-class.html#prepareOutput">prepareOutput</a></code>,
       <code><a href="crino.module.Module-class.html#prepareParams">prepareParams</a></code>,
+      <code><a href="crino.module.Module-class.html#restoreFunction">restoreFunction</a></code>,
       <code><a href="crino.module.Module-class.html#save">save</a></code>,
       <code><a href="crino.module.Module-class.html#trainFunction">trainFunction</a></code>
       </p>
@@ -179,6 +189,7 @@ implementation.
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#backupParams">backupParams</a></code>,
       <code><a href="crino.module.Module-class.html#inputs">inputs</a></code>,
       <code><a href="crino.module.Module-class.html#nInputs">nInputs</a></code>,
       <code><a href="crino.module.Module-class.html#nOutputs">nOutputs</a></code>,
@@ -288,7 +299,8 @@ implementation.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:01 2014
+    Generated by Epydoc 3.0.2
+    on Thu Aug 20 13:34:15 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

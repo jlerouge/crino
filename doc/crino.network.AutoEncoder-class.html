@@ -59,14 +59,22 @@
 <h1 class="epydoc">Class AutoEncoder</h1><p class="nomargin-top"><span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="class_hierarchy_for_autoencode" name="class_hierarchy_for_autoencode">
-<area shape="rect" id="node1" href="crino.module.Container-class.html" title="module.Container" alt="" coords="8,65,131,93"/>
-<area shape="rect" id="node3" href="crino.module.Sequential-class.html" title="module.Sequential" alt="" coords="5,123,133,151"/>
-<area shape="rect" id="node2" href="crino.module.Module-class.html" title="module.Module" alt="" coords="15,6,124,34"/>
-<area shape="rect" id="node4" href="crino.network.AutoEncoder-class.html" title="AutoEncoder" alt="" coords="21,182,117,210"/>
+<area shape="rect" id="node1" href="crino.network.AutoEncoder-class.html" title="AutoEncoder" alt="" coords="29,230,125,255"/>
+<area shape="rect" id="node6" href="crino.network.OutputAutoEncoder-class.html" title="OutputAutoEncoder" alt="" coords="9,286,144,311"/>
+<area shape="rect" id="node2" href="crino.network.MultiLayerPerceptron-class.html" title="MultiLayerPerceptron" alt="" coords="5,174,149,199"/>
+<area shape="rect" id="node3" href="crino.module.Sequential-class.html" title="module.Sequential" alt="" coords="13,118,141,143"/>
+<area shape="rect" id="node4" href="crino.module.Container-class.html" title="module.Container" alt="" coords="15,62,139,87"/>
+<area shape="rect" id="node5" href="crino.module.Module-class.html" title="module.Module" alt="" coords="22,6,132,31"/>
 </map>
   <img src="class_hierarchy_for_autoencode.gif" alt='' usemap="#class_hierarchy_for_autoencode" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="crino.network.OutputAutoEncoder-class.html">OutputAutoEncoder</a></li>  </ul>
+</dd></dl>
+
 <hr />
 <p>An <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> is a neural network whichs aims at encoding
 its inputs in a smaller representation space. It is made of
@@ -107,9 +115,9 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="crino.network.AutoEncoder-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">nInputs</span>,
+        <span class="summary-sig-arg">nVisibles</span>,
         <span class="summary-sig-arg">nHidden</span>,
-        <span class="summary-sig-arg">outputActivation</span>=<span class="summary-sig-default">&lt;class crino.module.Sigmoid at 0x2e19390&gt;</span>)</span><br />
+        <span class="summary-sig-arg">outputActivation</span>=<span class="summary-sig-default">&lt;class crino.module.Sigmoid at 0x2b85740f5db8&gt;</span>)</span><br />
       Constructs a new <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> network.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="crino.network-pysrc.html#AutoEncoder.__init__">source&nbsp;code</a></span>
@@ -157,6 +165,21 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
   </tr>
   <tr>
     <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.network.MultiLayerPerceptron-class.html">MultiLayerPerceptron</a></code></b>:
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkBadmoveHook">checkBadmoveHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkBatchHook">checkBatchHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkEpochHook">checkEpochHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkLearningParameters">checkLearningParameters</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#defaultLearningParameters">defaultLearningParameters</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#finetune">finetune</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#getGeometry">getGeometry</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#getParameters">getParameters</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#initBadmoveHook">initBadmoveHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#initBatchHook">initBatchHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#initEpochHook">initEpochHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#setParameters">setParameters</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#train">train</a></code>
+      </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Sequential-class.html">module.Sequential</a></code></b>:
       <code><a href="crino.module.Sequential-class.html#prepareGeometry">prepareGeometry</a></code>,
       <code><a href="crino.module.Sequential-class.html#prepareOutput">prepareOutput</a></code>
@@ -165,10 +188,15 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
       <code><a href="crino.module.Container-class.html#add">add</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#criterionFunction">criterionFunction</a></code>,
       <code><a href="crino.module.Module-class.html#forward">forward</a></code>,
+      <code><a href="crino.module.Module-class.html#forwardFunction">forwardFunction</a></code>,
+      <code><a href="crino.module.Module-class.html#holdFunction">holdFunction</a></code>,
       <code><a href="crino.module.Module-class.html#linkInputs">linkInputs</a></code>,
       <code><a href="crino.module.Module-class.html#linkModule">linkModule</a></code>,
       <code><a href="crino.module.Module-class.html#prepare">prepare</a></code>,
+      <code><a href="crino.module.Module-class.html#prepareBackup">prepareBackup</a></code>,
+      <code><a href="crino.module.Module-class.html#restoreFunction">restoreFunction</a></code>,
       <code><a href="crino.module.Module-class.html#save">save</a></code>,
       <code><a href="crino.module.Module-class.html#trainFunction">trainFunction</a></code>
       </p>
@@ -198,6 +226,7 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
       <code><a href="crino.module.Container-class.html#modules">modules</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#backupParams">backupParams</a></code>,
       <code><a href="crino.module.Module-class.html#inputs">inputs</a></code>,
       <code><a href="crino.module.Module-class.html#nInputs">nInputs</a></code>,
       <code><a href="crino.module.Module-class.html#nOutputs">nOutputs</a></code>,
@@ -234,9 +263,9 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">nInputs</span>,
+        <span class="sig-arg">nVisibles</span>,
         <span class="sig-arg">nHidden</span>,
-        <span class="sig-arg">outputActivation</span>=<span class="sig-default">&lt;class crino.module.Sigmoid at 0x2e19390&gt;</span>)</span>
+        <span class="sig-arg">outputActivation</span>=<span class="sig-default">&lt;class crino.module.Sigmoid at 0x2b85740f5db8&gt;</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -248,7 +277,7 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>nInputs</code></strong> (int) - The <a href="crino.module.Module-class.html#inputs" class="link">inputs</a> size.</li>
+        <li><strong class="pname"><code>nVisibles</code></strong> (int) - The size of the visible representation.</li>
         <li><strong class="pname"><code>nHidden</code></strong> (int) - The size of the hidden representation.</li>
         <li><strong class="pname"><code>outputActivation</code></strong> (class derived from <a href="crino.module.Activation-class.html" class="link">Activation</a>) - The type of activation for the backprojection layer.</li>
     </ul></dd>
@@ -303,7 +332,7 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>x_input</code></strong> (<a class="rst-reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The input on which the hidden representation must be computed.</li>
+        <li><strong class="pname"><code>x_input</code></strong> (<a class="rst-reference external image-reference" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The input on which the hidden representation must be computed.</li>
     </ul></dd>
     <dt>Returns:</dt>
         <dd>the corresponding hidden representation</dd>
@@ -337,7 +366,8 @@ final activation module in conjunction with a <a href="crino.criterion.CrossEntr
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:02 2014
+    Generated by Epydoc 3.0.2
+    on Thu Aug 20 13:34:15 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

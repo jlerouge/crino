@@ -56,9 +56,25 @@
 </table>
 <!-- ==================== MODULE DESCRIPTION ==================== -->
 <h1 class="epydoc">Module network</h1><p class="nomargin-top"><span class="codelink"><a href="crino.network-pysrc.html">source&nbsp;code</a></span></p>
-provides some ready-to-use neural networks, such as MLP's, DNN's and IODA's.
+<p>The <a href="crino.network-module.html" class="link">network</a> module provides some ready-to-use neural network architectures,
+along with pretraining and supervised learning methods.</p>
+<dl class="rst-docutils">
+<dt>The currently implemented neural network architectures are :</dt>
+<dd><ul class="rst-first rst-last rst-simple">
+<li><a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> and its counterpart <a href="crino.network.OutputAutoEncoder-class.html" class="link">OutputAutoEncoder</a></li>
+<li><a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a></li>
+<li><a href="crino.network.DeepNeuralNetwork-class.html" class="link">DeepNeuralNetwork</a></li>
+<li><a href="crino.network.InputOutputDeepArchitecture-class.html" class="link">InputOutputDeepArchitecture</a></li>
+</ul>
+</dd>
+</dl>
+<p>See their respective documentations for more details about their use.</p>
 
-<!-- ==================== CLASSES ==================== -->
+<hr />
+<div class="fields">      <p><strong>See Also:</strong>
+        <a href="crino.criterion-module.html" class="link">criterion</a>, <a href="crino.network-module.html" class="link">network</a>
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
@@ -76,18 +92,7 @@ provides some ready-to-use neural networks, such as MLP's, DNN's and IODA's.
   </td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="crino.network.AutoEncoder-class.html" class="summary-name">AutoEncoder</a><br />
-      An <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> is a neural network whichs aims at encoding
-its inputs in a smaller representation space.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.network.MultiLayerPerceptron-class.html" class="summary-name">MultiLayerPerceptron</a><br />
       A <a href="crino.network.MultiLayerPerceptron-class.html" class="link">MultiLayerPerceptron</a> (MLP) is one classical form of artificial
 neural networks, whichs aims at predicting one or more output states
@@ -95,47 +100,38 @@ given some particular inputs.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
+        <a href="crino.network.AutoEncoder-class.html" class="summary-name">AutoEncoder</a><br />
+      An <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> is a neural network whichs aims at encoding
+its inputs in a smaller representation space.
+    </td>
+  </tr>
+<tr>
+    <td class="summary" colspan="2">
+        <a href="crino.network.OutputAutoEncoder-class.html" class="summary-name">OutputAutoEncoder</a>
+    </td>
+  </tr>
+<tr>
+    <td class="summary" colspan="2">
+        <a href="crino.network.PretrainedMLP-class.html" class="summary-name">PretrainedMLP</a><br />
+      A <a href="crino.network.PretrainedMLP-class.html" class="link">PretrainedMLP</a> is a specialization of the MLP, where the
+layers are pretrained, for input part on the training examples
+(<span class="rst-formula"><b>x</b>)<i>or</i><i>for</i><i>output</i><i>part</i><i>on</i><i>the</i><i>training</i><i>labels</i>(:<i>math</i>:</span>mathbf{y}) using a Stacked <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> strategy.
+    </td>
+  </tr>
+<tr>
+    <td class="summary" colspan="2">
         <a href="crino.network.DeepNeuralNetwork-class.html" class="summary-name">DeepNeuralNetwork</a><br />
       A <a href="crino.network.DeepNeuralNetwork-class.html" class="link">DeepNeuralNetwork</a> (DNN) is a specialization of the MLP, where the
 layers are pretrained on the training examples (<span class="rst-formula"><b>x</b>)<i>using</i><i>a</i><i>Stacked</i></span> strategy.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="crino.network.InputOutputDeepArchitecture-class.html" class="summary-name">InputOutputDeepArchitecture</a><br />
       An <a href="crino.network.InputOutputDeepArchitecture-class.html" class="link">InputOutputDeepArchitecture</a> (IODA) is a specialization of the DNN,
 where the layers are divided into three categories : the input layers,
 the link layer and the output layers.
-    </td>
-  </tr>
-</table>
-<!-- ==================== VARIABLES ==================== -->
-<a name="section-Variables"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Variables</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Variables"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'crino'"><code class="variable-quote">'</code><code class="variable-string">crino</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 </table>
@@ -165,7 +161,8 @@ the link layer and the output layers.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:01 2014
+    Generated by Epydoc 3.0.2
+    on Thu Aug 20 13:34:14 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

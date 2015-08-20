@@ -59,12 +59,12 @@
 <h1 class="epydoc">Class DeepNeuralNetwork</h1><p class="nomargin-top"><span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="class_hierarchy_for_deepneural" name="class_hierarchy_for_deepneural">
-<area shape="rect" id="node1" href="crino.module.Container-class.html" title="module.Container" alt="" coords="39,65,161,93"/>
-<area shape="rect" id="node3" href="crino.module.Sequential-class.html" title="module.Sequential" alt="" coords="36,123,164,151"/>
-<area shape="rect" id="node2" href="crino.module.Module-class.html" title="module.Module" alt="" coords="45,6,155,34"/>
-<area shape="rect" id="node6" href="crino.network.MultiLayerPerceptron-class.html" title="MultiLayerPerceptron" alt="" coords="28,182,172,210"/>
-<area shape="rect" id="node4" href="crino.network.DeepNeuralNetwork-class.html" title="DeepNeuralNetwork" alt="" coords="31,241,169,269"/>
-<area shape="rect" id="node5" href="crino.network.InputOutputDeepArchitecture-class.html" title="InputOutputDeepArchitecture" alt="" coords="5,299,195,327"/>
+<area shape="rect" id="node1" href="crino.network.DeepNeuralNetwork-class.html" title="DeepNeuralNetwork" alt="" coords="7,286,147,311"/>
+<area shape="rect" id="node2" href="crino.network.PretrainedMLP-class.html" title="PretrainedMLP" alt="" coords="23,230,131,255"/>
+<area shape="rect" id="node3" href="crino.network.MultiLayerPerceptron-class.html" title="MultiLayerPerceptron" alt="" coords="5,174,149,199"/>
+<area shape="rect" id="node4" href="crino.module.Sequential-class.html" title="module.Sequential" alt="" coords="13,118,141,143"/>
+<area shape="rect" id="node5" href="crino.module.Container-class.html" title="module.Container" alt="" coords="15,62,139,87"/>
+<area shape="rect" id="node6" href="crino.module.Module-class.html" title="module.Module" alt="" coords="22,6,132,31"/>
 </map>
   <img src="class_hierarchy_for_deepneural.gif" alt='' usemap="#class_hierarchy_for_deepneural" ismap="ismap" class="graph-without-title" />
 </center>
@@ -103,8 +103,8 @@ for data that lies in a high-dimensional input space.
         <tr>
           <td><span class="summary-sig"><a href="crino.network.DeepNeuralNetwork-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">nUnitsInput</span>,
-        <span class="summary-sig-arg">nUnitsOutput</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">outputActivation</span>=<span class="summary-sig-default">&lt;class crino.module.Sigmoid at 0x2e19390&gt;</span>)</span><br />
+        <span class="summary-sig-arg">nUnitsOutput</span>,
+        <span class="summary-sig-arg">outputActivation</span>=<span class="summary-sig-default">&lt;class crino.module.Sigmoid at 0x2b85740f5db8&gt;</span>)</span><br />
       Constructs a new <a href="crino.network.DeepNeuralNetwork-class.html" class="link">DeepNeuralNetwork</a>.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork.__init__">source&nbsp;code</a></span>
@@ -115,80 +115,27 @@ for data that lies in a high-dimensional input space.
       
     </td>
   </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="crino.network.DeepNeuralNetwork-class.html#prepareParams" class="summary-sig-name">prepareParams</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Initializes the <a href="crino.module.Module-class.html#params" class="link">params</a> of the submodules.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork.prepareParams">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="crino.network.DeepNeuralNetwork-class.html#pretrainAutoEncoders" class="summary-sig-name">pretrainAutoEncoders</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">data</span>,
-        <span class="summary-sig-arg">autoEncoders</span>,
-        <span class="summary-sig-arg">batch_size</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">learning_rate</span>=<span class="summary-sig-default">1.0</span>,
-        <span class="summary-sig-arg">epochs</span>=<span class="summary-sig-default">100</span>,
-        <span class="summary-sig-arg">growth_factor</span>=<span class="summary-sig-default">1.25</span>,
-        <span class="summary-sig-arg">growth_threshold</span>=<span class="summary-sig-default">5</span>,
-        <span class="summary-sig-arg">verbose</span>=<span class="summary-sig-default">True</span>)</span><br />
-      Performs the unsupervised learning step of the autoencoders,
-using a batch-gradient backpropagation algorithm.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork.pretrainAutoEncoders">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="crino.network.DeepNeuralNetwork-class.html#train" class="summary-sig-name">train</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">x_train</span>,
-        <span class="summary-sig-arg">y_train</span>,
-        <span class="summary-sig-arg">batch_size</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">learning_rate</span>=<span class="summary-sig-default">1.0</span>,
-        <span class="summary-sig-arg">pretraining_learning_rate</span>=<span class="summary-sig-default">2.0</span>,
-        <span class="summary-sig-arg">epochs</span>=<span class="summary-sig-default">100</span>,
-        <span class="summary-sig-arg">growth_factor</span>=<span class="summary-sig-default">1.25</span>,
-        <span class="summary-sig-arg">growth_threshold</span>=<span class="summary-sig-default">5</span>,
-        <span class="summary-sig-arg">verbose</span>=<span class="summary-sig-default">True</span>)</span><br />
-      Performs the pretraining step for the input autoencoders (<a href="crino.network.DeepNeuralNetwork-class.html#pretrainAutoEncoders" class="link">pretrainAutoEncoders</a>),
-and the supervised learning step (<a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="link">finetune</a>).</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork.train">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
   <tr>
     <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.network.PretrainedMLP-class.html">PretrainedMLP</a></code></b>:
+      <code><a href="crino.network.PretrainedMLP-class.html#prepareParams">prepareParams</a></code>,
+      <code><a href="crino.network.PretrainedMLP-class.html#pretrainInputAutoEncoders">pretrainInputAutoEncoders</a></code>,
+      <code><a href="crino.network.PretrainedMLP-class.html#pretrainOutputAutoEncoders">pretrainOutputAutoEncoders</a></code>,
+      <code><a href="crino.network.PretrainedMLP-class.html#train">train</a></code>
+      </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.network.MultiLayerPerceptron-class.html">MultiLayerPerceptron</a></code></b>:
-      <code><a href="crino.network.MultiLayerPerceptron-class.html#finetune">finetune</a></code>
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkBadmoveHook">checkBadmoveHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkBatchHook">checkBatchHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkEpochHook">checkEpochHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#checkLearningParameters">checkLearningParameters</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#defaultLearningParameters">defaultLearningParameters</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#finetune">finetune</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#getGeometry">getGeometry</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#getParameters">getParameters</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#initBadmoveHook">initBadmoveHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#initBatchHook">initBatchHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#initEpochHook">initEpochHook</a></code>,
+      <code><a href="crino.network.MultiLayerPerceptron-class.html#setParameters">setParameters</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Sequential-class.html">module.Sequential</a></code></b>:
       <code><a href="crino.module.Sequential-class.html#prepareGeometry">prepareGeometry</a></code>,
@@ -198,10 +145,15 @@ and the supervised learning step (<a href="crino.network.MultiLayerPerceptron-cl
       <code><a href="crino.module.Container-class.html#add">add</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#criterionFunction">criterionFunction</a></code>,
       <code><a href="crino.module.Module-class.html#forward">forward</a></code>,
+      <code><a href="crino.module.Module-class.html#forwardFunction">forwardFunction</a></code>,
+      <code><a href="crino.module.Module-class.html#holdFunction">holdFunction</a></code>,
       <code><a href="crino.module.Module-class.html#linkInputs">linkInputs</a></code>,
       <code><a href="crino.module.Module-class.html#linkModule">linkModule</a></code>,
       <code><a href="crino.module.Module-class.html#prepare">prepare</a></code>,
+      <code><a href="crino.module.Module-class.html#prepareBackup">prepareBackup</a></code>,
+      <code><a href="crino.module.Module-class.html#restoreFunction">restoreFunction</a></code>,
       <code><a href="crino.module.Module-class.html#save">save</a></code>,
       <code><a href="crino.module.Module-class.html#trainFunction">trainFunction</a></code>
       </p>
@@ -231,6 +183,7 @@ and the supervised learning step (<a href="crino.network.MultiLayerPerceptron-cl
       <code><a href="crino.module.Container-class.html#modules">modules</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="crino.module.Module-class.html">module.Module</a></code></b>:
+      <code><a href="crino.module.Module-class.html#backupParams">backupParams</a></code>,
       <code><a href="crino.module.Module-class.html#inputs">inputs</a></code>,
       <code><a href="crino.module.Module-class.html#nInputs">nInputs</a></code>,
       <code><a href="crino.module.Module-class.html#nOutputs">nOutputs</a></code>,
@@ -268,8 +221,8 @@ and the supervised learning step (<a href="crino.network.MultiLayerPerceptron-cl
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">nUnitsInput</span>,
-        <span class="sig-arg">nUnitsOutput</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="sig-arg">outputActivation</span>=<span class="sig-default">&lt;class crino.module.Sigmoid at 0x2e19390&gt;</span>)</span>
+        <span class="sig-arg">nUnitsOutput</span>,
+        <span class="sig-arg">outputActivation</span>=<span class="sig-default">&lt;class crino.module.Sigmoid at 0x2b85740f5db8&gt;</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -291,134 +244,6 @@ and the supervised learning step (<a href="crino.network.MultiLayerPerceptron-cl
   </dl>
 <div class="fields">      <p><strong>Attention:</strong>
         <code class="link">outputActivation</code> parameter is not an instance but a class.
-      </p>
-</div></td></tr></table>
-</div>
-<a name="prepareParams"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">prepareParams</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork.prepareParams">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  Initializes the <a href="crino.module.Module-class.html#params" class="link">params</a> of the submodules. The <a href="crino.module.Sequential-class.html" class="link">Sequential</a> module <a href="crino.module.Module-class.html#params" class="link">params</a> will include the <a href="crino.module.Module-class.html#params" class="link">params</a> of its submodules .
-  <dl class="fields">
-    <dt>Overrides:
-        <a href="crino.module.Module-class.html#prepareParams">module.Module.prepareParams</a>
-        <dd><em class="note">(inherited documentation)</em></dd>
-    </dt>
-  </dl>
-</td></tr></table>
-</div>
-<a name="pretrainAutoEncoders"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">pretrainAutoEncoders</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">data</span>,
-        <span class="sig-arg">autoEncoders</span>,
-        <span class="sig-arg">batch_size</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">learning_rate</span>=<span class="sig-default">1.0</span>,
-        <span class="sig-arg">epochs</span>=<span class="sig-default">100</span>,
-        <span class="sig-arg">growth_factor</span>=<span class="sig-default">1.25</span>,
-        <span class="sig-arg">growth_threshold</span>=<span class="sig-default">5</span>,
-        <span class="sig-arg">verbose</span>=<span class="sig-default">True</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork.pretrainAutoEncoders">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Performs the unsupervised learning step of the autoencoders,
-using a batch-gradient backpropagation algorithm. This step can
-be applied to the autoencoders located on the input side or on
-the output side. Classically, in a <a href="crino.network.DeepNeuralNetwork-class.html" class="link">DeepNeuralNetwork</a>, only the
-input autoencoders are pretrained. The data used for this pretraining
-step can be the input training dataset used for the supervised learning
-(see <a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="link">finetune</a>), or a subset of this dataset, or else a specially
-crafted input pretraining dataset.</p>
-<p>The <a href="crino.network.InputOutputDeepArchitecture-class.html" class="link">InputOutputDeepArchitecture</a> also pretrains the output autoencoders,
-in the same way the <a href="crino.network.DeepNeuralNetwork-class.html" class="link">DeepNeuralNetwork</a> does for input autoencoders. In
-this case, the given training data are the labels (<span class="rst-formula"><b>y</b></span>)
-and not the examples (<span class="rst-formula"><b>x</b></span>) (i.e. the labels that the network
-must predict).</p>
-<p>Once an <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> is learned, the projection layer is kept and used
-to initialize the network layers. The backprojection part is not useful
-anymore.</p>
-<p>The <code class="link">learning_rate</code> is made adaptative with the <code class="link">growth_factor</code> multiplier.
-If the mean loss a number is improved during <code class="link">growth_threshold</code> successive epochs,
-then the <code class="link">learning_rate</code> is increased, and if the mean loss is degraded during
-one epoch, then the <code class="link">learning_rate</code> is decreased.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>data</code></strong> (<a class="rst-reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The training data (examples or labels).</li>
-        <li><strong class="pname"><code>autoEncoders</code></strong> (<a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a> list) - The list of autoencoders used for training (input or output autoencoders).</li>
-        <li><strong class="pname"><code>batch_size</code></strong> (int) - The number of training samples in each mini-batch.</li>
-        <li><strong class="pname"><code>learning_rate</code></strong> (float) - The rate used to update the parameters with the gradient.</li>
-        <li><strong class="pname"><code>epochs</code></strong> (int) - The number of epochs to run the training algorithm.</li>
-        <li><strong class="pname"><code>growth_factor</code></strong> (float) - The multiplier factor used to increase or decrease the <code class="link">learning_rate</code>.</li>
-        <li><strong class="pname"><code>growth_threshold</code></strong> (float) - The number of successive loss-improving epochs after which the <code class="link">learning_rate</code> must be updated.</li>
-        <li><strong class="pname"><code>verbose</code></strong> (bool) - If true, information about the training process will be displayed on the standard output.</li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="train"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">train</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">x_train</span>,
-        <span class="sig-arg">y_train</span>,
-        <span class="sig-arg">batch_size</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">learning_rate</span>=<span class="sig-default">1.0</span>,
-        <span class="sig-arg">pretraining_learning_rate</span>=<span class="sig-default">2.0</span>,
-        <span class="sig-arg">epochs</span>=<span class="sig-default">100</span>,
-        <span class="sig-arg">growth_factor</span>=<span class="sig-default">1.25</span>,
-        <span class="sig-arg">growth_threshold</span>=<span class="sig-default">5</span>,
-        <span class="sig-arg">verbose</span>=<span class="sig-default">True</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="crino.network-pysrc.html#DeepNeuralNetwork.train">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  Performs the pretraining step for the input autoencoders (<a href="crino.network.DeepNeuralNetwork-class.html#pretrainAutoEncoders" class="link">pretrainAutoEncoders</a>),
-and the supervised learning step (<a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="link">finetune</a>).
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>x_train</code></strong> (<a class="rst-reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The training examples.</li>
-        <li><strong class="pname"><code>y_train</code></strong> (<a class="rst-reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The training labels.</li>
-        <li><strong class="pname"><code>batch_size</code></strong> (int) - The number of training examples in each mini-batch.</li>
-        <li><strong class="pname"><code>learning_rate</code></strong> (float) - The rate used to update the parameters with the gradient.</li>
-        <li><strong class="pname"><code>epochs</code></strong> (int) - The number of epochs to run the training algorithm.</li>
-        <li><strong class="pname"><code>growth_factor</code></strong> (float) - The multiplier factor used to increase or decrease the <code class="link">learning_rate</code>.</li>
-        <li><strong class="pname"><code>growth_threshold</code></strong> (float) - The number of successive loss-improving epochs after which the <code class="link">learning_rate</code> must be updated.</li>
-        <li><strong class="pname"><code>verbose</code></strong> (bool) - If true, information about the training process will be displayed on the standard output.</li>
-    </ul></dd>
-    <dt>Returns:</dt>
-        <dd>elapsed time, in seconds.</dd>
-    <dt>Overrides:
-        <a href="crino.network.MultiLayerPerceptron-class.html#train">MultiLayerPerceptron.train</a>
-    </dt>
-  </dl>
-<div class="fields">      <p><strong>See Also:</strong>
-        <a href="crino.network.DeepNeuralNetwork-class.html#pretrainAutoEncoders" class="link">pretrainAutoEncoders</a>, <a href="crino.network.MultiLayerPerceptron-class.html#finetune" class="link">finetune</a>
       </p>
 </div></td></tr></table>
 </div>
@@ -449,7 +274,8 @@ and the supervised learning step (<a href="crino.network.MultiLayerPerceptron-cl
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:02 2014
+    Generated by Epydoc 3.0.2
+    on Thu Aug 20 13:34:15 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

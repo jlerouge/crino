@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>crino.criterion.CrossEntropy</title>
+  <title>crino.criterion.NegativeLogLikelihood</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -39,7 +39,7 @@
       <span class="breadcrumbs">
         <a href="crino-module.html">Package&nbsp;crino</a> ::
         <a href="crino.criterion-module.html">Module&nbsp;criterion</a> ::
-        Class&nbsp;CrossEntropy
+        Class&nbsp;NegativeLogLikelihood
       </span>
     </td>
     <td>
@@ -49,30 +49,30 @@
     onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="crino.criterion.CrossEntropy-class.html"
+            >]&nbsp;|&nbsp;<a href="crino.criterion.NegativeLogLikelihood-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class CrossEntropy</h1><p class="nomargin-top"><span class="codelink"><a href="crino.criterion-pysrc.html#CrossEntropy">source&nbsp;code</a></span></p>
+<h1 class="epydoc">Class NegativeLogLikelihood</h1><p class="nomargin-top"><span class="codelink"><a href="crino.criterion-pysrc.html#NegativeLogLikelihood">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="class_hierarchy_for_crossentro" name="class_hierarchy_for_crossentro">
-<area shape="rect" id="node1" href="crino.criterion.CrossEntropy-class.html" title="CrossEntropy" alt="" coords="5,62,107,87"/>
-<area shape="rect" id="node2" href="crino.criterion.Criterion-class.html" title="Criterion" alt="" coords="21,6,91,31"/>
+<center>  <map id="class_hierarchy_for_negativelo" name="class_hierarchy_for_negativelo">
+<area shape="rect" id="node1" href="crino.criterion.NegativeLogLikelihood-class.html" title="NegativeLogLikelihood" alt="" coords="5,62,157,87"/>
+<area shape="rect" id="node2" href="crino.criterion.Criterion-class.html" title="Criterion" alt="" coords="46,6,116,31"/>
 </map>
-  <img src="class_hierarchy_for_crossentro.gif" alt='' usemap="#class_hierarchy_for_crossentro" ismap="ismap" class="graph-without-title" />
+  <img src="class_hierarchy_for_negativelo.gif" alt='' usemap="#class_hierarchy_for_negativelo" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
-<p>The cross-entropy criterion is well suited for targets vector
-that are normalized between 0 and 1, used along with a final
-<a href="crino.module.Sigmoid-class.html" class="link">Sigmoid</a> activation module.</p>
-<p>It has been experimentally demonstrated that an <a href="crino.network.AutoEncoder-class.html" class="link">AutoEncoder</a>
-trains faster with a cross-entropy criterion.</p>
-<p>The cross-entropy loss can be written as follows :</p>
-<p><span class="rst-formula"><i>L</i><sub><i>CE</i></sub>&#8197;=&#8197;&#8197;&#8722;&#8197;1&#8197;&#8260;&#8197;<i>N</i>&#160;<span class="limits"><span class="limit"><span class="symbol">&#8721;</span></span></span><span class="scripts"><sup class="script"><i>N</i></sup><sub class="script"><i>k</i>&#8197;=&#8197;1</sub></span>(<i>y</i>&#8901;<i>log</i>(<i>y&#770;</i>)&#8197;+&#8197;(1&#8197;&#8722;&#8197;<i>y</i>)&#8901;<i>log</i>(1&#8197;&#8722;&#8197;<i>y&#770;</i>))</span></p>
+<p>The Negative Log Likelihood criterion is used in classification task.</p>
+<p>It is meant to be connected to a Softmax Module as the last layer of the MLP.</p>
+<p>The output size should be the same as the number of possible classes.</p>
+<p>The target size should be the same as the number of possible classes, with value in between [0..1].
+If not weighted, all 0 except 1 on the correct class.</p>
+<p>The Negative Log Likelihood can be written as follows :</p>
+<p><span class="rst-formula"><i>L</i><sub><i>NLL</i></sub>&#8197;=&#8197;&#8197;&#8722;&#8197;<i>log</i>(&#8197;&lt;&#8197;<i>y&#770;</i>,&#8197;<i>y</i>&#8197;&gt;&#8197;)</span></p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -97,12 +97,12 @@ trains faster with a cross-entropy criterion.</p>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="crino.criterion.CrossEntropy-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="crino.criterion.NegativeLogLikelihood-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">outputs</span>,
         <span class="summary-sig-arg">targets</span>)</span><br />
-      Constructs a new <a href="crino.criterion.CrossEntropy-class.html" class="link">CrossEntropy</a> criterion.</td>
+      Constructs a new <a href="crino.criterion.NegativeLogLikelihood-class.html" class="link">NegativeLogLikelihood</a> criterion.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="crino.criterion-pysrc.html#CrossEntropy.__init__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="crino.criterion-pysrc.html#NegativeLogLikelihood.__init__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -116,10 +116,10 @@ trains faster with a cross-entropy criterion.</p>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="crino.criterion.CrossEntropy-class.html#prepare" class="summary-sig-name">prepare</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Computes the cross-entropy symbolic expression.</td>
+          <td><span class="summary-sig"><a href="crino.criterion.NegativeLogLikelihood-class.html#prepare" class="summary-sig-name">prepare</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Computes the Negative Log Likelihood symbolic expression.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="crino.criterion-pysrc.html#CrossEntropy.prepare">source&nbsp;code</a></span>
+            <span class="codelink"><a href="crino.criterion-pysrc.html#NegativeLogLikelihood.prepare">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -186,15 +186,15 @@ trains faster with a cross-entropy criterion.</p>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="crino.criterion-pysrc.html#CrossEntropy.__init__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="crino.criterion-pysrc.html#NegativeLogLikelihood.__init__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  Constructs a new <a href="crino.criterion.CrossEntropy-class.html" class="link">CrossEntropy</a> criterion.
+  Constructs a new <a href="crino.criterion.NegativeLogLikelihood-class.html" class="link">NegativeLogLikelihood</a> criterion.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>outputs</code></strong> (<a class="rst-reference external image-reference" href="http://deeplearning.net/software/theano/library/tensor/basic.html#tensor.TensorVariable" target="_top"><tt class="rst-docutils literal">TensorVariable</tt></a>) - The symbolic <a href="crino.criterion.Criterion-class.html#outputs" class="link">outputs</a> vector of the network</li>
+        <li><strong class="pname"><code>outputs</code></strong> (<a class="rst-reference external image-reference" href="http://deeplearning.net/software/theano/library/tensor/basic.html#tensor.TensorVariable" target="_top"><tt class="rst-docutils literal">TensorVariable</tt></a>) - The symbolic <a href="crino.criterion.Criterion-class.html#outputs" class="link">outputs</a> vector of a network</li>
         <li><strong class="pname"><code>targets</code></strong> (<a class="rst-reference external image-reference" href="http://deeplearning.net/software/theano/library/tensor/basic.html#tensor.TensorVariable" target="_top"><tt class="rst-docutils literal">TensorVariable</tt></a>) - The symbolic <a href="crino.criterion.Criterion-class.html#targets" class="link">targets</a> vector</li>
     </ul></dd>
     <dt>Overrides:
@@ -213,11 +213,11 @@ trains faster with a cross-entropy criterion.</p>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">prepare</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="crino.criterion-pysrc.html#CrossEntropy.prepare">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="crino.criterion-pysrc.html#NegativeLogLikelihood.prepare">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  Computes the cross-entropy symbolic expression.
+  Computes the Negative Log Likelihood symbolic expression.
   <dl class="fields">
     <dt>Overrides:
         <a href="crino.criterion.Criterion-class.html#prepare">Criterion.prepare</a>

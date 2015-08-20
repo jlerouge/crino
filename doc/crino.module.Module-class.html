@@ -59,24 +59,26 @@
 <h1 class="epydoc">Class Module</h1><p class="nomargin-top"><span class="codelink"><a href="crino.module-pysrc.html#Module">source&nbsp;code</a></span></p>
 <center>
 <center>  <map id="class_hierarchy_for_module" name="class_hierarchy_for_module">
-<area shape="rect" id="node1" href="crino.module.Activation-class.html" title="Activation" alt="" coords="436,123,516,151"/>
-<area shape="rect" id="node7" href="crino.module.Sigmoid-class.html" title="Sigmoid" alt="" coords="395,182,464,210"/>
-<area shape="rect" id="node8" href="crino.module.Softmax-class.html" title="Softmax" alt="" coords="488,182,557,210"/>
-<area shape="rect" id="node10" href="crino.module.Tanh-class.html" title="Tanh" alt="" coords="581,182,632,210"/>
-<area shape="rect" id="node2" href="crino.module.Concat-class.html" title="Concat" alt="" coords="144,123,208,151"/>
-<area shape="rect" id="node3" href="crino.module.Container-class.html" title="Container" alt="" coords="235,65,312,93"/>
-<area shape="rect" id="node6" href="crino.module.Sequential-class.html" title="Sequential" alt="" coords="232,123,315,151"/>
-<area shape="rect" id="node4" href="crino.module.Linear-class.html" title="Linear" alt="" coords="540,123,596,151"/>
-<area shape="rect" id="node5" href="crino.module.Module-class.html" title="Module" alt="" coords="343,6,407,34"/>
-<area shape="rect" id="node9" href="crino.module.Standalone-class.html" title="Standalone" alt="" coords="433,65,519,93"/>
-<area shape="rect" id="node11" href="crino.network.AutoEncoder-class.html" title="network.AutoEncoder" alt="" coords="5,182,152,210"/>
-<area shape="rect" id="node14" href="crino.network.MultiLayerPerceptron-class.html" title="network.MultiLayerPerceptron" alt="" coords="176,182,371,210"/>
-<area shape="rect" id="node12" href="crino.network.DeepNeuralNetwork-class.html" title="network.DeepNeuralNetwork" alt="" coords="179,241,368,269"/>
-<area shape="rect" id="node13" href="crino.network.InputOutputDeepArchitecture-class.html" title="network.InputOutputDeepArchitecture" alt="" coords="153,299,393,327"/>
+<area shape="rect" id="node1" href="crino.module.Module-class.html" title="Module" alt="" coords="255,6,319,31"/>
+<area shape="rect" id="node2" href="crino.module.Container-class.html" title="Container" alt="" coords="189,62,267,87"/>
+<area shape="rect" id="node3" href="crino.module.Standalone-class.html" title="Standalone" alt="" coords="303,62,389,87"/>
+<area shape="rect" id="node4" href="crino.module.Sequential-class.html" title="Sequential" alt="" coords="67,118,148,143"/>
+<area shape="rect" id="node5" href="crino.module.Concat-class.html" title="Concat" alt="" coords="196,118,260,143"/>
+<area shape="rect" id="node6" href="crino.module.Activation-class.html" title="Activation" alt="" coords="307,118,385,143"/>
+<area shape="rect" id="node7" href="crino.module.Linear-class.html" title="Linear" alt="" coords="411,118,468,143"/>
+<area shape="rect" id="node8" href="crino.network.MultiLayerPerceptron-class.html" title="network.MultiLayerPerceptron" alt="" coords="5,174,200,199"/>
+<area shape="rect" id="node9" href="crino.module.Sigmoid-class.html" title="Sigmoid" alt="" coords="224,174,293,199"/>
+<area shape="rect" id="node10" href="crino.module.Softmax-class.html" title="Softmax" alt="" coords="318,174,388,199"/>
 </map>
   <img src="class_hierarchy_for_module.gif" alt='' usemap="#class_hierarchy_for_module" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="crino.module.Container-class.html">Container</a></li><li>, <a href="crino.module.Standalone-class.html">Standalone</a></li>  </ul>
+</dd></dl>
+
 <hr />
 <p>A <a href="crino.module.Module-class.html" class="link">Module</a> is a part of a neural network architecture,
 that may have parameters. Provided an input vector of
@@ -174,10 +176,51 @@ a gradient descent.</p>
           <td><span class="summary-sig"><a href="crino.module.Module-class.html#trainFunction" class="summary-sig-name">trainFunction</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">batch_size</span>=<span class="summary-sig-default">1</span>,
         <span class="summary-sig-arg">lr</span>=<span class="summary-sig-default">0.1</span>,
-        <span class="summary-sig-arg">downcast</span>=<span class="summary-sig-default">None</span>)</span><br />
+        <span class="summary-sig-arg">downcast</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">shared_x_train</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">shared_y_train</span>=<span class="summary-sig-default">None</span>)</span><br />
       Constructs and compiles a Theano function in order to train the module.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="crino.module-pysrc.html#Module.trainFunction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><a class="rst-reference external" href="http://deeplearning.net/software/theano/library/compile/function.html#module-function" target="_top"><tt class="rst-docutils literal">function</tt></a></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.module.Module-class.html#criterionFunction" class="summary-sig-name">criterionFunction</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">downcast</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">shared_x_data</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">shared_y_data</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Constructs and compiles a Theano function in order to compute the criterion on a given set.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.module-pysrc.html#Module.criterionFunction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><a class="rst-reference external" href="http://deeplearning.net/software/theano/library/compile/function.html#module-function" target="_top"><tt class="rst-docutils literal">function</tt></a></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="crino.module.Module-class.html#forwardFunction" class="summary-sig-name">forwardFunction</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">downcast</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">shared_x_data</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Constructs and compiles a Theano function in order to compute the forward on a given set.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.module-pysrc.html#Module.forwardFunction">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -196,6 +239,38 @@ a gradient descent.</p>
       Performs the forward step on the given test example.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="crino.module-pysrc.html#Module.forward">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="holdFunction"></a><span class="summary-sig-name">holdFunction</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.module-pysrc.html#Module.holdFunction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="restoreFunction"></a><span class="summary-sig-name">restoreFunction</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.module-pysrc.html#Module.restoreFunction">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -247,6 +322,23 @@ a gradient descent.</p>
       Initializes the <a href="crino.module.Module-class.html#params" class="link">params</a> of the module and its potential submodules.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="crino.module-pysrc.html#Module.prepareParams">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="prepareBackup"></a><span class="summary-sig-name">prepareBackup</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Initializes the <a href="crino.module.Module-class.html#backupParams" class="link">backupParams</a> of the module and its potential submodules.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="crino.module-pysrc.html#Module.prepareBackup">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -349,6 +441,14 @@ a gradient descent.</p>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">list</span>
+    </td><td class="summary">
+        <a name="backupParams"></a><span class="summary-name">backupParams</span><br />
+      The list of backup parameters
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">bool</span>
     </td><td class="summary">
         <a name="prepared"></a><span class="summary-name">prepared</span><br />
@@ -445,7 +545,7 @@ a gradient descent.</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>vector</code></strong> (<a class="rst-reference external" href="http://deeplearning.net/software/theano/library/tensor/basic.html#tensor.TensorVariable" target="_top"><tt class="rst-docutils literal">TensorVariable</tt></a>) - The symbolic vector that will serve as inputs.</li>
+        <li><strong class="pname"><code>vector</code></strong> (<a class="rst-reference external image-reference" href="http://deeplearning.net/software/theano/library/tensor/basic.html#tensor.TensorVariable" target="_top"><tt class="rst-docutils literal">TensorVariable</tt></a>) - The symbolic vector that will serve as inputs.</li>
         <li><strong class="pname"><code>nInputs</code></strong> (int) - The size of this inputs vector.</li>
     </ul></dd>
   </dl>
@@ -464,7 +564,9 @@ a gradient descent.</p>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">trainFunction</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">batch_size</span>=<span class="sig-default">1</span>,
         <span class="sig-arg">lr</span>=<span class="sig-default">0.1</span>,
-        <span class="sig-arg">downcast</span>=<span class="sig-default">None</span>)</span>
+        <span class="sig-arg">downcast</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">shared_x_train</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">shared_y_train</span>=<span class="sig-default">None</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="crino.module-pysrc.html#Module.trainFunction">source&nbsp;code</a></span>&nbsp;
@@ -494,6 +596,63 @@ a gradient descent.</p>
   </dl>
 </td></tr></table>
 </div>
+<a name="criterionFunction"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">criterionFunction</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">downcast</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">shared_x_data</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">shared_y_data</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.module-pysrc.html#Module.criterionFunction">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Constructs and compiles a Theano function in order to compute the criterion on a given set.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>downcast</code></strong> (bool) - If true, allows the inputs data to be downcasted
+(e.g. from double to single precision floats for GPU use).</li>
+    </ul></dd>
+    <dt>Returns: <a class="rst-reference external" href="http://deeplearning.net/software/theano/library/compile/function.html#module-function" target="_top"><tt class="rst-docutils literal">function</tt></a></dt>
+        <dd>a Theano-function that performs one step of gradient descent</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="forwardFunction"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">forwardFunction</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">downcast</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">shared_x_data</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="crino.module-pysrc.html#Module.forwardFunction">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Constructs and compiles a Theano function in order to compute the forward on a given set.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>downcast</code></strong> (bool) - If true, allows the inputs data to be downcasted
+(e.g. from double to single precision floats for GPU use).</li>
+    </ul></dd>
+    <dt>Returns: <a class="rst-reference external" href="http://deeplearning.net/software/theano/library/compile/function.html#module-function" target="_top"><tt class="rst-docutils literal">function</tt></a></dt>
+        <dd>a Theano-function that performs one step of gradient descent</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="forward"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -513,7 +672,7 @@ a gradient descent.</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>x_test</code></strong> (<a class="rst-reference external" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The test example on which the neural network will compute its outputs.</li>
+        <li><strong class="pname"><code>x_test</code></strong> (<a class="rst-reference external image-reference" href="http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html" target="_top"><tt class="rst-docutils literal">ndarray</tt></a>) - The test example on which the neural network will compute its outputs.</li>
     </ul></dd>
     <dt>Returns: <a class="rst-reference external" href="http://deeplearning.net/software/theano/library/compile/function.html#module-function" target="_top"><tt class="rst-docutils literal">function</tt></a></dt>
         <dd>a Theano function that performs one step of gradient descent</dd>
@@ -659,7 +818,8 @@ a gradient descent.</p>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Sep  4 18:02:01 2014
+    Generated by Epydoc 3.0.2
+    on Thu Aug 20 13:34:15 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
