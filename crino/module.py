@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
-#    
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
+#
 #    This file is part of Crino.
 #
 #    Crino is free software: you can redistribute it and/or modify
@@ -19,7 +20,27 @@
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
 """
-provides a modular architecture to build a neural network.
+The `module` module provides a modular architecture to build a neural network.
+
+These modules can be either `Standalone` modules, i.e. modules that doesn't have
+submodules, or `Container` modules, i.e. modules that are composed of one or
+several other module(s). The `Container` modules are typically used to create
+arbitrarily complex neural network architectures, while `Standalone` modules
+acts as `Linear` regression layers or non-linear `Activation` layers.
+
+The currently implemented `Standalone` modules are :
+    - `Linear`
+    - `Sigmoid`
+    - `Softmax`
+    - `Tanh`
+
+The currently implemented `Container` modules are :
+    - `Concat`
+    - `Sequential`
+
+See their respective documentations for more details about their use.
+
+:see: `criterion`, `network`
 """
 
 import theano
@@ -28,6 +49,7 @@ import numpy as np
 import warnings
 import cPickle as pickle
 from crino.criterion import Criterion
+from theano.compile.sharedvalue import SharedVariable
 
 def load(filename):
     """
@@ -37,7 +59,7 @@ def load(filename):
         filename : str
             The path to the saved module.
     """
-    return pickle.load(open(load_file, 'rb'))
+    return pickle.load(open(filename, 'rb'))
 
 class Module:
     """
@@ -95,6 +117,12 @@ class Module:
         :type: list
         """
 
+        self.backupParams = []
+        """
+        :ivar: The list of backup parameters
+        :type: list
+        """
+
         self.prepared = False
         """
         :ivar: Indicates whether the module have already been prepared
@@ -136,7 +164,7 @@ class Module:
             self.nInputs = nInputs
         self.inputs = vector
 
-    def trainFunction(self, batch_size=1, lr=0.1, downcast=None):
+    def trainFunction(self, batch_size=1, lr=0.1, downcast=None, shared_x_train=None, shared_y_train=None):
         """
         Constructs and compiles a Theano function in order to train the module.
 
@@ -157,24 +185,119 @@ class Module:
         :rtype: :theano:`function`
         """
 
+        shared_sets=False
+        if isinstance(shared_x_train,SharedVariable) and isinstance(shared_y_train,SharedVariable):
+            shared_sets=True
+
         if self.params and self.criterion:
             self.gparams = T.grad(self.criterion.expression, self.params)
 
             # Définition des variables symboliques
             index = T.lscalar('index')
-            x_train = T.matrix('x_train')
-            y_train = T.matrix('y_train')
+            if shared_sets:
+                x_train = shared_x_train
+                y_train = shared_y_train
+            else:
+                x_train = T.matrix('x_train')
+                y_train = T.matrix('y_train')
 
             # Définition des mises à jour
             updates = []
             for param_i, grad_i in zip(self.params, self.gparams):
                 updates.append((param_i, param_i - lr*grad_i))
 
+            # Définition des entrées
+            if shared_sets:
+                inputs=[index]
+            else:
+                inputs=[x_train, y_train, index]
+
             # Construction d'une fonction d'apprentissage theano
-            return theano.function( inputs=[x_train, y_train, index], outputs=self.criterion.expression, updates=updates,
+            return theano.function( inputs=inputs, outputs=self.criterion.expression, updates=updates,
                                     givens={
                                         self.inputs: x_train[index*batch_size:(index+1)*batch_size],
                                         self.criterion.targets: y_train[index*batch_size:(index+1)*batch_size]
+                                    }, allow_input_downcast=downcast)
+        else:
+            return None
+
+    def criterionFunction(self, downcast=None, shared_x_data=None, shared_y_data=None):
+        """
+        Constructs and compiles a Theano function in order to compute the criterion on a given set.
+
+        :Parameters:
+
+            downcast : bool
+                If true, allows the inputs data to be downcasted
+                (e.g. from double to single precision floats for GPU use).
+        :return: a Theano-function that performs one step of gradient descent
+        :rtype: :theano:`function`
+        """
+
+        shared_sets=False
+        if isinstance(shared_x_data,SharedVariable) and isinstance(shared_y_data,SharedVariable):
+            shared_sets=True
+
+        if self.params and self.criterion:
+
+            # Définition des variables symboliques
+            if shared_sets:
+                x_data = shared_x_data
+                y_data = shared_y_data
+            else:
+                x_data = T.matrix('x_data')
+                y_data = T.matrix('y_data')
+
+            # Définition des entrées
+            if shared_sets:
+                inputs=[]
+            else:
+                inputs=[x_data, y_data]
+
+            # Construction de la fonction
+            return theano.function( inputs=inputs, outputs=self.criterion.expression,
+                                    givens={
+                                        self.inputs: x_data,
+                                        self.criterion.targets: y_data
+                                    }, allow_input_downcast=downcast)
+        else:
+            return None
+
+    def forwardFunction(self, downcast=None, shared_x_data=None):
+        """
+        Constructs and compiles a Theano function in order to compute the forward on a given set.
+
+        :Parameters:
+
+            downcast : bool
+                If true, allows the inputs data to be downcasted
+                (e.g. from double to single precision floats for GPU use).
+        :return: a Theano-function that performs one step of gradient descent
+        :rtype: :theano:`function`
+        """
+
+        shared_sets=False
+        if isinstance(shared_x_data,SharedVariable):
+            shared_sets=True
+
+        if self.prepared:
+
+            # Définition des variables symboliques
+            if shared_sets:
+                x_data = shared_x_data
+            else:
+                x_data = T.matrix('x_data')
+
+            # Définition des entrées
+            if shared_sets:
+                inputs=[]
+            else:
+                inputs=[x_data]
+
+            # Construction de la fonction
+            return theano.function( inputs=inputs, outputs=self.outputs,
+                                    givens={
+                                        self.inputs: x_data
                                     }, allow_input_downcast=downcast)
         else:
             return None
@@ -190,8 +313,35 @@ class Module:
         :return: a Theano function that performs one step of gradient descent
         :rtype: :theano:`function`
         """
-        forward = theano.function(inputs=[], outputs=self.outputs, givens={self.inputs: x_test})
+        shared_x_test=theano.shared(x_test)
+        forward = self.forwardFunction(downcast=None,shared_x_data=shared_x_test)
         return forward()
+
+    def holdFunction(self):
+
+        if self.params and self.backupParams:
+            # Définition des mises à jour
+            updates = []
+            for param_i, backup_param_i in zip(self.params, self.backupParams):
+                updates.append((backup_param_i, param_i))
+
+            # Construction d'une fonction de hold
+            return theano.function(inputs=[], updates=updates)
+        else:
+            return None
+
+    def restoreFunction(self):
+
+        if self.params and self.backupParams:
+            # Définition des mises à jour
+            updates = []
+            for param_i, backup_param_i in zip(self.params, self.backupParams):
+                updates.append((param_i, backup_param_i))
+
+            # Construction d'une fonction de restore
+            return theano.function(inputs=[], updates=updates)
+        else:
+            return None
 
     def prepare(self):
         """
@@ -205,6 +355,7 @@ class Module:
             else:
                 self.prepareGeometry()
                 self.prepareParams()
+                self.prepareBackup()
                 self.prepareOutput()
                 self.prepared = True
         else:
@@ -225,6 +376,17 @@ class Module:
         :attention: It must be implemented in derived classes.
         """
         raise NotImplementedError("This class must be derived.")
+
+    def prepareBackup(self):
+        """
+        Initializes the `backupParams` of the module and its potential submodules.
+        """
+        #
+        if self.params:
+            for param_i in self.params:
+                theShape=theano.function(inputs=[],outputs=param_i.shape)
+                data=np.zeros(theShape(),dtype=theano.config.floatX)
+                self.backupParams.append(theano.shared(value=data, name='backup_'+param_i.name, borrow=True))
 
     def prepareOutput(self):
         """
@@ -539,7 +701,7 @@ class Activation(Standalone):
     def __init__(self, nOutputs, nInputs=None):
         """
         Constructs a new `Activation` module.
-        
+
         :Parameters:
             nOutputs : int
                 The `outputs` size.
@@ -579,7 +741,7 @@ class Tanh(Activation):
         Computes the tanh function :math:`\mathbf{\hat{y}} = = [\dfrac{exp(x_i)-exp(-x_i)}{exp(x_i)+exp(-x_i)}]_{i=1}^n`
         """
         self.outputs = T.tanh(self.inputs)
-        
+
 class Sigmoid(Activation):
     """
     A `Sigmoid` activation module computes its `outputs` with the
@@ -604,7 +766,7 @@ class Sigmoid(Activation):
         Computes the sigmoid function :math:`\mathbf{\hat{y}} = [1/(1+exp(-x_i))]_{i=1}^n`
         """
         self.outputs = T.nnet.sigmoid(self.inputs)
-        
+
 class Softmax(Activation):
     """
     A `Softmax` activation module computes its `outputs` with the
@@ -612,7 +774,7 @@ class Softmax(Activation):
     :math:`softmax(\mathbf{x}) = [exp(x_i)/\sum_{i=1}^n exp(x_i)]_{i=1}^n`,
     with :math:`\mathbf{x} = [x_1, x_2, \dots, x_n] \in \mathbb{R}^n`.
     """
-    
+
     def __init__(self, nOutputs, nInputs=None):
         """
         Constructs a new `Softmax` activation module.
