@@ -10,10 +10,11 @@
 %
 % Description : Création de bases de données jouets
 
-%% Demo
+%% Initialization
 clear all;
 close all;
 clc;
+rng('shuffle');
 
 %% Chargement des textures
 fg = imnormalize(double(imread('D17.gif')));
@@ -25,11 +26,13 @@ height = 128;
 min_radius = min(width, height)/4;
 
 n_train = 500;
+n_valid = 500;
 n_test = 500;
 
 x_train = zeros(n_train, width*height);
 y_train = zeros(n_train, width*height);
-
+x_valid = zeros(n_valid, width*height);
+y_valid = zeros(n_valid, width*height);
 x_test = zeros(n_test, width*height);
 y_test = zeros(n_test, width*height);
 
@@ -57,13 +60,17 @@ for i=1:(n_train+n_test)
     if(i <= n_train)
         x_train(i,:) = reshape(xdata, 1, width*height);
         y_train(i,:) = reshape(ydata, 1, width*height);
+    elseif(i <= n_train + n_valid)
+        x_valid(i-n_train,:) = reshape(xdata, 1, width*height);
+        y_valid(i-n_train,:) = reshape(ydata, 1, width*height);
     else
-        x_test(i-n_train,:) = reshape(xdata, 1, width*height);
-        y_test(i-n_train,:) = reshape(ydata, 1, width*height);
+        x_test(i-n_train-n_valid,:) = reshape(xdata, 1, width*height);
+        y_test(i-n_train-n_valid,:) = reshape(ydata, 1, width*height);
     end
 end
 toc;
 
 %% Enregistrement
 save('train', 'x_train', 'y_train');
+save('valid', 'x_valid', 'y_valid');
 save('test', 'x_test', 'y_test');

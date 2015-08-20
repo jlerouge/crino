@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
-#    
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
+#
 #    This file is part of Crino.
 #
 #    Crino is free software: you can redistribute it and/or modify
@@ -26,28 +27,28 @@ import datetime as DT
 def fastTestConfig():
 
     config={}
-    
+
     #Learning parameters of the input pretraining
     input_pretraining_params={
             'learning_rate': 1.0,
             'batch_size' : 250,
             'epochs' : 1
             }
-    
+
     #Learning parameters of the output pretraining
     output_pretraining_params={
             'learning_rate': 1.0,
             'batch_size' : 250,
             'epochs' : 1
             }
-    
+
     #Learning parameters of the link pretraining
     link_pretraining_params={
             'learning_rate': 1.0,
             'batch_size' : 250,
             'epochs' : 1
             }
-    
+
     #Learning parameters of the supervised training + pretrainings
     config['learning_params']={
         'learning_rate' : 1.0,
@@ -58,10 +59,10 @@ def fastTestConfig():
         'link_pretraining_params' : link_pretraining_params,
         'link_pretraining' : True
     }
-    
+
     #Size of one hidden representation
     hidden_size = 256
-    #Geometry of all hidden representations 
+    #Geometry of all hidden representations
     config['hidden_geometry'] = [hidden_size]*2
 
     # All configurations have the same geometry 3 layers and 4 representations
@@ -73,13 +74,13 @@ def fastTestConfig():
     # First layer pretrained input way
     config['pretraining_geometries'].append({'nInputLayers':1,'nOutputLayers':0})
     # Last layer pretrained output way
-    config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':1})  
+    config['pretraining_geometries'].append({'nInputLayers':0,'nOutputLayers':1})
 
     #Shall we used known init weights (here no)
     config['init_weights'] = None
     #Shall we save init weights
     config['save_init_weights'] = True
-    
+
     #Examples to be displayed at testing
     config['displayed_examples']=[10,50,100]
 
@@ -91,7 +92,7 @@ def fastTestConfig():
 
     return config
 
-  
+
 
 def main():
     experience_multiple_pretraining_geometry(fastTestConfig())

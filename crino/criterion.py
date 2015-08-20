@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (c) 2014 Clément Chatelain, Romain Hérault, Julien Lerouge,
-#    Romain Modzelewski (LITIS - EA 4108). All rights reserved.
-#    
+#    Copyright (c) 2014-2015 Soufiane Belharbi, Clément Chatelain,
+#    Romain Hérault, Julien Lerouge, Romain Modzelewski (LITIS - EA 4108).
+#    All rights reserved.
+#
 #    This file is part of Crino.
 #
 #    Crino is free software: you can redistribute it and/or modify
@@ -19,8 +20,19 @@
 #    along with Crino. If not, see <http://www.gnu.org/licenses/>.
 
 """
-provides some differentiable loss functions in order to
+The `criterion` module provides some differentiable loss functions in order to
 perform a gradient descent on a hand-crafted neural network.
+
+The currently implemented criterions are :
+    - `CrossEntropy`
+    - `MeanSquareError`
+    - `MeanAbsoluteError`
+    - `NegativeLogLikelihood`
+
+See their respective documentations for their mathematical expressions and their
+use cases.
+ 
+:see: `module`
 """
 
 import theano.tensor as T
@@ -160,9 +172,9 @@ class NegativeLogLikelihood(Criterion):
     The Negative Log Likelihood criterion is used in classification task.
 
     It is meant to be connected to a Softmax Module as the last layer of the MLP.
-    
+
     The output size should be the same as the number of possible classes.
-    
+
     The target size should be the same as the number of possible classes, with value in between [0..1].
     If not weighted, all 0 except 1 on the correct class.
 
@@ -186,4 +198,3 @@ class NegativeLogLikelihood(Criterion):
     def prepare(self):
         """ Computes the Negative Log Likelihood symbolic expression. """
         self.expression = -T.log(T.sum(self.outputs*self.targets))
-
