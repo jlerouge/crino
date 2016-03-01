@@ -61,7 +61,7 @@ def load(filename):
 	"""
 	return pickle.load(open(filename, 'rb'))
 
-class Module:
+class Module(object):
 	"""
 	A `Module` is a part of a neural network architecture,
 	that may have parameters. Provided an input vector of

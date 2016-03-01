@@ -37,7 +37,7 @@ use cases.
 
 import theano.tensor as T
 
-class Criterion:
+class Criterion(object):
 	"""
 	The Criterion class handles the loss computation between **ŷ** (the `outputs` vector of a `Module`)
 	and **y** (the `targets` vector). This loss has to be differentiable, in order to perform a gradient descent.

@@ -66,7 +66,7 @@ class MultiLayerPerceptron(Sequential):
 				The type of activation for the output layer.
 		:attention: `outputActivation` parameter is not an instance but a class.
 		"""
-		super(MultiLayerPerceptron).__init__(self, nInputs=nUnits[0])
+		super(MultiLayerPerceptron, self).__init__(nInputs=nUnits[0])
 		self.nUnits = nUnits
 
 		# In and hidden layers
@@ -250,7 +250,7 @@ class AutoEncoder(MultiLayerPerceptron):
 				The type of activation for the backprojection layer.
 		:attention: `outputActivation` parameter is not an instance but a class.
 		"""
-		super(AutoEncoder).__init__(self, nUnits=[nVisibles, nHidden, nVisibles], outputActivation=outputActivation)
+		super(AutoEncoder, self).__init__(nUnits=[nVisibles, nHidden, nVisibles], outputActivation=outputActivation)
 
 	def prepareParams(self):
 		if(self.modules):
