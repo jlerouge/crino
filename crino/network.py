@@ -67,7 +67,7 @@ class MultiLayerPerceptron(Sequential):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        Sequential.__init__(self, nInputs=nUnits[0])
+        super(MultiLayerPerceptron, self).__init__(nInputs=nUnits[0])
         self.nUnits = nUnits
 
         # In and hidden layers
@@ -77,7 +77,6 @@ class MultiLayerPerceptron(Sequential):
         # Output layer
         self.add(Linear(nUnits[-1]))
         self.add(outputActivation(nUnits[-1]))
-
 
     def getGeometry(self):
         if not(self.prepared):
@@ -321,12 +320,12 @@ class AutoEncoder(MultiLayerPerceptron):
                 The type of activation for the backprojection layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        Sequential.__init__(self, nInputs=nVisibles)
+        super(AutoEncoder, self).__init__([nVisibles, nHidden, nVisibles], outputActivation)
         self.nHidden = nHidden
-        self.add(Linear(nHidden, nVisibles))
-        self.add(Tanh(nHidden))
-        self.add(Linear(nVisibles, nHidden))
-        self.add(outputActivation(nVisibles))
+#        self.add(Linear(nHidden, nVisibles))
+#        self.add(Tanh(nHidden))
+#        self.add(Linear(nVisibles, nHidden))
+#        self.add(outputActivation(nVisibles))
 
     def prepareParams(self):
         if(self.modules):
@@ -349,6 +348,12 @@ class AutoEncoder(MultiLayerPerceptron):
         return self.modules[1].forward(linear)
 
 class OutputAutoEncoder(AutoEncoder):
+    """
+    Construct an output auto encoder from its parent.
+    """
+    def __init__(self, *args, **kwargs):
+        super(OutputAutoEncoder, self).__init__(*args, **kwargs)
+
     def prepareParams(self):
         if(self.modules):
             self.modules[2].prepareParams()
@@ -385,7 +390,7 @@ class PretrainedMLP(MultiLayerPerceptron):
 
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        MultiLayerPerceptron.__init__(self, nUnits, outputActivation)
+        super(PretrainedMLP, self).__init__(nUnits, outputActivation)
 
         nLayers=len(nUnits)-1;
         nLinkLayers=nLayers-nInputLayers-nOutputLayers;
@@ -669,7 +674,7 @@ class DeepNeuralNetwork(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        PretrainedMLP.__init__(self, nUnitsInput+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1)
+        super(DeepNeuralNetwork, self).__init__(nUnitsInput+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1)
 
 class InputOutputDeepArchitecture(PretrainedMLP):
     """
@@ -702,4 +707,4 @@ class InputOutputDeepArchitecture(PretrainedMLP):
                 The type of activation for the output layer.
         :attention: `outputActivation` parameter is not an instance but a class.
         """
-        PretrainedMLP.__init__(self, nUnitsInput+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1, nOutputLayers=len(nUnitsOutput)-1)
+        super(InputOutputDeepArchitecture, self).__init__(self, nUnitsInput+nUnitsOutput, outputActivation=outputActivation, nInputLayers=len(nUnitsInput)-1, nOutputLayers=len(nUnitsOutput)-1)

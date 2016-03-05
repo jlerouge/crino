@@ -37,7 +37,7 @@ use cases.
 
 import theano.tensor as T
 
-class Criterion:
+class Criterion(object):
     """
     The Criterion class handles the loss computation between **ŷ** (the `outputs` vector of a `Module`)
     and **y** (the `targets` vector). This loss has to be differentiable, in order to perform a gradient descent.
@@ -108,7 +108,7 @@ class CrossEntropy(Criterion):
             targets : :theano:`TensorVariable`
                 The symbolic `targets` vector
         """
-        Criterion.__init__(self, outputs, targets)
+        super(CrossEntropy, self).__init__(outputs, targets)
 
     def prepare(self):
         """ Computes the cross-entropy symbolic expression. """
@@ -135,7 +135,7 @@ class MeanSquareError(Criterion):
             targets : :theano:`TensorVariable`
                 The symbolic `targets` vector
         """
-        Criterion.__init__(self, outputs, targets)
+        super(MeanSquareError, self).__init__(outputs, targets)
 
     def prepare(self):
         """ Computes the mean square error symbolic expression. """
@@ -161,7 +161,7 @@ class MeanAbsoluteError(Criterion):
             targets : :theano:`TensorVariable`
                 The symbolic `targets` vector
         """
-        Criterion.__init__(self, outputs, targets)
+        super(MeanAbsoluteError, self).__init__(outputs, targets)
 
     def prepare(self):
         """ Computes the mean absolute error symbolic expression. """
@@ -193,7 +193,7 @@ class NegativeLogLikelihood(Criterion):
             targets : :theano:`TensorVariable`
                 The symbolic `targets` vector
         """
-        Criterion.__init__(self, outputs, targets)
+        super(NegativeLogLikelihood, self).__init__(outputs, targets)
 
     def prepare(self):
         """ Computes the Negative Log Likelihood symbolic expression. """

@@ -61,7 +61,7 @@ def load(filename):
     """
     return pickle.load(open(filename, 'rb'))
 
-class Module:
+class Module(object):
     """
     A `Module` is a part of a neural network architecture,
     that may have parameters. Provided an input vector of
@@ -424,7 +424,7 @@ class Standalone(Module):
             nInputs : int
                 The `inputs` size.
         """
-        Module.__init__(self, nOutputs, nInputs)
+        super(Standalone, self).__init__(nOutputs, nInputs)
 
     def prepareGeometry(self):
         """
@@ -458,7 +458,7 @@ class Linear(Standalone):
                 The initialization vector for b.
         """
 
-        Standalone.__init__(self, nOutputs, nInputs)
+        super(Linear, self).__init__(nOutputs, nInputs)
 
         self.W_init = W_init
         """
@@ -543,7 +543,7 @@ class Container(Module):
             nInputs : int
                 The `inputs` size.
         """
-        Module.__init__(self, None, nInputs)
+        super(Container, self).__init__(None, nInputs)
 
         self.modules=[]
         """
@@ -585,7 +585,7 @@ class Sequential(Container):
             nInputs : int
                 The `inputs` size of the sequence (and of all the submodules).
         """
-        Container.__init__(self, mods, nInputs)
+        super(Sequential, self).__init__(mods, nInputs)
 
     def prepareGeometry(self):
         """
@@ -650,7 +650,7 @@ class Concat(Container):
             nInputs : int
                 The `inputs` size of the concat.
         """
-        Container.__init__(self, mods, nInputs)
+        super(Concat, self).__init__(mods, nInputs)
 
     def prepareGeometry(self):
         """
@@ -709,7 +709,7 @@ class Activation(Standalone):
                 The `inputs` size.
         """
 
-        Standalone.__init__(self, nOutputs, nInputs)
+        super(Activation, self).__init__(nOutputs, nInputs)
 
     def prepareParams(self):
         """
@@ -734,7 +734,7 @@ class Tanh(Activation):
             nInputs : int
                 The `inputs` size.
         """
-        Activation.__init__(self, nOutputs, nInputs=None)
+        super(Tanh, self).__init__(nOutputs, nInputs=None)
 
     def prepareOutput(self):
         """
@@ -759,7 +759,7 @@ class Sigmoid(Activation):
             nInputs : int
                 The `inputs` size.
         """
-        Activation.__init__(self, nOutputs, nInputs)
+        super(Sigmoid, self).__init__(nOutputs, nInputs)
 
     def prepareOutput(self):
         """
@@ -785,7 +785,7 @@ class Softmax(Activation):
             nInputs : int
                 The `inputs` size.
         """
-        Activation.__init__(self, nOutputs, nInputs)
+        super(Softmax, self).__init__(nOutputs, nInputs)
 
     def prepareOutput(self):
         """
