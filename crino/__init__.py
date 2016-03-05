@@ -55,4 +55,3 @@ __version__ = "0.2.0"
 import crino.criterion
 import crino.module
 import crino.network
-import crino.optimizer
