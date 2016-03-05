@@ -208,7 +208,7 @@ def experience_multiple_pretraining_geometry(config):
 
         nn.setInputs(T.matrix('x'), nFeats)
         nn.prepare()
-        nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
+        nn.setCriterion(MeanSquareError(nn.getOutputs(), T.matrix('y')))
         if parameters is None:
             parameters=nn.getParameters()
             if save_init_weights:

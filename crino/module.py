@@ -162,6 +162,14 @@ class Module(object):
         self.nInputs = nInputs
         self.inputs = vector
 
+    def getOutputs(self):
+        """
+        Returns the symbolic output vector. You most likely need to have prepared the network in order to use this function.
+        """
+        if self.outputs == None:
+            raise Exception("The output symbolic vector must be computed (did you prepare the module first?)")
+        return self.outputs
+
     def setCriterion(self, criterion):
         """
         Sets the criterion for training.

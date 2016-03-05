@@ -286,7 +286,7 @@ def experience(config):
     # bake the MLP and set the criterion
     nn.setInputs(T.matrix('x'), nFeats)
     nn.prepare()
-    nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
+    nn.setCriterion(MeanSquareError(nn.getOutputs(), T.matrix('y')))
 
     # set initial weights if they exists
     if not(init_weights is None):

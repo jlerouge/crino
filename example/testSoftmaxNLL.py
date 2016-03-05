@@ -83,7 +83,7 @@ print '... building and learning a MLP network'
 nn = crino.network.MultiLayerPerceptron([2,4,nClasses] ,crino.module.Softmax)
 nn.setInputs(T.matrix('x'), nFeats)
 nn.prepare()
-nn.criterion = NegativeLogLikelihood(nn.outputs, T.matrix('y'))
+nn.setCriterion(NegativeLogLikelihood(nn.getOutputs(), T.matrix('y')))
 
 delta = nn.train(x_train, y_train, **learning_params)
 print '... learning lasted %s ' % (delta)
