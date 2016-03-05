@@ -18,17 +18,17 @@ CLASSIFIERS =  ['Development Status :: 5 - Production/Stable',
                 'Operating System :: OS Independent']
 
 if __name__ == "__main__":
-	setup(
-		name = DISTNAME,
-  		version = crino.__version__,
-		author = AUTHOR,
-		author_email = AUTHOR_EMAIL,
-		description = DESCRIPTION,
-		long_description = LONG_DESCRIPTION,
-		license = LICENSE,
-		keywords = KEYWORDS,
-		url = URL,
-		packages = ['crino'],
-		classifiers =CLASSIFIERS,
-		install_requires=['numpy','scipy','theano']
-	)
+    setup(
+        name = DISTNAME,
+        version = crino.__version__,
+        author = AUTHOR,
+        author_email = AUTHOR_EMAIL,
+        description = DESCRIPTION,
+        long_description = LONG_DESCRIPTION,
+        license = LICENSE,
+        keywords = KEYWORDS,
+        url = URL,
+        packages = ['crino'],
+        classifiers =CLASSIFIERS,
+        install_requires=['numpy','scipy','theano']
+    )
