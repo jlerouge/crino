@@ -284,7 +284,7 @@ def experience(config):
     nn.setDisplayedEpochs(displayed_epochs)
 
     # bake the MLP and set the criterion
-    nn.linkInputs(T.matrix('x'), nFeats)
+    nn.setInputs(T.matrix('x'), nFeats)
     nn.prepare()
     nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
 

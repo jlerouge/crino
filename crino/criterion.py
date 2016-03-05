@@ -83,7 +83,6 @@ class Criterion(object):
 		"""
 		raise NotImplementedError("This class must be derived.")
 
-
 class CrossEntropy(Criterion):
 	"""
 	The cross-entropy criterion is well suited for targets vector
@@ -108,7 +107,7 @@ class CrossEntropy(Criterion):
 			targets : :theano:`TensorVariable`
 				The symbolic `targets` vector
 		"""
-		Criterion.__init__(self, outputs, targets)
+		super(CrossEntropy, self).__init__(outputs, targets)
 
 	def prepare(self):
 		""" Computes the cross-entropy symbolic expression. """
@@ -135,7 +134,7 @@ class MeanSquareError(Criterion):
 			targets : :theano:`TensorVariable`
 				The symbolic `targets` vector
 		"""
-		Criterion.__init__(self, outputs, targets)
+		super(MeanSquareError, self).__init__(outputs, targets)
 
 	def prepare(self):
 		""" Computes the mean square error symbolic expression. """
@@ -161,7 +160,7 @@ class MeanAbsoluteError(Criterion):
 			targets : :theano:`TensorVariable`
 				The symbolic `targets` vector
 		"""
-		Criterion.__init__(self, outputs, targets)
+		super(MeanAbsoluteError, self).__init__(outputs, targets)
 
 	def prepare(self):
 		""" Computes the mean absolute error symbolic expression. """
@@ -193,7 +192,7 @@ class NegativeLogLikelihood(Criterion):
 			targets : :theano:`TensorVariable`
 				The symbolic `targets` vector
 		"""
-		Criterion.__init__(self, outputs, targets)
+		super(NegativeLogLikelihood, self).__init__(outputs, targets)
 
 	def prepare(self):
 		""" Computes the Negative Log Likelihood symbolic expression. """

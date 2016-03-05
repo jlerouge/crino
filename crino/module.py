@@ -117,12 +117,6 @@ class Module(object):
 		:type: list
 		"""
 
-		self.updates = []
-		"""
-		:ivar: The list of state updates
-		:type: list
-		"""
-
 		self.backupParams = []
 		"""
 		:ivar: The list of backup parameters
@@ -170,23 +164,66 @@ class Module(object):
 			self.nInputs = nInputs
 		self.inputs = vector
 
-	def setCriterion(self, criterion):
-		"""
-		Sets the criterion for training, and compute the partial gradients
-		of the parameters.
-
-		:Parameters:
-			vector : :theano:`TensorVariable`
-				The symbolic vector that will serve as inputs.
-			nInputs : int
-				The size of this inputs vector.
-		"""
-		self.criterion = criterion
-		self.gparams = T.grad(self.criterion.expression, self.params)
-
-	def trainFunction(self, downcast=None):
+	def trainFunction(self, batch_size=1, lr=0.1, downcast=None, shared_x_train=None, shared_y_train=None):
 		"""
 		Constructs and compiles a Theano function in order to train the module.
+
+		:Parameters:
+			batch_size : int
+				The size of the batches to use for gradient descent :
+					- 1 for stochastic gradient descent;
+					- :math:`n \in ]1..N_{train}[` for mini-batch gradient descent (:math:`N_{train}` must be a multiple of n);
+					- :math:`N_{train}` for batch gradient descent.
+
+				(:math:`N_{train}` is the total number of training examples)
+			lr : float
+				The learning rate.
+			downcast : bool
+				If true, allows the inputs data to be downcasted
+				(e.g. from double to single precision floats for GPU use).
+		:return: a Theano-function that performs one step of gradient descent
+		:rtype: :theano:`function`
+		"""
+
+		shared_sets=False
+		if isinstance(shared_x_train,SharedVariable) and isinstance(shared_y_train,SharedVariable):
+			shared_sets=True
+
+		if self.params and self.criterion:
+			self.gparams = T.grad(self.criterion.expression, self.params)
+
+			# Définition des variables symboliques
+			index = T.lscalar('index')
+			if shared_sets:
+				x_train = shared_x_train
+				y_train = shared_y_train
+			else:
+				x_train = T.matrix('x_train')
+				y_train = T.matrix('y_train')
+
+			# Définition des mises à jour
+			updates = []
+			for param_i, grad_i in zip(self.params, self.gparams):
+				updates.append((param_i, param_i - lr*grad_i))
+
+			# Définition des entrées
+			if shared_sets:
+				inputs=[index]
+			else:
+				inputs=[x_train, y_train, index]
+
+			# Construction d'une fonction d'apprentissage theano
+			return theano.function( inputs=inputs, outputs=self.criterion.expression, updates=updates,
+									givens={
+										self.inputs: x_train[index*batch_size:(index+1)*batch_size],
+										self.criterion.targets: y_train[index*batch_size:(index+1)*batch_size]
+									}, allow_input_downcast=downcast)
+		else:
+			return None
+
+	def criterionFunction(self, downcast=None, shared_x_data=None, shared_y_data=None):
+		"""
+		Constructs and compiles a Theano function in order to compute the criterion on a given set.
 
 		:Parameters:
 
@@ -197,106 +234,91 @@ class Module(object):
 		:rtype: :theano:`function`
 		"""
 
-		# Définition des entrées
-		lr = T.dscalar('lr')
+		shared_sets=False
+		if isinstance(shared_x_data,SharedVariable) and isinstance(shared_y_data,SharedVariable):
+			shared_sets=True
 
-		# Définition des mises à jour
-		updates = []
-		for param_i, grad_i in zip(self.params, self.gparams):
-			updates.append((param_i, param_i - lr*grad_i))
+		if self.params and self.criterion:
 
-		# Construction d'une fonction d'apprentissage theano
-		return theano.function( inputs=[self.inputs, self.criterion.targets, lr],
-								outputs=self.criterion.expression,
-								updates=updates,
-								allow_input_downcast=downcast)
+			# Définition des variables symboliques
+			if shared_sets:
+				x_data = shared_x_data
+				y_data = shared_y_data
+			else:
+				x_data = T.matrix('x_data')
+				y_data = T.matrix('y_data')
 
-	def train(self, x_train, y_train, optimizer):
-		"""
-		Performs the supervised learning step of the `MultiLayerPerceptron`.
-		This function explicitly calls `finetune`, but displays a bit more information.
+			# Définition des entrées
+			if shared_sets:
+				inputs=[]
+			else:
+				inputs=[x_data, y_data]
 
-		:Parameters:
-			x_train : :numpy:`ndarray`
-				The training examples.
-			y_train : :numpy:`ndarray`
-				The training labels.
-		:return: elapsed time, in datetime.
-		:see: `finetune`
-		"""
-		if not (hasattr(self, 'params') and self.params):
-			raise Exception("The module has no parameter, it cannot be trained.")
-		if not (hasattr(self, 'criterion') and self.criterion):
-			raise Exception("The module has no criterion, it cannot be trained.")
-		if not (hasattr(self, 'gparams') and self.gparams):
-			raise Exception("The partial gradients of the module have not been computed.")
+			# Construction de la fonction
+			return theano.function( inputs=inputs, outputs=self.criterion.expression,
+									givens={
+										self.inputs: x_data,
+										self.criterion.targets: y_data
+									}, allow_input_downcast=downcast)
+		else:
+			return None
 
-		if(optimizer.verbose):
-			print "-- Start training --"
-		delta = optimizer.optimize(self, x_train, y_train)
-		if(optimizer.verbose):
-			print "-- End training (lasted %s) --" % (delta)
-		return delta
-
-
-	def criterionFunction(self, downcast=None):
-		"""
-		Constructs and compiles a Theano function in order to compute the criterion on a given set.
-
-		:Parameters:
-			downcast : bool
-				If true, allows the inputs data to be downcasted
-				(e.g. from double to single precision floats for GPU use).
-		:return: a Theano-function that computes the criterion
-		:rtype: :theano:`function`
-		"""
-		return theano.function( inputs=[self.inputs, self.criterion.targets],
-								outputs=self.criterion.expression,
-								allow_input_downcast=downcast)
-
-	def forwardFunction(self, downcast=None):
+	def forwardFunction(self, downcast=None, shared_x_data=None):
 		"""
 		Constructs and compiles a Theano function in order to compute the forward on a given set.
 
 		:Parameters:
-			input : :numpy:`ndarray`
-				The test example(s) on which the neural network will compute its
-				outputs.
+
 			downcast : bool
 				If true, allows the inputs data to be downcasted
 				(e.g. from double to single precision floats for GPU use).
-		:return: a Theano-function that performs a forward step
+		:return: a Theano-function that performs one step of gradient descent
 		:rtype: :theano:`function`
 		"""
-		return theano.function(	inputs=[self.inputs],
-								outputs=self.outputs,
-								updates=self.updates,
-								allow_input_downcast=downcast)
 
-	def forward(self, x_test, downcast=None):
+		shared_sets=False
+		if isinstance(shared_x_data,SharedVariable):
+			shared_sets=True
+
+		if self.prepared:
+
+			# Définition des variables symboliques
+			if shared_sets:
+				x_data = shared_x_data
+			else:
+				x_data = T.matrix('x_data')
+
+			# Définition des entrées
+			if shared_sets:
+				inputs=[]
+			else:
+				inputs=[x_data]
+
+			# Construction de la fonction
+			return theano.function( inputs=inputs, outputs=self.outputs,
+									givens={
+										self.inputs: x_data
+									}, allow_input_downcast=downcast)
+		else:
+			return None
+
+	def forward(self, x_test):
 		"""
 		Performs the forward step on the given test example.
 
 		:Parameters:
 			x_test : :numpy:`ndarray`
-				The test example(s) on which the neural network will compute its
-				outputs.
-			downcast : bool
-				If true, allows the inputs data to be downcasted (e.g. from
-				double to single precision floats for GPU use).
+				The test example on which the neural network will compute its outputs.
 
-		:return: the outputs of the neural network on the given test example(s)
-		:rtype: :numpy:`ndarray`
+		:return: a Theano function that performs one step of gradient descent
+		:rtype: :theano:`function`
 		"""
-		if not(self.prepared):
-			raise Exception("The module must be prepared before doing a forward step.")
-		f = self.forwardFunction(downcast=downcast)
-		return f(x_test)
+		shared_x_test=theano.shared(x_test)
+		forward = self.forwardFunction(downcast=None,shared_x_data=shared_x_test)
+		return forward()
 
 	def holdFunction(self):
-		"""
-		TODO
-		"""
+
 		if self.params and self.backupParams:
 			# Définition des mises à jour
 			updates = []
@@ -309,9 +331,7 @@ class Module(object):
 			return None
 
 	def restoreFunction(self):
-		"""
-		TODO
-		"""
+
 		if self.params and self.backupParams:
 			# Définition des mises à jour
 			updates = []
@@ -337,7 +357,6 @@ class Module(object):
 				self.prepareParams()
 				self.prepareBackup()
 				self.prepareOutputs()
-				self.prepareUpdates()
 				self.prepared = True
 		else:
 			warnings.warn("This module is already prepared.")
@@ -377,14 +396,6 @@ class Module(object):
 		"""
 		raise NotImplementedError("This class must be derived.")
 
-	def prepareUpdates(self):
-		"""
-		Computes the updates that are applied at each forward step.
-
-		:attention: It must be implemented in derived classes.
-		"""
-		raise NotImplementedError("This class must be derived.")
-
 	def save(self, filename):
 		"""
 		Saves this `Module` to a file.
@@ -413,7 +424,7 @@ class Standalone(Module):
 			nInputs : int
 				The `inputs` size.
 		"""
-		Module.__init__(self, nOutputs, nInputs)
+		super(Standalone, self).__init__(nOutputs, nInputs)
 
 	def prepareGeometry(self):
 		"""
@@ -447,7 +458,7 @@ class Linear(Standalone):
 				The initialization vector for b.
 		"""
 
-		Standalone.__init__(self, nOutputs, nInputs)
+		super(Linear, self).__init__(nOutputs, nInputs)
 
 		self.W_init = W_init
 		"""
@@ -512,76 +523,6 @@ class Linear(Standalone):
 		self.outputs = T.dot(self.inputs, self.W) + self.b
 
 
-	def prepareUpdates(self):
-		"""
-		`Linear` module has no states, so it does nothing.
-		"""
-		pass
-
-class LongShortTermMemory(Standalone):
-	"""
-	A `LongShortTermMemory` (LSTM) module computes its `outputs` as ...
-	TODO
-	"""
-
-	def __init__(self, nOutputs, nInputs=None):
-		"""
-		Constructs a new `LongShortTermMemory` (LSTM) module.
-		TODO
-		"""
-		Standalone.__init__(self, nOutputs, nInputs)
-
-	def initialWeights(self, low, high, size, name=None):
-		W = np.random.uniform(low, high, size)
-		W = np.asarray(W, dtype=theano.config.floatX)
-		return theano.shared(value=W, name=name, borrow=True)
-
-	def prepareParams(self):
-		"""
-		TODO
-		"""
-		self.W_xi = self.initialWeights(-1.0, 1.0, (self.nInputs, self.nOutputs), 'W_xi')
-		self.W_hi = self.initialWeights(-1.0, 1.0, (self.nOutputs, self.nOutputs), 'W_hi')
-		self.W_ci = self.initialWeights(-1.0, 1.0, (self.nOutputs, self.nOutputs), 'W_ci')
-		self.b_i = self.initialWeights(-0.5, 0.5, (self.nOutputs, ), 'b_i')
-
-		self.W_xf = self.initialWeights(-1.0, 1.0, (self.nInputs, self.nOutputs), 'W_xf')
-		self.W_hf = self.initialWeights(-1.0, 1.0, (self.nOutputs, self.nOutputs), 'W_hf')
-		self.W_cf = self.initialWeights(-1.0, 1.0, (self.nOutputs, self.nOutputs), 'W_cf')
-		self.b_f = self.initialWeights(0.0, 1.0, (self.nOutputs, ), 'b_f')
-
-		self.W_xc = self.initialWeights(-1.0, 1.0, (self.nInputs, self.nOutputs), 'W_xc')
-		self.W_hc = self.initialWeights(-1.0, 1.0, (self.nOutputs, self.nOutputs), 'W_hc')
-		self.b_c = self.initialWeights(0.0, 0.0, (self.nOutputs, ), 'b_c')
-
-		self.W_xo = self.initialWeights(-1.0, 1.0, (self.nInputs, self.nOutputs), 'W_xo')
-		self.W_ho = self.initialWeights(-1.0, 1.0, (self.nOutputs, self.nOutputs), 'W_ho')
-		self.W_co = self.initialWeights(-1.0, 1.0, (self.nOutputs, self.nOutputs), 'W_co')
-		self.b_o = self.initialWeights(-0.5, 0.5, (self.nOutputs, ), 'b_o')
-
-		self.params = [self.W_xi, self.W_hi, self.W_ci, self.b_i, self.W_xf, self.W_hf, self.W_cf, self.b_f, self.W_xc, self.W_hc, self.b_c, self.W_xo, self.W_ho, self.W_co, self.b_o]
-
-	def prepareOutputs(self):
-		"""
-		TODO
-		"""
-		self.c_tm1 = theano.shared(value=np.zeros((self.nOutputs,1), dtype=theano.config.floatX), name='c_tm1')
-		self.h_tm1 = theano.shared(value=np.zeros((self.nOutputs,1), dtype=theano.config.floatX), name='h_tm1')
-
-		self.i_t = T.nnet.sigmoid(T.dot(self.inputs, self.W_xi) + T.dot(self.h_tm1, self.W_hi) + T.dot(self.c_tm1, self.W_ci) + self.b_i)
-		self.f_t = T.nnet.sigmoid(T.dot(self.inputs, self.W_xf) + T.dot(self.h_tm1, self.W_hf) + T.dot(self.c_tm1, self.W_cf) + self.b_f)
-		self.c_t = self.f_t * self.c_tm1 + self.i_t * T.tanh(T.dot(self.inputs, self.W_xc) + T.dot(self.h_tm1, self.W_hc) + self.b_c)
-		self.o_t = T.nnet.sigmoid(T.dot(self.inputs, self.W_xo)+ T.dot(self.h_tm1, self.W_ho) + T.dot(self.c_t, self.W_co)  + self.b_o)
-		self.h_t = self.o_t * T.tanh(self.c_t)
-		self.outputs = self.h_t
-
-	def prepareUpdates(self):
-		"""
-		Initializes the state `updates` of the LongShortTermMemory layer.
-		"""
-		self.updates.append((self.h_tm1, self.h_t))
-		self.updates.append((self.c_tm1, self.c_t))
-
 class Container(Module):
 	"""
 	A `Container` module computes its `outputs` thanks to
@@ -602,7 +543,7 @@ class Container(Module):
 			nInputs : int
 				The `inputs` size.
 		"""
-		Module.__init__(self, None, nInputs)
+		super(Container, self).__init__(None, nInputs)
 
 		self.modules=[]
 		"""
@@ -622,25 +563,6 @@ class Container(Module):
 		"""
 		self.modules.append(module)
 
-	def prepareParams(self):
-		"""
-		Initializes the `params` of the submodules. The `Container` module
-		`params` will include all the parameters of its submodules.
-		"""
-		if(self.modules):
-			for mod in self.modules:
-				mod.prepareParams()
-				self.params.extend(mod.params)
-
-	def prepareUpdates(self):
-		"""
-		Initializes the `updates` of the submodules. The `Container` module
-		`updates` will include all the updates of its submodules.
-		"""
-		if(self.modules):
-			for mod in self.modules:
-				mod.prepareUpdates()
-				self.updates.extend(mod.updates)
 
 class Sequential(Container):
 	"""
@@ -663,7 +585,7 @@ class Sequential(Container):
 			nInputs : int
 				The `inputs` size of the sequence (and of all the submodules).
 		"""
-		Container.__init__(self, mods, nInputs)
+		super(Sequential, self).__init__(mods, nInputs)
 
 	def prepareGeometry(self):
 		"""
@@ -681,6 +603,16 @@ class Sequential(Container):
 			for base, new in zip(self.modules, self.modules[1:]):
 				new.nInputs = base.nOutputs
 				new.prepareGeometry()
+
+	def prepareParams(self):
+		"""
+		Initializes the `params` of the submodules. The `Sequential` module `params` will include the `params` of its submodules .
+		"""
+
+		if(self.modules):
+			for mod in self.modules:
+				mod.prepareParams()
+				self.params.extend(mod.params)
 
 	def prepareOutputs(self):
 		"""
@@ -718,7 +650,7 @@ class Concat(Container):
 			nInputs : int
 				The `inputs` size of the concat.
 		"""
-		Container.__init__(self, mods, nInputs)
+		super(Concat, self).__init__(mods, nInputs)
 
 	def prepareGeometry(self):
 		"""
@@ -733,6 +665,15 @@ class Concat(Container):
 				raise Exception("The total inputs sizes of the sub-modules is wrong.")
 
 			map(lambda x:x.prepareGeometry(), self.modules)
+
+	def prepareParams(self):
+		"""
+		Initializes the `params` of the submodules. The `Sequential` module `params` will include the `params` of its submodules .
+		"""
+		if(self.modules):
+			for mod in self.modules:
+				mod.prepareParams()
+				self.params.extend(mod.params)
 
 	def prepareOutputs(self):
 		"""
@@ -768,17 +709,11 @@ class Activation(Standalone):
 				The `inputs` size.
 		"""
 
-		Standalone.__init__(self, nOutputs, nInputs)
+		super(Activation, self).__init__(nOutputs, nInputs)
 
 	def prepareParams(self):
 		"""
-		`Activation` module has no `params`, so it does nothing.
-		"""
-		pass
-
-	def prepareUpdates(self):
-		"""
-		`Activation` module has no states, so it does nothing.
+		Do nothing, as an activation module doesn't have `params`.
 		"""
 		pass
 
@@ -799,7 +734,7 @@ class Tanh(Activation):
 			nInputs : int
 				The `inputs` size.
 		"""
-		Activation.__init__(self, nOutputs, nInputs=None)
+		super(Tanh, self).__init__(nOutputs, nInputs=None)
 
 	def prepareOutputs(self):
 		"""
@@ -824,7 +759,7 @@ class Sigmoid(Activation):
 			nInputs : int
 				The `inputs` size.
 		"""
-		Activation.__init__(self, nOutputs, nInputs)
+		super(Sigmoid, self).__init__(nOutputs, nInputs)
 
 	def prepareOutputs(self):
 		"""
@@ -850,10 +785,11 @@ class Softmax(Activation):
 			nInputs : int
 				The `inputs` size.
 		"""
-		Activation.__init__(self, nOutputs, nInputs)
+		super(Softmax, self).__init__(nOutputs, nInputs)
 
 	def prepareOutputs(self):
 		"""
 		Computes the softmax function :math:`\mathbf{\hat{y}} = [exp(x_i)/\sum_{i=1}^n exp(x_i)]_{i=1}^n`
 		"""
 		self.outputs = T.nnet.softmax(self.inputs)
+
