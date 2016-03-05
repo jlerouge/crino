@@ -139,11 +139,10 @@ class Module(object):
         """
         if self.prepared and (self.nInputs != previous.nOutputs):
             raise Exception("This module has already been prepared, you can't change its inputs size.")
-        elif not(previous.outputs) :
+        elif not(previous.outputs):
             raise Exception("The inputs module has not been prepared before.")
-        else :
-            self.nInputs = previous.nOutputs
-            self.inputs = previous.outputs
+        self.nInputs = previous.nOutputs
+        self.inputs = previous.outputs
 
 
     def setInputs(self, vector, nInputs):
@@ -160,9 +159,17 @@ class Module(object):
         """
         if self.prepared and (self.nInputs != nInputs):
             raise Exception("This module has already been prepared, you can't change its inputs size.")
-        else:
-            self.nInputs = nInputs
+        self.nInputs = nInputs
         self.inputs = vector
+
+    def setCriterion(self, criterion):
+        """
+        Sets the criterion for training.
+        :Parameters:
+            criterion : `Criterion`
+                Criterion that will be used by this module.
+        """
+        self.criterion = criterion
 
     def trainFunction(self, batch_size=1, lr=0.1, downcast=None, shared_x_train=None, shared_y_train=None):
         """
