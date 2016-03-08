@@ -231,9 +231,9 @@ def experience_multiple_pretraining_geometry_and_valid(config):
         # set the epochs where we will have a particular look at
         nn.setDisplayedEpochs(displayed_epochs)
 
-        nn.linkInputs(T.matrix('x'), nFeats)
+        nn.setInputs(T.matrix('x'), nFeats)
         nn.prepare()
-        nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
+        nn.setCriterion(MeanSquareError(nn.getOutputs(), T.matrix('y')))
         if parameters is None:
             parameters=nn.getParameters()
             if save_init_weights:

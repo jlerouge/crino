@@ -206,9 +206,9 @@ def experience_multiple_pretraining_geometry(config):
         # set the epochs where we will have a particular look at
         nn.setDisplayedEpochs(displayed_epochs)
 
-        nn.linkInputs(T.matrix('x'), nFeats)
+        nn.setInputs(T.matrix('x'), nFeats)
         nn.prepare()
-        nn.criterion = MeanSquareError(nn.outputs, T.matrix('y'))
+        nn.setCriterion(MeanSquareError(nn.getOutputs(), T.matrix('y')))
         if parameters is None:
             parameters=nn.getParameters()
             if save_init_weights:
@@ -230,7 +230,7 @@ def experience_multiple_pretraining_geometry(config):
             }
         pickle.dump(nn.getParameters(),open(os.path.join(absoutfolder,"%s_params.pck"%(expname,)),'w'),protocol=-1)
 
-	print("RESULT %s: train: %f test: %f"%(expname,nn.finetune_history[-1],nn.test_criterion_history[-1]))
+    print("RESULT %s: train: %f test: %f"%(expname,nn.finetune_history[-1],nn.test_criterion_history[-1]))
 
         for phase,xdata,ydata,history in [
                     ['train',x_train,y_train,nn.app_forward_history],
